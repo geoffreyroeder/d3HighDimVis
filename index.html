@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>-->
+
+        <link rel="stylesheet" href="static/css/d3.slider.css" />
+
+        <!-- STYLES -->
+        <style type="text/css">
+            @font-face { font-family: Delicious; src: url('static/res/delicious-123/Delicious-Roman.otf'); }
+            @font-face { font-family: Delicious; font-weight: bold; src: url('static/res/delicious-123/Delicious-Bold.otf'); }
+            /*http://scottpdawson.com/three-methods-for-creating-beveled-corners-css-css3-or-jquery/*/
+
+            .axis path,
+            .axis line {
+                fill: none;
+                stroke: black;
+                shape-rendering: crispEdges;
+            }
+
+            .axis text {
+                font-family: Delicious;
+                /*font-family: sans-serif;*/
+
+                font-size: 11px;
+            }
+
+            body {
+                font-family: Delicious;
+                font-weight: bold;
+                margin:0;     /* This is used to reset any browser-default margins */
+                display: block;
+
+            }
+
+            .dataLoadWrapper {
+                margin: 20px;
+                margin-left: auto;
+                margin-right: auto;
+                display: block;
+                justify-content: center;
+                width: 90vw;
+                background: lightgoldenrodyellow;
+            }
+
+            .algorithmWrapper {
+                display: block;
+                font-family: Delicious;
+
+            }
+            .loadWidgetsWrapper, .algorithmViewport, .titleBar {
+                /*background: grey;*/
+                margin: 20px;
+                margin-left: auto;
+                margin-right: auto;
+                display: flex;
+                justify-content: center;
+                width: 90vw;
+            }
+            /*.titleBar {*/
+                /*width:*/
+                /*background: red;*/
+
+            /*}*/
+
+            div.bar {
+                display: inline-block;
+                width: 20px;
+                height: 75px;   /* Gets overriden by D3-assigned height below */
+                margin-right: 2px;
+                background-color: blue;
+            }
+
+            .plotViewportWrapper {
+                margin: 15px;
+                width:30%;
+                display: block;
+                vertical-align: middle;
+                align-items: center;
+                justify-content: center;
+            }
+            .plotViewport {
+                border: 5px dashed #ccc;
+            }
+            .plotViewport, .slidersWrapper, .plotViewportTitle {
+                vertical-align: middle;
+                align-items: center;
+                justify-content: center;
+                width:200px; /*Sort of: expanded by svg*/
+                margin:auto;
+                text-align: center;
+            }
+            .plotViewport, .slidersWrapper {
+                height:200px;
+            }
+
+
+            .sliderViewport {
+                border: 5px dashed #ccc;
+                align-items: center;
+                vertical-align: middle;
+                text-align: center;
+                justify-content: center;
+                margin:5px;
+            }
+            .sliderViewport:hover, .plotViewport:hover {
+                border: 5px dashed #00ffff;
+                /*color: #F0F;*/
+            }
+
+            /*Debug CSS*/
+            .algorithmViewport {
+                background: cyan;
+            }
+            .plotViewport {
+                background: yellow;
+            }
+            .sliderViewport {
+                background: magenta;
+            }
+            .plotViewportWrapper {
+                background: yellow;
+            }
+            .plotViewport {
+                background: grey;
+            }
+            /* loader demo */
+            #featuresLoader, #labelsLoader { border: 10px dashed #ccc; width: 300px; height: 300px; margin: 20px auto;}
+            #featuresLoader.hover, #labelsLoader.hover { border: 10px dashed #333; }
+        </style>
+
+        <meta charset="utf-8"> 
+        <title>D3 Page Template</title>
+        <script type="text/javascript" src="d3/d3.js"></script>
+    </head>
+    <body>
+
+    <div class="dataLoadWrapper">
+        <div class="loadWidgetsWrapper">
+
+            <div id="featuresLoader">
+                <p id="status">File API & FileReader API not supported</p>
+            </div>
+            <div id="labelsLoader"></div>
+        </div>
+
+    </div>
+
+    <div class="algorithmWrapper">
+        <div class="titleBar">t-Distributed Stochastic Neighbour Embedding</div>
+
+        <div class="algorithmViewport">
+                <div class="oneSelector plotViewportWrapper">
+                    <div class="plotViewportTitle">1-D</div>
+                    <div id="oneD" class="plotViewport"></div>
+                    <div class="slidersWrapper">
+                        <div class="sliderViewport">
+                            Perp: <span id="sliderText">100</span>, Eps: <span id="slider2Text">100</span>
+                        </div>
+                        <div class="sliderViewport">
+                            <div id="slider1"></div>
+                        </div>
+                        <div class="sliderViewport"><div id="slider2"></div></div>
+                        <div class="sliderViewport"></div></div>
+                    </div>
+                </div>
+
+            <div class="plotViewportWrapper">
+                <div class="plotViewportTitle">2-D</div>
+                <div id="twoD" class="plotViewport"></div>
+
+                <div class="slidersWrapper">
+                    <div class="sliderViewport"></div>
+                    <div class="sliderViewport"></div>
+                    <div class="sliderViewport"></div>
+                </div>
+            </div>
+
+            <div class="plotViewportWrapper">
+                <div class="plotViewportTitle">3-D</div>
+            <div id="threeD" class="plotViewport"></div>
+
+            <div class="slidersWrapper">
+                <div class="sliderViewport"></div>
+                <div class="sliderViewport"></div>
+                <div class="sliderViewport"></div>
+            </div>
+
+            </div>
+    </div>
+    </div>
+
+    <script src="static/js/papaparse.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <script src="static/js/tsne.js"></script>
+    <script src="static/js/d3.slider.js"></script>
+
+    <script>
+
+        d3.select('#slider1').call(d3.slider().value(100).on("slide", function(evt, value) {
+            d3.select('#sliderText').text(Math.floor( value ));
+        }));
+        d3.select('#slider2').call(d3.slider().value(100).on("slide", function(evt, value) {
+            d3.select('#slider2Text').text(Math.floor( value ));
+        }));
+
+        /* t-SNE LOGIC */ // ##################################################
+
+        function runTSNE(eps, perp, iters, dim, data) {
+            var opt = {}
+            opt.epsilon = eps; // epsilon is learning rate (10 = default)
+            opt.perplexity = perp; // roughly how many neighbors each point influences (30 = default)
+            opt.dim = dim; // dimensionality of the embedding (2 = default)
+
+            var tsne = new tsnejs.tSNE(opt); // create a tSNE instance
+            tsne.initDataRaw(data);
+
+            for (var k = 0; k < iters; k++) {
+                tsne.step(); // every time you call this, solution gets better
+            }
+
+            return tsne.getSolution(); // Y is an array of 2-D points that you can plot
+        }
+
+        /* File loading logic */ // ##################################################
+
+        // modified from http://html5demos.com/file-api
+        var holder = document.getElementById('featuresLoader'),
+             state = document.getElementById('status');
+        if (typeof window.FileReader === 'undefined') {
+            state.className = 'fail';
+        } else {
+            state.className = 'success';
+            state.innerHTML = 'File API & FileReader available';
+        }
+
+        holder.ondragover = function() {
+            this.className = 'hover';
+            return false;
+        };
+        holder.ondragend = function() {
+            this.className = '';
+            return false;
+        };
+        holder.ondrop = function(e) {
+            this.className = '';
+            e.preventDefault();
+
+            var file = e.dataTransfer.files[0],
+                    reader = new FileReader();
+            reader.onload = function(event) {
+                console.log(event.target);
+                holder.innerText = event.target.result;
+            };
+            // IAH: put on github. Make t-SNE visualizations animated.
+            // nice-to-have: okay box before executing algorithm
+            // Next: separate 1D and 2D visualizations
+            // nice-to-have: label colouring (critical to have? or shapes)
+            // Next:
+            console.log(file);
+
+            // define callback
+            Papa.parse(file, {
+                        dynamicTyping: true,
+                        skipEmptyLines: false,
+                        complete: function (results, file) {
+                            console.log("Parsing complete:", results, file);
+                            dataset = results.data;
+                            // TODO: Papa figure out why this is necessary
+//                            y = runTSNE(2,5,iters=200, dim=2,data=dataset.slice(0, -1))
+//                            console.log(y)
+//                            updatePlots(y);
+                           updatePlots(dataset.slice(0,-1));
+
+                        }
+                    })
+
+
+            //reader.readAsText(file);
+
+            return false;
+        };
+
+
+        // TODO: refactor into plotGenerator class
+    function generateRandomDataset(numDataPoints = 50, scale = 1000) {
+        var dataset = [];											//Initialize empty array
+        var maxRange = Math.random() * scale;						//Max range of new values
+        for (var i = 0; i < numDataPoints; i++) {					//Loop numDataPoints times
+            var newNumber1 = Math.floor(Math.random() * maxRange);	//New random integer
+            var newNumber2 = Math.floor(Math.random() * maxRange);	//New random integer
+            dataset.push([newNumber1, newNumber2]);					//Add new number to array
+        }
+        return dataset;
+    }
+
+    /* d3.js add data to plots logic */ // ##################################################
+
+        function updatePlots(newData) {
+            // generate plots
+            var divIDs = ["oneD", "twoD", "threeD"]
+            var buttonIDs = ["leftmost", "middle", "rightmost"] // parallels divIDs
+            var num_plots = divIDs.length
+
+            for (var i = 0; i < num_plots; i++) {
+                console.log("i")
+                // Check here whether the element is already created
+                var selectedPlotDiv = d3.select("#" + divIDs[i]);
+                // http://stackoverflow.com/questions/10003683/javascript-get-number-from-string
+                var divWidth = selectedPlotDiv.style("width").match(/\d/g).join("");
+                var divHeight = selectedPlotDiv.style("height").match(/\d/g).join("");
+                var dataset = generateRandomDataset();
+                add1or2DPlotToD3Selection(selectedPlotDiv, divWidth, divHeight, "#" + buttonIDs[i], newData, i + 1);
+            }
+        }
+
+    function createXYScales(dataset, padding, divWidth, divHeight) {
+        var xScale = d3.scale.linear()
+            .domain([d3.min(dataset, function (d) {
+                return d[0];
+            }), d3.max(dataset, function (d) {
+                return d[0];
+            })])
+            .range([padding, divWidth - padding]);
+
+        var yScale = d3.scale.linear()
+            .domain([d3.min(dataset, function (d) {
+                return d[1];
+            }), d3.max(dataset, function (d) {
+                return d[1];
+            })])
+            .range([divHeight - padding, padding]);
+
+        return [xScale, yScale]
+    }
+
+    function updateScales(xScale, yScale, dataset, dim) {
+        xScale.domain([d3.min(dataset, function (d) {
+            return d[0];
+        }), d3.max(dataset, function (d) {
+            return d[0];
+        })]);
+        if (dim > 1) {
+            yScale.domain([d3.min(dataset, function (d) {
+                return d[1];
+            }), d3.max(dataset, function (d) {
+
+                return d[1];
+            })]);
+        }
+    }
+
+    function add1or2DPlotToD3Selection(selectedPlotDiv, divWidth, divHeight, controlButtonID, dataset, dim) {
+        var padding = 30;
+        console.log(divWidth)
+        console.log(divHeight)
+        console.log(dataset[0][0])
+
+        xyScales = createXYScales(dataset, padding, divWidth, divHeight)
+        xScale = xyScales[0]
+        if(dim > 1) {
+            yScale = xyScales[1]
+        }
+
+        // TODO: set a flag, update if it already exists OR delete all existing ones
+
+        //Define X axis
+        var xAxis = d3.svg.axis()
+                .scale(xScale)
+                .orient("bottom")
+                .ticks(5);
+
+        if(dim > 1) {
+            //Define Y axis
+            var yAxis = d3.svg.axis()
+                .scale(yScale)
+                .orient("left")
+                .ticks(5);
+        }
+
+        //Create SVG element
+        // Have we created this SVG before?
+        svg = selectedPlotDiv.select('svg')
+        svgExistenceTest = svg[0][0] == null
+
+        if (svgExistenceTest) {
+            console.log("SVG did not exist, making new one")
+            var svg = selectedPlotDiv
+                .append("svg")
+                .attr("width", divWidth)
+                .attr("height", divHeight);
+
+            //Create circles
+            svg.selectAll("circle")
+                .data(dataset)
+                .enter()
+                .append("circle")
+                .attr("cx", function (d) {
+                    return xScale(d[0]);
+                })
+                .attr("cy", function (d) {
+                    var ret
+                    if (dim > 1) {
+                        ret = yScale(d[1])
+                    } else {
+                        ret = divHeight / 2
+                    }
+                    return ret;
+                })
+                .attr("r", 2);
+
+            //Create X axis
+            svg.append("g")
+                .attr("class", "x axis")
+                .attr("transform", "translate(0," + (divHeight - padding) + ")")
+                .call(xAxis);
+
+            //Create Y axis
+            if (dim > 1) {
+                svg.append("g")
+                    .attr("class", "y axis")
+                    .attr("transform", "translate(" + padding + ",0)")
+                    .call(yAxis);
+            }
+        } else {
+            console.log("svg exists, updating with new data")
+            // update svg with new data
+            //Update scale domains
+            updateScales(xScale, yScale, dataset, dim)
+
+            //Update all circles
+
+            svg.selectAll("circle")
+                .data(dataset)
+                .transition()
+                .duration(1000)
+                .each("start", function () {
+                    d3.select(this)
+                        .attr("fill", "magenta")
+                        .attr("r", 7);
+                })
+                .attr("cx", function (d) {
+                    return xScale(d[0]);
+                })
+                .attr("cy", function (d) {
+                    var ret
+                    if (dim > 1) {
+                        ret = yScale(d[1])
+                    } else {
+                        ret = divHeight / 2
+                    }
+                    return ret;
+                })
+                .each("end", function () {
+                    d3.select(this)
+                        .transition()
+                        .duration(1000)
+                        .attr("fill", "black")
+                        .attr("r", 2);
+                });
+
+            //Update X axis
+            svg.select(".x.axis")
+                .transition()
+                .duration(1000)
+                .call(xAxis);
+
+            if(dim > 1) {
+                //Update Y axis
+                svg.select(".y.axis")
+                    .transition()
+                    .duration(1000)
+                    .call(yAxis);
+            }
+
+        }
+         // TODO: currently inactive
+            //On click, update with new data
+//            d3.select(controlButtonID)
+//                .on("click", function () {
+//
+//
+//                    //New values for dataset
+//                    var numValues = dataset.length;						 		//Count original length of dataset
+//                    var maxRange = Math.random() * 1000;						//Max range of new values
+//                    dataset = [];  						 				 		//Initialize empty array
+//                    for (var i = 0; i < numValues; i++) {				 		//Loop numValues times
+//                        var newNumber1 = Math.floor(Math.random() * maxRange);	//New random integer
+//                        var newNumber2 = Math.floor(Math.random() * maxRange);	//New random integer
+//                        dataset.push([newNumber1, newNumber2]);					//Add new number to array
+//                    }
+//
+//                    //Update scale domains
+//                    xScale.domain([0, d3.max(dataset, function (d) {
+//                        return d[0];
+//                    })]);
+//                    yScale.domain([0, d3.max(dataset, function (d) {
+//                        return d[1];
+//                    })]);
+//
+//                    //Update all circles
+//                    svg.selectAll("circle")
+//                        .data(dataset)
+//                        .transition()
+//                        .duration(1000)
+//                        .each("start", function () {
+//                            d3.select(this)
+//                                .attr("fill", "magenta")
+//                                .attr("r", 7);
+//                        })
+//                        .attr("cx", function (d) {
+//                            return xScale(d[0]);
+//                        })
+//                        .attr("cy", function (d) {
+//                            var ret
+//                            if (dim > 1) {
+//                                ret = yScale(d[1])
+//                            } else {
+//                                ret = divHeight / 2
+//                            }
+//                            return ret;
+//                        })
+//                        .each("end", function () {
+//                            d3.select(this)
+//                                .transition()
+//                                .duration(1000)
+//                                .attr("fill", "black")
+//                                .attr("r", 2);
+//                        });
+//
+//                    //Update X axis
+//                    svg.select(".x.axis")
+//                        .transition()
+//                        .duration(1000)
+//                        .call(xAxis);
+//
+//                    if(dim > 1) {
+//                        //Update Y axis
+//                        svg.select(".y.axis")
+//                            .transition()
+//                            .duration(1000)
+//                            .call(yAxis);
+//                    }
+//
+//                });
+
+    }
+
+        //updatePlots(generateRandomDataset())
+
+    </script>
+
+
+    <!--<script type="text/javascript" src="static/js/dataload.js"></script>-->
+        <!--<script type="text/javascript" src="static/js/main.js"></script>-->
+    </body>
+</html>
+
+
