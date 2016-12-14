@@ -1,0 +1,110 @@
+
+
+.axis path,
+.axis line {
+    fill: none;
+    stroke: black;
+    shape-rendering: crispEdges;
+}
+
+.axis text {
+    font-family: Delicious;
+    /*font-family: sans-serif;*/
+
+    font-size: 11px;
+}
+
+body {
+    font-family: Delicious;
+    font-weight: bold;
+    margin:0;     /* This is used to reset any browser-default margins */
+    display: block;
+
+}
+
+.dataLoadWrapper {
+    margin: 20px;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+    justify-content: center;
+    width: 90vw;
+    background: lightgoldenrodyellow;
+}
+
+.algorithmWrapper {
+    display: block;
+    font-family: Delicious;
+
+}
+.loadWidgetsWrapper, .algorithmViewport, .titleBar {
+    /*background: grey;*/
+    margin: 20px;
+    margin-left: auto;
+    margin-right: auto;
+    display: flex;
+    justify-content: center;
+    width: 90vw;
+}
+
+div.bar {
+    display: inline-block;
+    width: 20px;
+    height: 75px;   /* Gets overriden by D3-assigned height below */
+    margin-right: 2px;
+    background-color: blue;
+}
+
+.plotViewportWrapper {
+    margin: 15px;
+    width:30%;
+    display: block;
+    vertical-align: middle;
+    align-items: center;
+    justify-content: center;
+}
+.plotViewport {
+    border: 5px dashed #ccc;
+}
+.plotViewport, .slidersWrapper, .plotViewportTitle {
+    vertical-align: middle;
+    align-items: center;
+    justify-content: center;
+    width:200px; /*Sort of: expanded by svg*/
+    margin:auto;
+    text-align: center;
+}
+.plotViewport, .slidersWrapper {
+    height:200px;
+}
+.runAlgoButton {
+    border: 5px #ccc;
+    background-color: #999999;
+    color: #333333;
+    align-items: center;
+    vertical-align: middle;
+    text-align: center;
+    justify-content: center;
+    margin:5px;
+}
+.runAlgoButton:hover {
+    color: white;
+    background-color: #333333;
+}
+.sliderViewport {
+    border: 5px dashed #ccc;
+    align-items: center;
+    vertical-align: middle;
+    text-align: center;
+    justify-content: center;
+    /*margin:5px;*/
+}
+.sliderViewport:hover, .plotViewport:hover {
+    border: 5px dashed #00ffff;
+    /*color: #F0F;*/
+}
+
+/* loader demo */
+#featuresLoader, #labelsLoader { border: 10px dashed #ccc; width: 300px; height: 300px; margin: 20px auto;}
+#featuresLoader.hover, #labelsLoader.hover { border: 10px dashed #333; }
+

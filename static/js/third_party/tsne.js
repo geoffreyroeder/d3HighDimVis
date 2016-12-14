@@ -201,7 +201,7 @@ var tsnejs = tsnejs || { REVISION: 'ALPHA' };
       assert(D > 0, " X[0] is empty? Where is the data?");
       var dists = xtod(X); // convert X to distances using gaussian kernel
       this.P = d2p(dists, this.perplexity, 1e-4); // attach to object
-      this.N = N; // back up the size of the dataset
+      this.N = N; // back up the size of the _dataset
       this.initSolution(); // refresh this
     },
 

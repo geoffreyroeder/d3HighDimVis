@@ -51,7 +51,7 @@
 			var h = plotDiv.style("height").match(/\d/g).join("");
 			var padding = 30;
 			
-			//Dynamic, random dataset
+			//Dynamic, random _dataset
 			var dataset = [];											//Initialize empty array
 			var numDataPoints = 50;										//Number of dummy data points to create
 			var maxRange = Math.random() * 1000;						//Max range of new values
@@ -124,8 +124,8 @@
 				.on("click", function() {
 
 
-					//New values for dataset
-					var numValues = dataset.length;						 		//Count original length of dataset
+					//New values for _dataset
+					var numValues = dataset.length;						 		//Count original length of _dataset
 					var maxRange = Math.random() * 1000;						//Max range of new values
 					dataset = [];  						 				 		//Initialize empty array
 					for (var i = 0; i < numValues; i++) {				 		//Loop numValues times
