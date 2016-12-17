@@ -25,6 +25,8 @@
         </div>
     </div>
 
+    <!--######################### t-SNE-->
+
     <div class="algorithmWrapper">
         <div class="titleBar">t-Distributed Stochastic Neighbour Embedding</div>
 
@@ -36,7 +38,7 @@
                 <div class="slidersWrapper">
 
                     <div class="sliderViewport">
-Perp: <span id="tsneOneDSlider1Text">5</span>, Eps: <span id="tsneOneDSlider2Text">5</span>, Iters: <span id="tsneOneDSlider3Text">25</span>
+                    Perp: <span id="tsneOneDSlider1Text">5</span>, Eps: <span id="tsneOneDSlider2Text">5</span>, Iters: <span id="tsneOneDSlider3Text">25</span>
                     </div>
 
                     <div class="sliderViewport">
@@ -52,8 +54,17 @@ Perp: <span id="tsneOneDSlider1Text">5</span>, Eps: <span id="tsneOneDSlider2Tex
                     </div>
 
                     <div class="runAlgoButton">
-                        <div id="tsneOneDRun">Run the algorithm!</div>
+                        <div id="tsneOneDRun">Reduce Dimensionality</div>
                     </div>
+
+                    <div class="sliderViewport">
+                        <div id="tsneOneDSlider4"></div>
+                    </div>
+
+                    <div class="runAlgoButton">
+                        <div id="kMeansTsneOneDRun">Cluster with k = <span id="tsneOneDSlider4Text">2</span></div>
+                    </div>
+
                 </div>
             </div>
 
@@ -82,6 +93,15 @@ Perp: <span id="tsneOneDSlider1Text">5</span>, Eps: <span id="tsneOneDSlider2Tex
                     <div class="runAlgoButton">
                         <div id="tsneTwoDRun">Run the algorithm!</div>
                     </div>
+
+                    <div class="sliderViewport">
+                        <div id="tsneTwoDSlider4"></div>
+                    </div>
+
+                    <div class="runAlgoButton">
+                        <div id="kMeansTsneTwoDRun">Cluster with k = <span id="tsneTwoDSlider4Text">2</span></div>
+                    </div>
+
                 </div>
             </div>
 
@@ -89,15 +109,42 @@ Perp: <span id="tsneOneDSlider1Text">5</span>, Eps: <span id="tsneOneDSlider2Tex
                 <div class="plotViewportTitle">3-D</div>
             <div id="tsneThreeD" class="plotViewport"></div>
 
-            <div class="slidersWrapper">
-                <div class="sliderViewport"></div>
-                <div class="sliderViewport"></div>
-                <div class="sliderViewport"></div>
-            </div>
+                <div class="slidersWrapper">
+
+                    <div class="sliderViewport">
+                        Perp: <span id="tsneThreeDSlider1Text">5</span>, Eps: <span id="tsneThreeDSlider2Text">5</span>, Iters: <span id="tsneThreeDSlider3Text">25</span>
+                    </div>
+
+                    <div class="sliderViewport">
+                        <div id="tsneThreeDSlider1"></div>
+                    </div>
+
+                    <div class="sliderViewport">
+                        <div id="tsneThreeDSlider2"></div>
+                    </div>
+
+                    <div class="sliderViewport">
+                        <div id="tsneThreeDSlider3"></div>
+                    </div>
+
+                    <div class="runAlgoButton">
+                        <div id="tsneThreeDRun">Run the algorithm!</div>
+                    </div>
+
+                    <div class="sliderViewport">
+                        <div id="tsneThreeDSlider4"></div>
+                    </div>
+
+                    <div class="runAlgoButton">
+                        <div id="kMeansTsneThreeDRun">Cluster with k = <span id="tsneThreeDSlider4Text">2</span></div>
+                    </div>
+                </div>
 
             </div>
     </div>
     </div>
+
+    <!--######################### PCA ######################### PCA ######################### PCA-->
 
     <div class="algorithmWrapper">
         <div class="titleBar">Principal Components Analysis</div>
@@ -106,42 +153,93 @@ Perp: <span id="tsneOneDSlider1Text">5</span>, Eps: <span id="tsneOneDSlider2Tex
 
             <div class="oneSelector plotViewportWrapper">
                 <div class="plotViewportTitle">1-D</div>
-                <div id="pca.oneD" class="plotViewport"></div>
+                <div id="pcaOneD" class="plotViewport"></div>
                 <div class="slidersWrapper">
 
                     <div class="sliderViewport">
-                        Perp: <span id="pca.sliderText">100</span>, Eps: <span id="pca.slider2Text">100</span>
+                        % Variance Explained: <span id="pcaOneDVarText">0</span>
                     </div>
 
-                    <div class="sliderViewport">
-                        <div id="pca.slider1"></div>
+                    <div class="runAlgoButton">
+                        <div id="pcaOneDRun">Run the algorithm!</div>
                     </div>
 
-                    <div class="sliderViewport">
-                        <div id="pca.slider2"></div>
-                    </div>
                 </div>
             </div>
 
             <div class="plotViewportWrapper">
                 <div class="plotViewportTitle">2-D</div>
-                <div id="pca.twoD" class="plotViewport"></div>
+                <div id="pcaTwoD" class="plotViewport"></div>
+                <div class="slidersWrapper">
+                <div class="sliderViewport">
+                    % Variance Explained: <span id="pcaTwoDVarText">0</span>
+                </div>
+
+                <div class="runAlgoButton">
+                    <div id="pcaTwoDRun">Run the algorithm!</div>
+                </div>
+                </div>
+            </div>
+
+
+            <div class="plotViewportWrapper">
+                <div class="plotViewportTitle">3-D</div>
+                <div id="pcaThreeD" class="plotViewport"></div>
 
                 <div class="slidersWrapper">
-                    <div class="sliderViewport"></div>
-                    <div class="sliderViewport"></div>
-                    <div class="sliderViewport"></div>
+                    <div class="sliderViewport">
+                        % Variance Explained: <span id="pcaThreeDVarText">0</span>
+                    </div>
+
+                    <div class="runAlgoButton">
+                        <div id="pcaThreeDRun">Run the algorithm!</div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!--######################### MDS ######################### MDS ######################### MDS-->
+
+    <div class="algorithmWrapper">
+        <div class="titleBar">Multidimensional Scaling</div>
+
+        <div class="algorithmViewport">
+
+            <div class="oneSelector plotViewportWrapper">
+                <div class="plotViewportTitle">1-D</div>
+                <div id="mdsOneD" class="plotViewport"></div>
+                <div class="slidersWrapper">
+
+                    <div class="runAlgoButton">
+                        <div id="mdsOneDRun">Run the algorithm!</div>
+                    </div>
+
                 </div>
             </div>
 
             <div class="plotViewportWrapper">
+                <div class="plotViewportTitle">2-D</div>
+                <div id="mdsTwoD" class="plotViewport"></div>
+                <div class="slidersWrapper">
+
+
+                <div class="runAlgoButton">
+                    <div id="mdsTwoDRun">Run the algorithm!</div>
+                </div>
+                </div>
+            </div>
+
+
+            <div class="plotViewportWrapper">
                 <div class="plotViewportTitle">3-D</div>
-                <div id="pca.threeD" class="plotViewport"></div>
+                <div id="mdsThreeD" class="plotViewport"></div>
 
                 <div class="slidersWrapper">
-                    <div class="sliderViewport"></div>
-                    <div class="sliderViewport"></div>
-                    <div class="sliderViewport"></div>
+                    <div class="runAlgoButton">
+                        <div id="mdsThreeDRun">Run the algorithm!</div>
+                    </div>
                 </div>
 
             </div>
@@ -153,8 +251,11 @@ Perp: <span id="tsneOneDSlider1Text">5</span>, Eps: <span id="tsneOneDSlider2Tex
     <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
     <script src="static/js/third_party/tsne.js"></script>
     <script src="static/js/third_party/d3.slider.js"></script>
-    <script src="static/js/third_party/pca.js"></script>
-
+    <script src="static/js/third_party/ml.js"></script>
+    <script src="static/js/third_party/mdsjs.js"></script>
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.highcharts.com/highcharts-3d.js"></script>
+    <script src="https://code.highcharts.com/modules/exporting.js"></script>
 
     <!-- main app -->
     <script src="static/js/algorithms.js"></script>

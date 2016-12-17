@@ -64,7 +64,7 @@ div.bar {
     justify-content: center;
 }
 .plotViewport {
-    border: 5px dashed #ccc;
+    border: 3px dashed #ccc;
 }
 .plotViewport, .slidersWrapper, .plotViewportTitle {
     vertical-align: middle;
@@ -78,7 +78,7 @@ div.bar {
     height:200px;
 }
 .runAlgoButton {
-    border: 5px #ccc;
+    border: 3px #ccc;
     background-color: #999999;
     color: #333333;
     align-items: center;
@@ -92,15 +92,15 @@ div.bar {
     background-color: #333333;
 }
 .sliderViewport {
-    border: 5px dashed #ccc;
+    border: 3px dashed #ccc;
     align-items: center;
     vertical-align: middle;
     text-align: center;
     justify-content: center;
-    /*margin:5px;*/
+    margin:5px;
 }
 .sliderViewport:hover, .plotViewport:hover {
-    border: 5px dashed #00ffff;
+    border: 3px dashed #00ffff;
     /*color: #F0F;*/
 }
 

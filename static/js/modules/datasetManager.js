@@ -62,10 +62,19 @@ function buildDropZone(divId, labels=false) {
 var datasetManager = {
 
     $_dataset: null,
+    $_reducedDataset: null,
     $_labels: null,
 
     getDataset : function () {
         return $_dataset;
+    },
+
+    setReducedDataset : function(reduced) {
+        this.$_reducedDataset = reduced;
+    },
+
+    getReducedDataset : function(reduced) {
+        return this.$_reducedDataset;
     },
 
     getLabels : function () {
