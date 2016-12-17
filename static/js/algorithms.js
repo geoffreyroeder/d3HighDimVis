@@ -1,12 +1,21 @@
 /* t-SNE LOGIC */ // ##################################################
 var algorithms = {
 
+    runKMeans: function(dataset, k) {
+        rng = new ML.RNG.XSadd();
 
+        // initialize random cluster centers
+        centers = [];
+        for (let j = 0; j < k; j++) {
+            randIdx = rng.getUint32() % dataset.length;
+            console.log(dataset[randIdx])
+            centers.push(dataset[randIdx]);
+        }
 
-
-    runKMeans: function() {
-
-
+        kmeansResult = ML.Clust.kmeans(dataset, centers);
+        clusterAssignments = kmeansResult.clusters;
+        console.log('found these assignments: ' + clusterAssignments);
+        return clusterAssignments;
     },
 
 

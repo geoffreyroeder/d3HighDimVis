@@ -14446,10 +14446,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	    let withIterations = options.withIterations || defaultOptions.withIterations;
 
 	    let nData = data.length;
+        console.log('Data length is '+nData)
 	    if (nData === 0) {
 	        return [];
 	    }
 	    let K = centers.length;
+	    console.log('K is '+K)
 	    let clusterID = new Array(nData);
 	    for (let i = 0; i < nData; i++)
 	        clusterID[i] = 0;

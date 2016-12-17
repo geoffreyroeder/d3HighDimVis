@@ -15,8 +15,8 @@ var sliderManager = {
             d3.select('#tsneOneDSlider3Text').text(Math.floor(value));
         }));
 
-        d3.select('#tsneOneDSlider4').call(d3.slider().value(3).min(1).max(10).on("slide", function (evt, value) {
-            d3.select('#tsneOneDSlider4Text').text(Math.floor(value));
+        d3.select('#tsneOneDSliderK').call(d3.slider().value(3).min(1).max(10).on("slide", function (evt, value) {
+            d3.select('#tsneOneDSliderKText').text(Math.floor(value));
         }));
 
         d3.select('#tsneTwoDSlider1').call(d3.slider().value(5).on("slide", function (evt, value) {
@@ -31,8 +31,8 @@ var sliderManager = {
             d3.select('#tsneTwoDSlider3Text').text(Math.floor(value));
         }));
 
-        d3.select('#tsneTwoDSlider4').call(d3.slider().value(3).min(1).max(10).on("slide", function (evt, value) {
-            d3.select('#tsneTwoDSlider4Text').text(Math.floor(value));
+        d3.select('#tsneTwoDSliderK').call(d3.slider().value(3).min(1).max(10).on("slide", function (evt, value) {
+            d3.select('#tsneTwoDSliderKText').text(Math.floor(value));
         }));
 
         d3.select('#tsneThreeDSlider1').call(d3.slider().value(5).on("slide", function (evt, value) {
@@ -47,9 +47,35 @@ var sliderManager = {
             d3.select('#tsneThreeDSlider3Text').text(Math.floor(value));
         }));
 
-        d3.select('#tsneThreeDSlider4').call(d3.slider().value(3).min(1).max(10).on("slide", function (evt, value) {
-            d3.select('#tsneThreeDSlider4Text').text(Math.floor(value));
+        d3.select('#tsneThreeDSliderK').call(d3.slider().value(3).min(1).max(10).on("slide", function (evt, value) {
+            d3.select('#tsneThreeDSliderKText').text(Math.floor(value));
         }));
+
+        d3.select('#pcaOneDSlider1').call(d3.slider().value(3).min(1).max(10).on("slide", function (evt, value) {
+            d3.select('#pcaOneDSliderKText').text(Math.floor(value));
+        }));
+
+        d3.select('#pcaTwoDSlider1').call(d3.slider().value(3).min(1).max(10).on("slide", function (evt, value) {
+            d3.select('#pcaTwoDSliderKText').text(Math.floor(value));
+        }));
+
+        d3.select('#pcaThreeDSlider1').call(d3.slider().value(3).min(1).max(10).on("slide", function (evt, value) {
+            d3.select('#pcaThreeDSliderKText').text(Math.floor(value));
+        }));
+
+        d3.select('#mdsOneDSlider1').call(d3.slider().value(3).min(1).max(10).on("slide", function (evt, value) {
+            d3.select('#mdsOneDSliderKText').text(Math.floor(value));
+        }));
+
+        d3.select('#mdsTwoDSlider1').call(d3.slider().value(3).min(1).max(10).on("slide", function (evt, value) {
+            d3.select('#mdsTwoDSliderKText').text(Math.floor(value));
+        }));
+
+        d3.select('#mdsThreeDSlider1').call(d3.slider().value(3).min(1).max(10).on("slide", function (evt, value) {
+            d3.select('#mdsThreeDSliderKText').text(Math.floor(value));
+        }));
+
+
 
     }
 }
