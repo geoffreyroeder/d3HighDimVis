@@ -1,3 +1,27 @@
+.body{
+    background-color: #FCFCFC;
+
+}
+
+.algorithmViewport {
+    background: #47494D;
+    border-radius: 25px;
+}
+.plotViewport {
+    background: #F6F6F6;
+    border-color: white;
+    border-radius: 25px;
+}
+.sliderViewport {
+    border-radius: 5px;
+}
+.plotViewportWrapper {
+    background: #F6F6F6;
+    border-radius: 25px;
+}
+.plotViewport {
+    background: #333;
+}
 
 
 .axis path,
@@ -59,17 +83,40 @@ body {
     display: block;
     justify-content: center;
     width: 90vw;
-    background: lightgoldenrodyellow;
+    background: #47494D;
+    border-radius: 25px;
 }
 
+/* loader demo */
+#featuresLoader, #labelsLoader {
+    align-items: center;
+    vertical-align: middle;
+    text-align: center;
+    justify-content: center;
+    border: 2px dashed #ccc;
+    color: #ccc;
+    width: 200px;
+    height: 200px;
+    margin: 20px auto;
+    border-radius: 25px;
+}
+#featuresLoader.hover, #labelsLoader.hover { border: 2px dashed #333; }
+
+
+
 .algorithmWrapper {
+    width: 90vw;
     display: block;
+    border:3px solid slategrey;
+    margin: 5px auto;
     font-family: Delicious;
+    border-radius: 25px;
 
 }
 .loadWidgetsWrapper, .algorithmViewport, .titleBar {
     /*background: grey;*/
     margin: 20px;
+
     margin-left: auto;
     margin-right: auto;
     display: flex;
@@ -87,6 +134,9 @@ div.bar {
 
 .plotViewportWrapper {
     margin: 15px;
+    background-color: #47494D;
+    color: white;
+    border: 3px dashed #ccc;
     width:30%;
     display: block;
     vertical-align: middle;
@@ -94,7 +144,7 @@ div.bar {
     justify-content: center;
 }
 .plotViewport {
-    border: 3px dashed #ccc;
+    border: 3px #ccc;
 }
 .plotViewport, .slidersWrapper, .plotViewportTitle {
     vertical-align: middle;
@@ -122,19 +172,28 @@ div.bar {
     background-color: #333333;
 }
 .sliderViewport {
-    border: 3px dashed #ccc;
+    border: 3px #ccc;
+    background-color: #2980b9;
     align-items: center;
     vertical-align: middle;
     text-align: center;
     justify-content: center;
-    margin:5px;
+    margin:10px;
+    margin:10px;
 }
 .sliderViewport:hover, .plotViewport:hover {
-    border: 3px dashed #00ffff;
+    border: 3px #00ffff;
     /*color: #F0F;*/
 }
 
-/* loader demo */
-#featuresLoader, #labelsLoader { border: 10px dashed #ccc; width: 300px; height: 300px; margin: 20px auto;}
-#featuresLoader.hover, #labelsLoader.hover { border: 10px dashed #333; }
+table {
+    border-collapse: collapse;
+    border: 2px black solid;
+    font: 12px sans-serif;
+}
+
+td {
+    border: 1px black solid;
+    padding: 5px;
+}
 

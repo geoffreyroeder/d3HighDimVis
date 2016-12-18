@@ -167,6 +167,7 @@ var mdsButtonBuilder = {
 
                 mds.reducedDatasets[divName] = reducedDists;
                 if (dim < 3) {
+                    console.log(reducedDists);
                     plotManager.updatePlot(reducedDists, labels, divName, dim);
                 } else {
 

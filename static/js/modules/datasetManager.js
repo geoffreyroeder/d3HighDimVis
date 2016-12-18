@@ -9,7 +9,11 @@ function buildDropZone(divId, labels=false) {
         state.className = 'fail';
     } else {
         state.className = 'success';
-        state.innerHTML = 'Drop .csv data here';
+        if (labels) {
+            state.innerHTML = 'LABEL DATA (optional)<br>Drop .csv file here';
+        } else {
+            state.innerHTML = 'FEATURE DATA<br>Drop .csv file here';
+        }
     }
 
     holder.ondragover = function () {
@@ -37,10 +41,10 @@ function buildDropZone(divId, labels=false) {
         // define callback
         Papa.parse(file, {
             dynamicTyping: true,
-            skipEmptyLines: false,
+            skipEmptyLines: true,
             complete: function (results, file) {
                 console.log("Parsing complete:", results, file);
-                // GOTCHA: some files have trailing junK
+                // GOTCHA: some files have trailing junk
                 // TODO: make this principled / automatic
                 if (labels) {
                     console.log("label data");
@@ -49,9 +53,13 @@ function buildDropZone(divId, labels=false) {
                     state.innerHTML = 'Currently loaded: ' + file.name;
                 } else {
                     console.log("feature data");
+
+                        plotManager.removeAllPlots();
+
                     $_dataset = results.data.slice(0, -1);
                     state = document.getElementById(divId + 'Status');
                     state.innerHTML = 'Currently loaded: ' + file.name;
+                    tableManager.makeTable($_dataset, "tableTarget")
                 }
             }
         });
@@ -78,7 +86,10 @@ var datasetManager = {
     },
 
     getLabels : function () {
-        return $_labels;
+        if (this.$_labels == null) {
+            this.$_labels = ML.Matrix.ones(datasetManager.getDataset().length, 1)
+        }
+        return this.$_labels;
     },
 
 

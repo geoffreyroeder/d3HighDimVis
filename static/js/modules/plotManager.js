@@ -56,12 +56,7 @@ var plotManager = {
                     lineColor: '#707073',
                     minorGridLineColor: '#505053',
                     tickColor: '#707073',
-                    title: {
-                        style: {
-                            color: '#A0A0A3'
-
-                        }
-                    }
+                    title: false
                 },
                 yAxis: {
                     gridLineColor: '#707073',
@@ -74,11 +69,7 @@ var plotManager = {
                     minorGridLineColor: '#505053',
                     tickColor: '#707073',
                     tickWidth: 1,
-                    title: {
-                        style: {
-                            color: '#A0A0A3'
-                        }
-                    }
+                    title: false
                 },
                 tooltip: {
                     borderColor: '#F0F0F0',
@@ -396,6 +387,10 @@ var plotManager = {
             }
         },
 
+        removeAllPlots: function() {
+            d3.selectAll("svg").remove();
+        },
+
         addPlot: function(selectedPlotDiv, divWidth, divHeight, dataset, labels, dim, clusterAssignments = null) {
             var padding = 30;
             console.log(divWidth);
@@ -403,15 +398,12 @@ var plotManager = {
             console.log(dataset[0][0]);
 
 
-
-
-
             // https://stackoverflow.com/questions/17671252/d3-create-a-continous-color-scale-with-many-strings-inputs-for-the-range-and-dy/17672702#17672702
             minlab = d3.min(labels, function(d) { return d[0]; })
             maxlab = d3.max(labels, function(d) { return d[0]; })
 
             if (clusterAssignments == null) {
-
+            console.log('clutser assignments null')
                 // https://www.strangeplanet.fr/work/gradient-generator/index.php
                 // 100 step gradient blue to red
                 // var colours = ["#FF0000", "#FD0001", "#FC0002", "#FB0003", "#FA0004", "#F90005", "#F80006", "#F70007",
@@ -451,8 +443,10 @@ var plotManager = {
 
                 var colourMap = d3.scale.category10();
 
-                var rescale = d3.scale.linear().domain([minlab, maxlab]).range([0, 1])
+                var rescale = d3.scale.linear().domain([minlab, maxlab]).range([1, 10])
             } else {
+                console.log('clutser assignments no null')
+
                 labels = clusterAssignments;
                 console.log('after clustering labels are' + labels)
                 var colourMap = d3.scale.category10();
@@ -495,27 +489,17 @@ var plotManager = {
                     .attr('class', 'd3-tip')
                     .offset([-10, 0])
                     .html(function (d, i) {
-                        return "x:<span style='color:white'>" + d3.format(".1e")(d[0]) + "</span><br>"
-                            + "Index: <span style='color:white'>" + i + "</span><br>";
-                    });
-            } else if (dim == 2) {
-                var tip = d3.tip()
-                    .attr('class', 'd3-tip')
-                    .offset([-10, 0])
-                    .html(function (d, i) {
-                        return "x:<span style='color:white'>" + d3.format(".1e")(d[0]) + "</span><br>"
-                            + "y:<span style='color:white'>" + d3.format(".1e")(d[1]) + "</span><br>"
-                            + "Index: <span style='color:white'>" + i + "</span><br>";
+                        return "x: " + d3.format(".1e")(d[0]) + "<br>"
+                            + "Index: " + i + "<br>";
                     });
             } else {
                 var tip = d3.tip()
                     .attr('class', 'd3-tip')
                     .offset([-10, 0])
                     .html(function (d, i) {
-                        return "x:<span style='color:white'>" + d3.format(".1e")(d[0]) + "</span><br>"
-                            + "y:<span style='color:white'>" + d3.format(".1e")(d[1]) + "</span><br>"
-                            + "y:<span style='color:white'>" + d3.format(".1e")(d[2]) + "</span><br>"
-                            + "Index: <span style='color:white'>" + i + "</span><br>";
+                        return "x: " + d3.format(".1e")(d[0]) + "<br>"
+                            + "y: " + d3.format(".1e")(d[1]) + "<br>"
+                            + "Index: " + i + "<br>";
                     });
             }
 
@@ -545,11 +529,12 @@ var plotManager = {
                         }
                         return ret;
                     })
-                    .attr("r", 5)
+                    .attr("r", 4)
                     .attr("fill", function(d,i) {
-                        //console.log(i)
+                        console.log(colourMap(Math.round(rescale(labels[i]))))
+                        console.log(colourMap(Math.round(rescale(labels[i]))))
                         // enforce at most 100 colours by rounding
-                        return colourMap(Math.round(100*rescale(labels[i]))/100);
+                        return colourMap(Math.round(rescale(labels[i])));
                     })
                     .on('mouseover', tip.show)
                     .on('mouseout', tip.hide)
@@ -580,7 +565,7 @@ var plotManager = {
                     .transition()
                     .duration(1000)
                     .attr("fill", function(d, i) {
-                        console.log('update index is:' + i);
+                        console.log('color index is:' + i);
                         return colourMap(Math.round(100*rescale(labels[i]))/100);
                     })
                     .each("start", function () {
@@ -608,11 +593,9 @@ var plotManager = {
                             //     console.log(d);
                             //     return colourMap(Math.round(100*rescale(i))/100);
                             // })
-                            .attr("r", 5);
+                            .attr("r", 4);
 
                     })
-                    .on('mouseover', tip.show)
-                    .on('mouseout', tip.hide)
 
 
                 //Update X axis

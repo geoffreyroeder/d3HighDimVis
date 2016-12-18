@@ -1,16 +1,1 @@
 /*Debug CSS positions*/
-.algorithmViewport {
-    background: cyan;
-}
-.plotViewport {
-    background: yellow;
-}
-.sliderViewport {
-    background: magenta;
-}
-.plotViewportWrapper {
-    background: yellow;
-}
-.plotViewport {
-    background: #333;
-}

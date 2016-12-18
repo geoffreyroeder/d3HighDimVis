@@ -12,6 +12,8 @@
     </head>
     <body>
 
+    <!--<div id="tableTarget">target for table</div>-->
+
     <div class="dataLoadWrapper">
         <div class="loadWidgetsWrapper">
 
@@ -28,17 +30,17 @@
     <!--######################### t-SNE-->
 
     <div class="algorithmWrapper">
-        <div class="titleBar">t-Distributed Stochastic Neighbour Embedding</div>
+        <div class="titleBar">t-Distributed Stochastic Neighbour Embedding (<a href="http://distill.pub/2016/misread-tsne/">How does this work?</a>)</div>
 
         <div class="algorithmViewport">
 
              <div class="oneSelector plotViewportWrapper">
-                <div class="plotViewportTitle">1-D</div>
+                <div class="plotViewportTitle">One Dimensional</div>
                 <div id="tsneOneD" class="plotViewport"></div>
                 <div class="slidersWrapper">
 
                     <div class="sliderViewport">
-                    Perp: <span id="tsneOneDSlider1Text">5</span>, Eps: <span id="tsneOneDSlider2Text">5</span>, Iters: <span id="tsneOneDSlider3Text">25</span>
+                    Perp: <span id="tsneOneDSlider1Text">5</span>, Eps: <span id="tsneOneDSlider2Text">5</span>, Iters: <span id="tsneOneDSlider3Text">100</span>
                     </div>
 
                     <div class="sliderViewport">
@@ -54,7 +56,7 @@
                     </div>
 
                     <div class="runAlgoButton">
-                        <div id="tsneOneDRun">Reduce Dimensionality</div>
+                        <div id="tsneOneDRun">Run the algorithm!</div>
                     </div>
 
                     <div class="sliderViewport">
@@ -69,13 +71,13 @@
             </div>
 
             <div class="plotViewportWrapper">
-                <div class="plotViewportTitle">2-D</div>
+                <div class="plotViewportTitle">Two Dimensional</div>
                 <div id="tsneTwoD" class="plotViewport"></div>
 
                 <div class="slidersWrapper">
 
                     <div class="sliderViewport">
-                        Perp: <span id="tsneTwoDSlider1Text">5</span>, Eps: <span id="tsneTwoDSlider2Text">5</span>, Iters: <span id="tsneTwoDSlider3Text">25</span>
+                        Perp: <span id="tsneTwoDSlider1Text">5</span>, Eps: <span id="tsneTwoDSlider2Text">5</span>, Iters: <span id="tsneTwoDSlider3Text">100</span>
                     </div>
 
                     <div class="sliderViewport">
@@ -106,13 +108,13 @@
             </div>
 
             <div class="plotViewportWrapper">
-                <div class="plotViewportTitle">3-D</div>
+                <div class="plotViewportTitle">Three Dimensional</div>
             <div id="tsneThreeD" class="plotViewport"></div>
 
                 <div class="slidersWrapper">
 
                     <div class="sliderViewport">
-                        Perp: <span id="tsneThreeDSlider1Text">5</span>, Eps: <span id="tsneThreeDSlider2Text">5</span>, Iters: <span id="tsneThreeDSlider3Text">25</span>
+                        Perp: <span id="tsneThreeDSlider1Text">5</span>, Eps: <span id="tsneThreeDSlider2Text">5</span>, Iters: <span id="tsneThreeDSlider3Text">100</span>
                     </div>
 
                     <div class="sliderViewport">
@@ -147,12 +149,12 @@
     <!--######################### PCA ######################### PCA ######################### PCA-->
 
     <div class="algorithmWrapper">
-        <div class="titleBar">Principal Components Analysis</div>
+        <div class="titleBar">Principal Component Analysis (<a href="http://setosa.io/ev/principal-component-analysis/">How does this work?</a>)</div>
 
         <div class="algorithmViewport">
 
             <div class="oneSelector plotViewportWrapper">
-                <div class="plotViewportTitle">1-D</div>
+                <div class="plotViewportTitle">One Dimensional</div>
                 <div id="pcaOneD" class="plotViewport"></div>
                 <div class="slidersWrapper">
 
@@ -176,7 +178,7 @@
             </div>
 
             <div class="plotViewportWrapper">
-                <div class="plotViewportTitle">2-D</div>
+                <div class="plotViewportTitle">Two Dimensional</div>
                 <div id="pcaTwoD" class="plotViewport"></div>
                 <div class="slidersWrapper">
                 <div class="sliderViewport">
@@ -200,7 +202,7 @@
 
 
             <div class="plotViewportWrapper">
-                <div class="plotViewportTitle">3-D</div>
+                <div class="plotViewportTitle">Three Dimensional</div>
                 <div id="pcaThreeD" class="plotViewport"></div>
 
                 <div class="slidersWrapper">
@@ -227,12 +229,12 @@
 
     <!--######################### MDS ######################### MDS ######################### MDS-->
     <div class="algorithmWrapper">
-        <div class="titleBar">Multidimensional Scaling</div>
+        <div class="titleBar">Multidimensional Scaling (<a href="http://setosa.io/ev/principal-component-analysis/">How does this work?</a>)</div>
 
         <div class="algorithmViewport">
 
             <div class="oneSelector plotViewportWrapper">
-                <div class="plotViewportTitle">1-D</div>
+                <div class="plotViewportTitle">One Dimensional</div>
                 <div id="mdsOneD" class="plotViewport"></div>
                 <div class="slidersWrapper">
 
@@ -252,7 +254,7 @@
             </div>
 
             <div class="plotViewportWrapper">
-                <div class="plotViewportTitle">2-D</div>
+                <div class="plotViewportTitle">Two Dimensional</div>
                 <div id="mdsTwoD" class="plotViewport"></div>
                 <div class="slidersWrapper">
 
@@ -273,7 +275,7 @@
 
 
             <div class="plotViewportWrapper">
-                <div class="plotViewportTitle">3-D</div>
+                <div class="plotViewportTitle">Three Dimensional</div>
                 <div id="mdsThreeD" class="plotViewport"></div>
 
                 <div class="slidersWrapper">
@@ -305,7 +307,8 @@
     <script src="https://code.highcharts.com/highcharts-3d.js"></script>
     <script src="https://code.highcharts.com/modules/exporting.js"></script>
     <script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
-    <script src="https://d3js.org/d3-format.v1.min.js"></script>
+    <!--<script src="https://d3js.org/d3-format.v1.min.js"></script>-->
+
 
     <!-- main app -->
     <script src="static/js/algorithms.js"></script>
@@ -314,7 +317,10 @@
     <script src="static/js/modules/datasetManager.js"></script>
     <script src="static/js/modules/sliderManager.js"></script>
     <script src="static/js/modules/buttonManager.js"></script>
+    <script src="static/js/modules/tableManager.js"></script>
     <script src="static/js/main.js"></script>
+
+
 
     </body>
 </html>
