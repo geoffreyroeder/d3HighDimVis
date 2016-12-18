@@ -15,6 +15,21 @@ var utils = {
 
     },
 
+    buildColouredDataset: function(dataset, labels, colourFun = d3.scale.category10()) {
+        console.log('buildcolor::');
+        console.log(labels);
+        console.log(dataset);
+        highchartDataset = [];
+        for (let i = 0; i < dataset.length; i++) {
+            highchartDataset.push({
+                x: dataset[i][0],
+                y: dataset[i][1],
+                z: dataset[i][2], color: colourFun(labels[i]), lineColor: '#ffffff', lineWidth: 1
+            });
+        }
+        return highchartDataset;
+    },
+
     generateRandomDataset: function(numDataPoints = 50, scale = 1000) {
     var dataset = [];											//Initialize empty array
     let maxRange = Math.random() * scale;						//Max range of new values

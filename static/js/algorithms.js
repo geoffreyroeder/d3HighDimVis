@@ -24,6 +24,8 @@ var algorithms = {
 
 var tsne = {
 
+    chart: null,
+
     // untyped containers for reduced dimensionality datasets
     reducedDatasets: {
         'tsneOneD': null,
@@ -49,6 +51,7 @@ var tsne = {
 }
 
 var pca = {
+    chart: null,
 
     // untyped containers for reduced dimensionality datasets
     reducedDatasets: {
@@ -59,6 +62,7 @@ var pca = {
 }
 
 var mds = {
+    chart: null,
 
     // untyped containers for reduced dimensionality datasets
     reducedDatasets: {

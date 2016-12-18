@@ -13,6 +13,11 @@ var plotManager = {
                 credits: {
                     enabled: false
                 },
+                marker: {
+                    enabled: true,
+                    symbol: 'circle',
+                    radius: 1
+                },
                 colors: ['#2b908f', '#90ee7e', '#f45b5b', '#7798BF', '#aaeeee', '#ff0066', '#eeaaee',
                     '#55BF3B', '#DF5353', '#7798BF', '#aaeeee'],
                 chart: {
@@ -76,9 +81,17 @@ var plotManager = {
                     }
                 },
                 tooltip: {
+                    borderColor: '#F0F0F0',
                     backgroundColor: 'rgba(0, 0, 0, 0.85)',
                     style: {
                         color: '#F0F0F0'
+                    },
+                    formatter: function() {
+                        console.log(this)
+                        return 'x: ' + this.point.x.toExponential(2) +'<br>'
+                            + 'y: ' + this.point.y.toExponential(2)+'<br>'
+                            + 'z: ' + this.point.z.toExponential(2)+'<br>'
+                            + 'Index: ' + this.series.data.indexOf( this.point ); // 2 digits of precision
                     }
                 },
                 plotOptions: {
@@ -244,7 +257,7 @@ var plotManager = {
                             // beta: 30,
                             // depth: 1000,
                             // viewDistance: 5,
-                            // fitToPlot: true,
+                            fitToPlot: true
                             // frame: {
                             //     bottom: { size: 1, color: 'rgba(0,0,0,0.02)' },
                             //     back: { size: 0, color: 'rgba(0,0,0,0.04)' },
@@ -286,7 +299,7 @@ var plotManager = {
                     series: [{
                         name: false,
                         colorByPoint: true,
-                        data: newData
+                        data: utils.buildColouredDataset(newData, newLabels)
                     }]
                 }},
 
@@ -389,6 +402,10 @@ var plotManager = {
             console.log(divHeight);
             console.log(dataset[0][0]);
 
+
+
+
+
             // https://stackoverflow.com/questions/17671252/d3-create-a-continous-color-scale-with-many-strings-inputs-for-the-range-and-dy/17672702#17672702
             minlab = d3.min(labels, function(d) { return d[0]; })
             maxlab = d3.max(labels, function(d) { return d[0]; })
@@ -397,40 +414,42 @@ var plotManager = {
 
                 // https://www.strangeplanet.fr/work/gradient-generator/index.php
                 // 100 step gradient blue to red
-                var colours = ["#FF0000", "#FD0001", "#FC0002", "#FB0003", "#FA0004", "#F90005", "#F80006", "#F70007",
-                    "#F60008", "#F50009", "#F4000A", "#F3000B", "#F2000C", "#F1000D", "#F0000E", "#EF000F", "#EE0010",
-                    "#ED0011", "#EC0012", "#EB0013", "#EA0014", "#E90015", "#E80016", "#E70017", "#E60018", "#E50019",
-                    "#E4001A", "#E3001B", "#E2001C", "#E1001D", "#E0001E", "#DF001F", "#DE0020", "#DD0021", "#DC0022",
-                    "#DB0023", "#DA0024", "#D90025", "#D80026", "#D70027", "#D60028", "#D50029", "#D4002A", "#D3002B",
-                    "#D2002C", "#D1002D", "#D0002E", "#CF002F", "#CE0030", "#CD0031", "#CC0032", "#CB0033", "#CA0034",
-                    "#C90035", "#C80036", "#C70037", "#C60038", "#C50039", "#C4003A", "#C3003B", "#C2003C", "#C1003D",
-                    "#C0003E", "#BF003F", "#BE0040", "#BD0041", "#BC0042", "#BB0043", "#BA0044", "#B90045", "#B80046",
-                    "#B70047", "#B60048", "#B50049", "#B4004A", "#B3004B", "#B2004C", "#B1004D", "#B0004E", "#AF004F",
-                    "#AE0050", "#AD0051", "#AC0052", "#AB0053", "#AA0054", "#A90055", "#A80056", "#A70057", "#A60058",
-                    "#A50059", "#A4005A", "#A3005B", "#A2005C", "#A1005D", "#A0005E", "#9F005F", "#9E0060", "#9D0061",
-                    "#9C0062", "#9B0063", "#9A0064", "#990065", "#980066", "#970067", "#960068", "#950069", "#94006A",
-                    "#93006B", "#92006C", "#91006D", "#90006E", "#8F006F", "#8E0070", "#8D0071", "#8C0072", "#8B0073",
-                    "#8A0074", "#890075", "#880076", "#870077", "#860078", "#850079", "#84007A", "#83007B", "#82007C",
-                    "#81007D", "#80007E", "#7F007F", "#7E0080", "#7D0081", "#7C0082", "#7B0083", "#7A0084", "#790085",
-                    "#780086", "#770087", "#760088", "#750089", "#74008A", "#73008B", "#72008C", "#71008D", "#70008E",
-                    "#6F008F", "#6E0090", "#6D0091", "#6C0092", "#6B0093", "#6A0094", "#690095", "#680096", "#670097",
-                    "#660098", "#650099", "#64009A", "#63009B", "#62009C", "#61009D", "#60009E", "#5F009F", "#5E00A0",
-                    "#5D00A1", "#5C00A2", "#5B00A3", "#5A00A4", "#5900A5", "#5800A6", "#5700A7", "#5600A8", "#5500A9",
-                    "#5400AA", "#5300AB", "#5200AC", "#5100AD", "#5000AE", "#4F00AF", "#4E00B0", "#4D00B1", "#4C00B2",
-                    "#4B00B3", "#4A00B4", "#4900B5", "#4800B6", "#4700B7", "#4600B8", "#4500B9", "#4400BA", "#4300BB",
-                    "#4200BC", "#4100BD", "#4000BE", "#3F00BF", "#3E00C0", "#3D00C1", "#3C00C2", "#3B00C3", "#3A00C4",
-                    "#3900C5", "#3800C6", "#3700C7", "#3600C8", "#3500C9", "#3400CA", "#3300CB", "#3200CC", "#3100CD",
-                    "#3000CE", "#2F00CF", "#2E00D0", "#2D00D1", "#2C00D2", "#2B00D3", "#2A00D4", "#2900D5", "#2800D6",
-                    "#2700D7", "#2600D8", "#2500D9", "#2400DA", "#2300DB", "#2200DC", "#2100DD", "#2000DE", "#1F00DF",
-                    "#1E00E0", "#1D00E1", "#1C00E2", "#1B00E3", "#1A00E4", "#1900E5", "#1800E6", "#1700E7", "#1600E8",
-                    "#1500E9", "#1400EA", "#1300EB", "#1200EC", "#1100ED", "#1000EE", "#0F00EF", "#0E00F0", "#0D00F1",
-                    "#0C00F2", "#0B00F3", "#0A00F4", "#0900F5", "#0800F6", "#0700F7", "#0600F8", "#0500F9", "#0400FA",
-                    "#0300FB", "#0200FC", "#0100FD", "#0000FF"];
+                // var colours = ["#FF0000", "#FD0001", "#FC0002", "#FB0003", "#FA0004", "#F90005", "#F80006", "#F70007",
+                //     "#F60008", "#F50009", "#F4000A", "#F3000B", "#F2000C", "#F1000D", "#F0000E", "#EF000F", "#EE0010",
+                //     "#ED0011", "#EC0012", "#EB0013", "#EA0014", "#E90015", "#E80016", "#E70017", "#E60018", "#E50019",
+                //     "#E4001A", "#E3001B", "#E2001C", "#E1001D", "#E0001E", "#DF001F", "#DE0020", "#DD0021", "#DC0022",
+                //     "#DB0023", "#DA0024", "#D90025", "#D80026", "#D70027", "#D60028", "#D50029", "#D4002A", "#D3002B",
+                //     "#D2002C", "#D1002D", "#D0002E", "#CF002F", "#CE0030", "#CD0031", "#CC0032", "#CB0033", "#CA0034",
+                //     "#C90035", "#C80036", "#C70037", "#C60038", "#C50039", "#C4003A", "#C3003B", "#C2003C", "#C1003D",
+                //     "#C0003E", "#BF003F", "#BE0040", "#BD0041", "#BC0042", "#BB0043", "#BA0044", "#B90045", "#B80046",
+                //     "#B70047", "#B60048", "#B50049", "#B4004A", "#B3004B", "#B2004C", "#B1004D", "#B0004E", "#AF004F",
+                //     "#AE0050", "#AD0051", "#AC0052", "#AB0053", "#AA0054", "#A90055", "#A80056", "#A70057", "#A60058",
+                //     "#A50059", "#A4005A", "#A3005B", "#A2005C", "#A1005D", "#A0005E", "#9F005F", "#9E0060", "#9D0061",
+                //     "#9C0062", "#9B0063", "#9A0064", "#990065", "#980066", "#970067", "#960068", "#950069", "#94006A",
+                //     "#93006B", "#92006C", "#91006D", "#90006E", "#8F006F", "#8E0070", "#8D0071", "#8C0072", "#8B0073",
+                //     "#8A0074", "#890075", "#880076", "#870077", "#860078", "#850079", "#84007A", "#83007B", "#82007C",
+                //     "#81007D", "#80007E", "#7F007F", "#7E0080", "#7D0081", "#7C0082", "#7B0083", "#7A0084", "#790085",
+                //     "#780086", "#770087", "#760088", "#750089", "#74008A", "#73008B", "#72008C", "#71008D", "#70008E",
+                //     "#6F008F", "#6E0090", "#6D0091", "#6C0092", "#6B0093", "#6A0094", "#690095", "#680096", "#670097",
+                //     "#660098", "#650099", "#64009A", "#63009B", "#62009C", "#61009D", "#60009E", "#5F009F", "#5E00A0",
+                //     "#5D00A1", "#5C00A2", "#5B00A3", "#5A00A4", "#5900A5", "#5800A6", "#5700A7", "#5600A8", "#5500A9",
+                //     "#5400AA", "#5300AB", "#5200AC", "#5100AD", "#5000AE", "#4F00AF", "#4E00B0", "#4D00B1", "#4C00B2",
+                //     "#4B00B3", "#4A00B4", "#4900B5", "#4800B6", "#4700B7", "#4600B8", "#4500B9", "#4400BA", "#4300BB",
+                //     "#4200BC", "#4100BD", "#4000BE", "#3F00BF", "#3E00C0", "#3D00C1", "#3C00C2", "#3B00C3", "#3A00C4",
+                //     "#3900C5", "#3800C6", "#3700C7", "#3600C8", "#3500C9", "#3400CA", "#3300CB", "#3200CC", "#3100CD",
+                //     "#3000CE", "#2F00CF", "#2E00D0", "#2D00D1", "#2C00D2", "#2B00D3", "#2A00D4", "#2900D5", "#2800D6",
+                //     "#2700D7", "#2600D8", "#2500D9", "#2400DA", "#2300DB", "#2200DC", "#2100DD", "#2000DE", "#1F00DF",
+                //     "#1E00E0", "#1D00E1", "#1C00E2", "#1B00E3", "#1A00E4", "#1900E5", "#1800E6", "#1700E7", "#1600E8",
+                //     "#1500E9", "#1400EA", "#1300EB", "#1200EC", "#1100ED", "#1000EE", "#0F00EF", "#0E00F0", "#0D00F1",
+                //     "#0C00F2", "#0B00F3", "#0A00F4", "#0900F5", "#0800F6", "#0700F7", "#0600F8", "#0500F9", "#0400FA",
+                //     "#0300FB", "#0200FC", "#0100FD", "#0000FF"];
 
                 // heatmap
-                var colourMap = d3.scale.linear()
-                    .domain(d3.range(0, 1, 1.0 / (colours.length - 1)))
-                    .range(colours);
+                // var colourMap = d3.scale.linear()
+                //     .domain(d3.range(0, 1, 1.0 / (colours.length - 1)))
+                //     .range(colours);
+
+                var colourMap = d3.scale.category10();
 
                 var rescale = d3.scale.linear().domain([minlab, maxlab]).range([0, 1])
             } else {
@@ -466,12 +485,48 @@ var plotManager = {
             svg = selectedPlotDiv.select('svg');
             svgExists = svg[0][0] == null;
 
+            round6 = function(num) {
+                return Math.round(100000*num) / 100000;
+            }
+
+            //Set up tool tip
+            if (dim == 1) {
+                var tip = d3.tip()
+                    .attr('class', 'd3-tip')
+                    .offset([-10, 0])
+                    .html(function (d, i) {
+                        return "x:<span style='color:white'>" + d3.format(".1e")(d[0]) + "</span><br>"
+                            + "Index: <span style='color:white'>" + i + "</span><br>";
+                    });
+            } else if (dim == 2) {
+                var tip = d3.tip()
+                    .attr('class', 'd3-tip')
+                    .offset([-10, 0])
+                    .html(function (d, i) {
+                        return "x:<span style='color:white'>" + d3.format(".1e")(d[0]) + "</span><br>"
+                            + "y:<span style='color:white'>" + d3.format(".1e")(d[1]) + "</span><br>"
+                            + "Index: <span style='color:white'>" + i + "</span><br>";
+                    });
+            } else {
+                var tip = d3.tip()
+                    .attr('class', 'd3-tip')
+                    .offset([-10, 0])
+                    .html(function (d, i) {
+                        return "x:<span style='color:white'>" + d3.format(".1e")(d[0]) + "</span><br>"
+                            + "y:<span style='color:white'>" + d3.format(".1e")(d[1]) + "</span><br>"
+                            + "y:<span style='color:white'>" + d3.format(".1e")(d[2]) + "</span><br>"
+                            + "Index: <span style='color:white'>" + i + "</span><br>";
+                    });
+            }
+
             if (svgExists) {
                 console.log("SVG did not exist, making new one");
                 var svg = selectedPlotDiv
                     .append("svg")
                     .attr("width", divWidth)
                     .attr("height", divHeight);
+
+                svg.call(tip);
 
                 //Create circles
                 svg.selectAll("circle")
@@ -490,12 +545,14 @@ var plotManager = {
                         }
                         return ret;
                     })
-                    .attr("r", 2)
+                    .attr("r", 5)
                     .attr("fill", function(d,i) {
                         //console.log(i)
                         // enforce at most 100 colours by rounding
                         return colourMap(Math.round(100*rescale(labels[i]))/100);
-                    });
+                    })
+                    .on('mouseover', tip.show)
+                    .on('mouseout', tip.hide)
 
                 //Create X axis
                 svg.append("g")
@@ -516,7 +573,7 @@ var plotManager = {
                 //Update scale domains
                 this.updateScales(xScale, yScale, dataset, dim)
 
-                //Update all circles
+                svg.call(tip);
 
                 svg.selectAll("circle")
                     .data(dataset)
@@ -551,9 +608,12 @@ var plotManager = {
                             //     console.log(d);
                             //     return colourMap(Math.round(100*rescale(i))/100);
                             // })
-                            .attr("r", 2);
+                            .attr("r", 5);
 
-                    });
+                    })
+                    .on('mouseover', tip.show)
+                    .on('mouseout', tip.hide)
+
 
                 //Update X axis
                 svg.select(".x.axis")

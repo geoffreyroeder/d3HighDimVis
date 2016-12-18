@@ -880,7 +880,7 @@ FUNCTION { is.leading.digit }
 {
   %% test whether first character of string is a digit
   %% stack in:  string
-  %% stack out: if first-char-is-digit then 1 else 0
+  %% stack out: if first-chart-is-digit then 1 else 0
 
   #1 #1 substring$                      % replace string by string[1:1]
   duplicate$                            % string[1:1] string[1:1]
