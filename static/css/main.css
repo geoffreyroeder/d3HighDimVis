@@ -3,6 +3,19 @@
 
 }
 
+.scrollable {
+    background-color: #47494D;
+    /*align-items: center;*/
+    /*vertical-align: middle;*/
+    /*text-align: center;*/
+    /*justify-content: center;*/
+    overflow: auto;
+    min-height: 0px;
+    max-height: 200px;
+    min-width: 0px;
+    max-width: 300px;
+}
+
 .algorithmViewport {
     background: #47494D;
     border-radius: 25px;
@@ -191,14 +204,18 @@ div.bar {
     /*color: #F0F;*/
 }
 
+
 table {
+    background: #47494D;
+    color:#ccc;
+    margin: 0 auto; /* or margin: 0 auto 0 auto */
     border-collapse: collapse;
-    border: 2px black solid;
+    border: 2px #ccc solid;
     font: 12px sans-serif;
 }
 
 td {
-    border: 1px black solid;
+    border: 1px #ccc solid;
     padding: 5px;
 }
 

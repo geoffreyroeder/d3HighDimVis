@@ -61,6 +61,7 @@ function buildDropZone(divId, labels=false) {
                     $_labels = results.data.slice(0, -1);
                     state = document.getElementById(divId + 'Status');
                     state.innerHTML = 'Currently loaded: ' + file.name;
+                    tableManager.makeTable($_labels, "tableTarget")
                 } else {
                     console.log("feature data");
 
@@ -69,7 +70,7 @@ function buildDropZone(divId, labels=false) {
                     $_dataset = results.data.slice(0, -1);
                     state = document.getElementById(divId + 'Status');
                     state.innerHTML = 'Currently loaded: ' + file.name;
-                    tableManager.makeTable($_dataset, "tableTarget")
+                    tableManager.makeTable($_dataset, "tableTarget", file.name)
                 }
             }
         });
