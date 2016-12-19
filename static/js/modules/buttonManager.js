@@ -90,7 +90,6 @@ var tsneButtonBuilder = {
 var pcaButtonBuilder = {
     button: null,
     divName: null,
-    pcaChartObject: null,
 
     build: function(divName, dim) {
         this.button = $('#'+ divName + 'Run');
@@ -114,18 +113,18 @@ var pcaButtonBuilder = {
                 if (dim < 3) {
                     plotManager.updatePlot(pcaReducedDataset, labels, divName, dim);
                 } else {
-                    if (this.chart != null) {
+                    if (pca.chart != null) {
                         console.log("ys. trying to estory chart");
-                        this.chart.destroy();
-                        console.log("chart is now" + this.chart);
-                        this.chart = null;
-                        console.log("chart is now" + this.chart);
+                        pca.chart.destroy();
+                        console.log("chart is now" + pca.chart);
+                        pca.chart = null;
+                        console.log("chart is now" + pca.chart);
                     }
                     // TODO: set options better for PCA
                     console.log(typeof(pcaReducedDataset[0][0][0]))
                     options = plotManager.config3DPlot(pcaReducedDataset, labels, divName);
-                    this.chart = new Highcharts.Chart(options);
-                    plotManager.configMouseControl(this.chart);
+                    pca.chart = new Highcharts.Chart(options);
+                    plotManager.configMouseControl(pca.chart);
                 }
                 console.log(divName + ' plotted a dataset');
             }
@@ -171,18 +170,18 @@ var mdsButtonBuilder = {
                     plotManager.updatePlot(reducedDists, labels, divName, dim);
                 } else {
 
-                if (this.chart != null) {
+                if (mds.chart != null) {
                     console.log("ys. trying to estory chart");
-                    this.chart.destroy();
-                    console.log("chart is now" + this.chart);
-                    this.chart = null;
-                    console.log("chart is now" + this.chart);
+                    mds.chart.destroy();
+                    console.log("chart is now" + mds.chart);
+                    mds.chart = null;
+                    console.log("chart is now" + mds.chart);
                 }
                 // TODO: set options better for mds
                 mdsoptions = plotManager.config3DPlot(reducedDists, labels, divName);
                 console.log(mdsoptions)
-                this.chart = new Highcharts.Chart(mdsoptions);
-                plotManager.configMouseControl(this.chart);
+                mds.chart = new Highcharts.Chart(mdsoptions);
+                plotManager.configMouseControl(mds.chart);
             }
                 console.log(divName + ' plotted a dataset');
             }

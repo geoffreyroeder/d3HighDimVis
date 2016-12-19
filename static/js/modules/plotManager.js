@@ -92,6 +92,9 @@ var plotManager = {
                         },
                         marker: {
                             lineColor: '#333'
+                        },
+                        series: {
+                            fillOpacity: 0.3
                         }
                     },
                     boxplot: {
@@ -536,6 +539,7 @@ var plotManager = {
                         // enforce at most 100 colours by rounding
                         return colourMap(Math.round(rescale(labels[i])));
                     })
+                    .attr("fill-opacity", 0.6)
                     .on('mouseover', tip.show)
                     .on('mouseout', tip.hide)
 
@@ -568,6 +572,7 @@ var plotManager = {
                         console.log('color index is:' + i);
                         return colourMap(Math.round(100*rescale(labels[i]))/100);
                     })
+                    .attr("fill-opacity", 0.6)
                     .each("start", function () {
                         d3.select(this)
 

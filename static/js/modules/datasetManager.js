@@ -65,7 +65,7 @@ function buildDropZone(divId, labels=false) {
                 } else {
                     console.log("feature data");
 
-                        plotManager.removeAllPlots();
+                    plotManager.removeAllPlots();
 
                     $_dataset = results.data.slice(0, -1);
                     state = document.getElementById(divId + 'Status');

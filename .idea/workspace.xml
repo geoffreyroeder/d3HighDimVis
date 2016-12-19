@@ -2,8 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c8493266-fc6b-4d3a-ade5-987c7e847d2f" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/index.html" afterPath="$PROJECT_DIR$/index.html" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/static/datasets/swissroll.csv" afterPath="" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/static/js/modules/buttonManager.js" afterPath="$PROJECT_DIR$/static/js/modules/buttonManager.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/static/js/modules/datasetManager.js" afterPath="$PROJECT_DIR$/static/js/modules/datasetManager.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/static/js/modules/plotManager.js" afterPath="$PROJECT_DIR$/static/js/modules/plotManager.js" />
     </list>
     <ignored path="d3_high_dim_viz.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -29,8 +31,18 @@
       <file leaf-file-name="buttonManager.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/static/js/modules/buttonManager.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="345">
-              <caret line="23" column="32" lean-forward="false" selection-start-line="23" selection-start-column="32" selection-end-line="23" selection-end-column="32" />
+            <state relative-caret-position="501">
+              <caret line="177" column="53" lean-forward="true" selection-start-line="177" selection-start-column="53" selection-end-line="177" selection-end-column="53" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="algorithms.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/static/js/algorithms.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="631">
+              <caret line="52" column="4" lean-forward="false" selection-start-line="52" selection-start-column="4" selection-end-line="52" selection-end-column="4" />
               <folding />
             </state>
           </provider>
@@ -39,8 +51,8 @@
       <file leaf-file-name="datasetManager.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/static/js/modules/datasetManager.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="648">
-              <caret line="72" column="39" lean-forward="false" selection-start-line="72" selection-start-column="39" selection-end-line="72" selection-end-column="39" />
+            <state relative-caret-position="408">
+              <caret line="72" column="38" lean-forward="false" selection-start-line="72" selection-start-column="38" selection-end-line="72" selection-end-column="38" />
               <folding />
             </state>
           </provider>
@@ -49,10 +61,10 @@
       <file leaf-file-name="plotManager.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/static/js/modules/plotManager.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1246">
-              <caret line="430" column="60" lean-forward="false" selection-start-line="430" selection-start-column="60" selection-end-line="430" selection-end-column="60" />
+            <state relative-caret-position="336">
+              <caret line="392" column="8" lean-forward="false" selection-start-line="392" selection-start-column="8" selection-end-line="392" selection-end-column="8" />
               <folding>
-                <element signature="e#8509#8522#0" expanded="false" />
+                <element signature="e#8615#8628#0" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -61,8 +73,8 @@
       <file leaf-file-name="index.html" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/index.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="525">
-              <caret line="35" column="45" lean-forward="false" selection-start-line="35" selection-start-column="45" selection-end-line="35" selection-end-column="45" />
+            <state relative-caret-position="210">
+              <caret line="14" column="33" lean-forward="true" selection-start-line="14" selection-start-column="33" selection-end-line="14" selection-end-column="33" />
               <folding>
                 <element signature="n#style#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
               </folding>
@@ -133,8 +145,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>Values</find>
-      <find>algorithms</find>
       <find>pca</find>
       <find>One</find>
       <find>142</find>
@@ -162,7 +172,9 @@
       <find>table</find>
       <find>scroll</find>
       <find>Perple</find>
+      <find>opacity</find>
       <find>makeTa</find>
+      <find>this.chart</find>
     </findStrings>
     <replaceStrings>
       <replace>&gt; 1</replace>
@@ -210,15 +222,15 @@
         <option value="$PROJECT_DIR$/static/js/third_party/ml.js" />
         <option value="$PROJECT_DIR$/static/js/algorithms.js" />
         <option value="$PROJECT_DIR$/static/js/utils.js" />
-        <option value="$PROJECT_DIR$/static/js/modules/buttonManager.js" />
         <option value="$PROJECT_DIR$/static/css/fonts.css" />
         <option value="$PROJECT_DIR$/static/css/debug.css" />
-        <option value="$PROJECT_DIR$/static/js/modules/plotManager.js" />
         <option value="$PROJECT_DIR$/static/js/modules/sliderManager.js" />
-        <option value="$PROJECT_DIR$/static/js/modules/datasetManager.js" />
         <option value="$PROJECT_DIR$/static/css/main.css" />
         <option value="$PROJECT_DIR$/static/js/modules/tableManager.js" />
         <option value="$PROJECT_DIR$/index.html" />
+        <option value="$PROJECT_DIR$/static/js/modules/plotManager.js" />
+        <option value="$PROJECT_DIR$/static/js/modules/datasetManager.js" />
+        <option value="$PROJECT_DIR$/static/js/modules/buttonManager.js" />
       </list>
     </option>
   </component>
@@ -520,12 +532,12 @@
       <workItem from="1481845231610" duration="31587000" />
       <workItem from="1482065248469" duration="9615000" />
       <workItem from="1482107766355" duration="138000" />
-      <workItem from="1482112637638" duration="7651000" />
+      <workItem from="1482112637638" duration="9061000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="164198000" />
+    <option name="totallyTimeSpent" value="165608000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="960" height="1173" extended-state="0" />
@@ -580,7 +592,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/static/js/modules/buttonManager.js</url>
-          <line>171</line>
+          <line>170</line>
           <option name="timeStamp" value="4" />
         </line-breakpoint>
       </breakpoints>
@@ -790,13 +802,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/static/js/algorithms.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="750">
-          <caret line="50" column="1" lean-forward="false" selection-start-line="50" selection-start-column="1" selection-end-line="50" selection-end-column="1" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/static/js/main.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="105">
@@ -809,14 +814,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="135">
           <caret line="25" column="33" lean-forward="false" selection-start-line="25" selection-start-column="33" selection-end-line="25" selection-end-column="33" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/static/js/modules/buttonManager.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="345">
-          <caret line="23" column="32" lean-forward="false" selection-start-line="23" selection-start-column="32" selection-end-line="23" selection-end-column="32" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -868,28 +865,44 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/static/js/modules/plotManager.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="336">
+          <caret line="392" column="8" lean-forward="false" selection-start-line="392" selection-start-column="8" selection-end-line="392" selection-end-column="8" />
+          <folding>
+            <element signature="e#8615#8628#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/static/js/modules/datasetManager.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="648">
-          <caret line="72" column="39" lean-forward="false" selection-start-line="72" selection-start-column="39" selection-end-line="72" selection-end-column="39" />
+        <state relative-caret-position="408">
+          <caret line="72" column="38" lean-forward="false" selection-start-line="72" selection-start-column="38" selection-end-line="72" selection-end-column="38" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/static/js/modules/plotManager.js">
+    <entry file="file://$PROJECT_DIR$/static/js/algorithms.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1246">
-          <caret line="430" column="60" lean-forward="false" selection-start-line="430" selection-start-column="60" selection-end-line="430" selection-end-column="60" />
-          <folding>
-            <element signature="e#8509#8522#0" expanded="false" />
-          </folding>
+        <state relative-caret-position="631">
+          <caret line="52" column="4" lean-forward="false" selection-start-line="52" selection-start-column="4" selection-end-line="52" selection-end-column="4" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/js/modules/buttonManager.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="501">
+          <caret line="177" column="53" lean-forward="true" selection-start-line="177" selection-start-column="53" selection-end-line="177" selection-end-column="53" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/index.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="525">
-          <caret line="35" column="45" lean-forward="false" selection-start-line="35" selection-start-column="45" selection-end-line="35" selection-end-column="45" />
+        <state relative-caret-position="210">
+          <caret line="14" column="33" lean-forward="true" selection-start-line="14" selection-start-column="33" selection-end-line="14" selection-end-column="33" />
           <folding>
             <element signature="n#style#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
           </folding>
