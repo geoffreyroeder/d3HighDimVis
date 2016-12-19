@@ -18,12 +18,22 @@ function buildDropZone(divId, labels=false) {
 
     holder.ondragover = function () {
         this.className = 'hover';
+        console.log(this.className)
         return false;
     };
+
+    holder.ondragleave = function () {
+        this.className = 'hoveroff';
+        console.log(this.className)
+        return false;
+    };
+
     holder.ondragend = function () {
-        this.className = '';
+        this.className = 'hoveroff';
+        console.log(this.className)
         return false;
     };
+
 
     holder.ondrop = function (e) {
         this.className = '';

@@ -89,6 +89,7 @@ body {
 
 /* loader demo */
 #featuresLoader, #labelsLoader {
+
     align-items: center;
     vertical-align: middle;
     text-align: center;
@@ -100,8 +101,12 @@ body {
     margin: 20px auto;
     border-radius: 25px;
 }
-#featuresLoader.hover, #labelsLoader.hover { border: 2px dashed #333; }
-
+#featuresLoader.hover, #labelsLoader.hover {
+    color: cyan;
+}
+#featuresLoader.hoveroff, #labelsLoader.hoveroff {
+    color: #ccc;
+}
 
 
 .algorithmWrapper {
