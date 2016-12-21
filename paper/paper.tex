@@ -105,18 +105,7 @@
 \maketitle
 
 \begin{abstract}
-
-Click to Sort
-
-Interactive visualization is most powerful when it can provide different views of the data, empowering the user to explore the information from different angles.
-d3.js textbook
-  UPDATED---\today. This sample paper describes the formatting
-  requirements for SIGCHI conference proceedings, and offers
-  recommendations on writing for the worldwide SIGCHI
-  readership. Please review this document even if you have submitted
-  to SIGCHI conferences before, as some format details have changed
-  relative to previous years. Abstracts should be about 150 words and
-  are required.
+PLACEHOLDER To address this visualization gap between classical statistics and machine learning, my project will produce a new software tool that implements automated dimensionality reduction algorithms from the domain of visual analytics like t-SNE (Hinton \& Van der Maatens 2008), Multi-Dimensional Scaling (Kruskal \& Wish, 1978) and Sammon Mapping (Sammon, 1969) in the context of a D3.js visualization interface. The interface will provide users with multiple reduced dimensionality versions of a dataset that can be clustered using the algorithms DBSCAN density-based clustering, (Ester et al. 1996), k-means centroid-based clustering (Hartigan \& Wong 1979), or mixture-of-Gaussians distribution-based clustering. The D3.js interface is a way for the tool to present the visualizations in an easy-to-modify form. The software provides easy-to-use sliders for adjusting the parameters and viewing boxes that allow a researcher to experiment and iterate quickly over different visualizations 
 \end{abstract}
 
 \category{H.5.m.}{Information Interfaces and Presentation
@@ -128,63 +117,312 @@ d3.js textbook
 
 \section{Introduction}
 
-This format is to be used for submissions that are published in the
-conference proceedings. We wish to give this volume a consistent,
-high-quality appearance. We therefore ask that authors follow some
-simple guidelines. You should format your paper exactly like this
-document. The easiest way to do this is to replace the content with
-your own material.  This document describes how to prepare your
-submissions using \LaTeX.
+Machine learning in practice follows a pipeline that begins with data cleaning and exploration and ends with a statistical model tailored to answer a particular question. % 
+%
+Information visualization can help a practitioner with this pipeline by providing valuable visualizations of high-dimensional data to aid in the formation of models that are effective for the task at hand. % 
+%
+Particular challenges in machine learning make existing tools inadequate. % 
+Unlike data collected from carefully designed statistical experiments, the data handled in machine learning is often collected as a by-product of some other business process, such as the scrolling, clicking, and purchase behaviour of customers while browsing a retail website. % 
+The features of such datasets are often redundant, and so they exhibit high statistical correlation with each other. % 
+%
+Correlated features reduce the efficacy of data mining techniques like generalized linear models by increasing the variance in the estimated model coefficients, leading to greater uncertainty in the model outputs. % 
+%
+Moreover, extra uninformative dimensions make the data exploration stage of the machine learning pipeline very challenging, because there exists no principled way of choosing which of the many dimensions to visualize for an arbitrary dataset. % 
+%
+\\\\
+%
+Visualizing data for exploratory purposes is a crucial step in an analysis that motivates the rest of the study, often suggesting a model class or a feature transform. %
+%
+Classical statistics has some tools to offer, like a matrix-style pairwise scatterplot showing how each pair of feature changes with respect to every other, accessible through the \texttt{pairs} function in the R programming language. % 
+%
+Such visualizations are instrumental in helping a practitioner choose the right features for a generalized linear model. % 
+%
+After perhaps nine dimensions, though, these plots become difficult to read and interpret. % 
+New visualization tools are needed in the machine learning pipeline to help practitioners deal with the expanding ambition and data scale of the methods. %
+%
+\\\\
+%
+This project asks the following research question: can a simple-to-use, automated dimensionality reduction and data-cluster tool improve the workflow of machine learning researchers during the model exploration phase of their analysis? % 
+%
+The motivation for this study stems from the author's personal experience working with a team of statisticians and mathematicians at an industry mathematical modelling workshop. %
+%
+The assigned task was to predict the output of an industrial fusion reactor using a subsample of 2 terabytes of time-series data. % 
+%
+The greatest bottleneck and most time consuming task was to discover an effective visualization of the data that revealed sufficient structure for the team to exploit to build a useful, interpretable predictive model. %
+%
+\\\\
+%
+Concretely, the contribution of this research is a high-dimensional data visualization dashboard (referred to as the \textit{Visualization Dashboard} in the remainder). % 
+%
+The Visualization Dashboard has been developed using the D3.JS and Highcharts libraries in Javascript. %
+%
+It is hosted on a remote web server and runs locally in a web browser. % 
+%
+The Visualization Dashboard allows users to easily load data from a locally-hosted file and to generate multiple reduced-dimensionality views on a raw dataset. % 
+%
+% TODO: maybe a figure here to motivate, as in the presentaiton
+%
+This views may then be clustered using the k-means centroid-based clustering (Hartigan \& Wong 1979) in order to reveal groups of related points. % 
+%
+The interface provides sliders for adaptively adjusting the parameters, and a button to re-run each algorithm with the new settings. % 
+%
+State-of-the-art dimensionality reduction techniques like t-Distributed Stochastic Neighbour Embedding (tSNE) \cite{maaten2008visualizing} require careful tuning of parameters to find useful results. % 
+%
+The Visualization Dashboard facilitates this tuning through the updatable views and sliders, and provides independent viewing panes for each of the three visualizable reductions (one, two, or three dimensions) and each of the algorithms currently implemented. % 
+%
+This allows a researcher to experiment and iterate quickly over different visualizations of a subsampled version of the dataset. % 
+%
+\section{Background and Previous Work}%
+%
+To the best of the author's knowledge, no previous tool provides an interactive dimensionality reduction and clustering framework with multiple different algorithms in order to aid researchers in data exploration. %
+%
+Common tools and software frameworks like or RStudio, or Matlab, or iPython require extensive installation and knowledge of the particularities of the languages. %
+% TODO: cite Tableau
+Tableau, by contrast, is a commercial software tool with a simple interface that can generate many different visualizations. %
+%
+Tableau is closest in intention to the Visualization Dashboard. %
+% http://www.tableau.com/learn/whitepapers/using-r-and-tableau
+% https://www.r-bloggers.com/dream-team-combining-tableau-and-r/
+For more advanced statistical techniques like dimensionality reduction, though, Tableau relies on user expertise in the R programming language. %
+In contrast, the Visualization Dashboard encapsulates the statistical experitise needed to program an advanced algorithm by exposing only sliders and the algorithm output. %
+%
+\\\\
+%
+There have been a number of recent research contributions that attempt to acheive a similar level of technical encapsulation for machine learning, and we review these in this section. %
+\subsection{Visualizations to Support Machine Learning}
+%
+EnsembleMatrix \cite{talbot2009ensemblematrix} is a visualization tool designed to assist non-experts in machine learning in the task of combining independently-trained classifiers into the best performing ensemble\footnote{An ensemble classifier aggregates the output of a set of classifiers to make a final classification decision through majority voting, or a the highest probability class out of a weighted combination of the class-membership probabilities contributed by each component classifier.}. %
+%
+EnsembleMatrix presents a confusion matrix \footnote{A confusion matrix displays the number of classification decisions for each class label in a matrix. The true class label is the row label, and the predicted class label is the column label. A perfect classifier has no entries in the off-diagonal of the matrix.}, coloured as a heat-map, as its central visualization. %
+%
+Users are given two interface widgets: (1) a polygon and brush tool that determines the weighting of each classifier by the position of the brush; and (2), the ability to partition the data by labels by clicking on the central confusion matrix visualization and apply a custom weighting scheme on that partition. %
+%
+Control point (1) allows a user to upweight classifiers that perform well on regions of the class space that have been isolated by control point (2). %
+%
+The combination of (1) and (2) allows a user to recursively identify areas of weakness in the ensemble classifier apply custom weighting schemes to strength the performance. %
+%
+Each change results in an immediate update of the confusion matrix. %
+%
+Such adaptive feedback allows fine-grained control over how the classifiers are combined into an ensemble. %
+\\\\
+A user study of the interface demonstrated that non-expert users were able to achieve state-of-the-art performance on an image classification task \cite{talbot2009ensemblematrix}. %
+%
+This validates the theory that well-designed visualization tools can give non-expert users access to very effective machine learning tools. %
+Both the adaptive updates and interface widget design concept were and inspiration for the Visualization Dashboard. %
+%
+EnsembleMatrix differs from the Visualization Dashboard because it intervenes in a later stage of the machine learning pipeline, after a group of models has already been constructed. %
+%
+The Visualization Interface presented in this paper intervens in an earlier stage: determining what model class and what features can be modeled using the dataset. %
+%
+\\\\
+%
+ManiMatrix \cite{kapoor2010interactive} is another visualization that intervenes in the machine learning pipeline after a classifier has been trained. %
+%
+ManiMatrix presents users with a visualization of a cost function
+%
+\footnote{A cost function is a mathematical tool from decision theory. It formalizes the natural idea that more costly mistakes should be avoided when doing classification (this is not a feature of the base mathematical formulation used in a classifier). %
+%
+Misclassifying a patient as suffering from the influenza virus when they are really suffering from a rhinovirus infection is not as serious as misclassifying skin cancer as a regular freckle. %
+%
+A cost function provides the mathematical object that tunes the decisions made by a classifier, allowing a statistician to minimize the risk of the most serious errors.}, a confusion matrix, and the decision boundaries generated by a classifier%
+%
+\footnote{A decision boundary is a region of the data space in which any point that falls in the region is classified identically. This is commonly visualized by colouring entire decision regions uniformly in a scatterplot of the points.}. %
+%
+ManiMatrix provides an interface widget that allows a user to change the cost function, represented as a matrix, up or down for each class. %
+%
+Every change triggers a fast update of the classification algorithm. %
+%
+This is reflected immediately in changes to the confusion matrix and decision boundary visualizations. %
+%
+\\\\
+%
+In a user study, \cite{kapoor2010interactive} found that their system allowed users to quickly and effectively tailor standard algorithms to problems with a complex cost and penalty structure. %
+%
+Their work demonstrates the gains that information visualization can offer machine learning practitioners by encapsulating algorithmic updates within adaptive displays and intuitive interface components. %
+%
+Such an interface allows users to avoid the expertise required (or, given the expertise, taxing work of) recalculating the model and re-running, re-visualizing the analysis scripts. %
+%
+The Visualization Dashboard works to provide the same encapsulation by hiding the unimportant details behind an effective user interface. %
+%
+ManiMatrix differs from the Visualization Dashboard differs in the same way as EnsembleMatrix: the intervention in the machine learning pipeline by ManiMatrix occurs after the difficult work of deciding on and training a model has been completed.%
+%
+\subsection{Visualizations to Teach Machine Learning}
+%
+Another set of research contributions, closer in technical ambitions and software form to the Visualization Dashboard, have been produced in recent years to help teach relatively complex machine learning concepts. \textbf{[TODO: better motivation for this section]}. %
+\\\\%
+%
+The architecture of a trained Convolutional Neural Network (CNN)%
+\footnote{Neural networks are represented in ML as node-link diagrams, because their mathematical structure corresponds exactly to a directed graph where each input feature of a datapoint is a root node, and each output features is a leaf nodes.} %
+%
+is visualized by \cite{harley2015interactive}. %
+%
+The network is trained to recognize the digit class of a handwritten digit. %
+%
+The goal of the interface is to enhance a user's understanding of CNNs in general and how they classify inputs. %
+%
+This is acheived by showing what parts of the network are most active during a classification decision. %
+%
+Users view a three-dimensional representation of the entire network, with a pane for drawing new digits with the mouse cursor. %
+%
+Users can traverse the network structure in three dimensions after entering a digit. %
+%
+Playing with this dynamic interface can help a user see what sorts of errors the network is prone to make, and can give a sense of how the network recognizes a given number. %
+%
+\\\\
+%
+Although a valuable learning tool to help users familiarize themselves with CNNs, the Node-Link visualization does not have any immediate applications for tuning or improving CNN models for image recognition. %
+%
+Moreover, as of writing, practical neural architectures for image recognition are non-trivially more complex than the network visualized in \cite{harley2015interactive}. %
+%
+Nevertheless, this work is an important first step in the direction of visualizing complex neural architectures. %
+%
+Its use of three-dimensional  highlight the desire for better visualization methods in machine learning to aid practitioners in understanding and using models.%
+%
+\\\\
+%
+A few online teaching tools are more similar in technology and intention to the Visualization Dashboard. %
+%
+Setosa.io's Explained Visually project demonstrates the Principal Component Analysis (PCA) algorithm \cite{setosaPCA} using both a toy example and a real example. %
+%
+PCA finds the directions of greatest variance in a dataset, and then projects the data points onto those directions as a way of eliminating redundant or noisy information. %
+%
+In the Setosa.io interface, users can click and drag points diplayed on a scatterplot to see how changing the location of inputs influences the projection onto 1 or 2 dimensions. %
+%
+This interactivity can help make the algorithm intuitive to a user, and aid in the interpretation of the results. %
+%
+\\\\
+%
+Similarly, the Google Brain research group released a set of visualizations \cite{wattenberg2016how} to help analysts understand how tuning particular parameters\footnote{Sometimes, the tunable components of tSNE are called \textit{hyperparameters} to emphasize their role in determining other parameters at a lower hierarchical level of the algorithm.} affects the output of tSNE \cite{maaten2008visualizing}. %
+%
+tSNE is the most complex algorithm included in the Visualization Dashboard. %
+%
+It is one of the most popular%
+%
+\footnote{In the eight years since its introduction to the time of writing, it has been cited 1973 times.} %
+%
+and widely used due to its ability to reproduce structure in high dimensions accurately in low dimensions \cite{maaten2008visualizing}. %
+%
+The tSNE visualizations show toy examples of particular geometrical relationships in high dimensional spaces and shows how tSNE represents them in two dimensions. %
+%
+They apply the same open-source library as the Visualization Dashboard to generate the tSNE visualizations. %
+%
+This works shows both the impetus for better visualizations in dimensionality reduction techniques, and also provides an exemplar of a successful set of visualizations. %
+%
+Moreover, the pedagogical value of \cite{wattenberg2016how} is high, and it has been linked to through the Visualization Dashboard as a source of extra information to help users develop intuition about their data in the reduced dimensional space.
+%A recent innovation in t-SNE, one of the algorithms used for the Visualization Dashboard \cite{pezzotti2015approximated}, applies ideas from the field of Progressive Visual Analytics to make intermediate results of t-SNE useful. %
+%
+%t-SNE is a computationally intensive technique when applied to a large or complex dataset. %
+%
+%It can require intensive computation to reach optimal embeddings of high dimensional data in low dimensional spaces. %
+%
+%The work by \cite{pezzotti2015approximated} is an algorithmic and technical innovation that allows parital results from t-SNE to be viewed and adapted in real time to enable data exploration. %
+%
+%Interestingly, t-SNE is attempting to solve the same problem as the Visualization Dashboard, to help users identify clusters or patterns in data that can be used to generate novel hypothesis. %
+%
+%The key difference  is that the Visualization Dashboard renders a problem computationlly tractable by subsampling the data randomly in a way that preserves statistical properties, whereas \cite{pezzotti2015approximated} develop approximation methods that are computationally efficient in order to maintain the entire dataset. %
+%
+%\cite{pezzotti2015approximated} also apply cluster algorithms to help users see developing structures in the low-dimensional representation of the data, and additionally use a Magic Lens visualization to allow users to focus in on a region of interest. %
+%
+%[FOOTNOTE] a magic lense is a circular area that customizes the opacity of points so that only the points of interest are focused on.%
+%
 
-\section{Previous Work}
-	Talbot et al. 2009 developed a visualization designed to support a particular task in machine learning: combining multi-class classifiers into ensembles of classifiers. An ensemble classifier is an aggregation of individually-weak classifier that in combination (through majority voting, or a weighted combination of class-membership probabilities) classifies an object into one of many possible classes. EnsembleMatrix uses a heat-map confusion matrix as its central visualization tool. A confusion matrix shows which classes are misclassified by visualizing them as a heatmap grid. The classes are given on the rows and columns. When a grid entry is dark, that means the class on the row has been classified as the class on the column. A perfect classifier would have a single dark line down the diagonal from left to right. EnsembleMatrix and provides two points of control for a user based on the confusion matrix: (1) a widget that controls the linear weighting of each classifier, and (2) a data-partitioning tool that splits the training data into subsets according to what class they belong to. Confusion matrices are visible for each of the classifiers separately, as well as an ensemble confusion matrix for all of them. (1) allows a user to upweight classifiers that perform well, and (2) allows a user to select subsets of the data to apply custom weighting schemes. Talbot et al. 2009 show that is users start  state-of-the-art classifiers, users are usually able to construct and ensemble at least as good as the state of the art, and sometimes better. This highlights the value that visualization tools can have for machine learning practitioners. In contrast to the present study, they use their visualization for a later stage in the machine learning pipeline, once a group of models has already been constructed.  The d3.js tool presented in this paper is used for an earlier stage: determining what model class and what features would be useful to explore.
-	
-	
-\section{Typeset Text}
-The styles contained in this document have been modified from the
-default styles to reflect ACM formatting conventions. For example,
-content paragraphs like this one are formatted using the Normal style.
+%\textbf{Previous Work in Statistics}
 
-\LaTeX\ sometimes will create overfull lines that extend into columns.
-To attempt to combat this, the \texttt{.cls} file has a command,
-\texttt{{\textbackslash}sloppy}, that essentially asks \LaTeX\ to
-prefer underfull lines with extra whitespace.  For more details on
-this, and info on how to control it more finely, check out
-{\url{http://www.economics.utoronto.ca/osborne/latex/PMAKEUP.HTM}}.
+%Statisticians have been dealing with high dimensional datasets since the inception of the field. H
 
-\subsection{Title and Authors}
+%Scatterplot matricies are their solution
 
-Your paper's title, authors and affiliations should run across the
-full width of the page in a single column 17.8 cm (7 in.) wide.  The
-title should be in Helvetica or Arial 18-point bold.  Authors' names
-should be in Times New Roman or Times Roman 12-point bold, and
-affiliations in 12-point regular.  
+%these work to a point, and then fail
 
-See \texttt{{\textbackslash}author} section of this template for
-instructions on how to format the authors. For more than three
-authors, you may have to place some address information in a footnote,
-or in a named section at the end of your paper. Names may optionally
-be placed in a single centered row instead of at the top of each
-column. Leave one 10-point line of white space below the last line of
-affiliations.
+%TODO: bring in the statistics comparison with scatterplot matrix.
 
-\subsection{Abstract and Keywords}
 
-Every submission should begin with an abstract of about 150 words,
-followed by a set of Author Keywords and ACM Classification
-Keywords. The abstract and keywords should be placed in the left
-column of the first page under the left half of the title. The
-abstract should be a concise statement of the problem, approach, and
-conclusions of the work described. It should clearly state the paper's
-contribution to the field of HCI\@.
+\section{Visualization Dashboard}
+The Visualization Dashboard is a web application intended for use by analysts in the initial phase of a machine learing project. A portion of the interface is shown in figure [TODO: add figure]. The steps necessary to develop a set of visualizations like this will be described in this section, focusing on what a user is able to acheive with the interface and the design choices that were made.%
+%
+\\\\
+%
+\textbf{Technical Overview}
+The core functionality of the Visualization Dashboard was written in Javascript, using a number of open source tools to acheive the dimensionality reduction and cluster algorithms. The tools include ml-js for PCA and general linear algebra functionality, tsnejs by Andrej Karpathy for the t-SNE dimensionality reduction algorithm, and mdsjs by  for the MDS algorithm
+\cite{tSNEJS}
+\cite{highcharts}
+\cite{mljs}
+\cite{mdsjs}
+\cite{papaparse}
+\cite{d3js}
+%
 
-\subsection{Normal or Body Text}
+\textbf{Data Loading} \\
+The interface consists of a group of visual widgets as in figure [TODO reference immediately previous figure] stacked vertically. Each widget is a dark region that fills the majority of the browser view window. The design choice of separated but visually similar widgets is intended to reinforce the idea that users are seeing independent and equally valid views of a dataset, differing in terms of the dimensionality reduction algorithms that were used.
 
-Please use a 10-point Times New Roman or Times Roman font or, if this
-is unavailable, another proportional font with serifs, as close as
-possible in appearance to Times Roman 10-point. Other than Helvetica
-or Arial headings, please use sans-serif or non-proportional fonts
-only for special purposes, such as source code text.
+
+The first widget is for loading data and labels into the interface [TODO: data load widget]. Users are presented with two, equal-area dashed boxes with beveled edges inside of a surrounding visual region, darker than the background. The boxes have "X Data: Drop .csv File Here" where X is one of Features, Labels. When a user drags a file over the area, the text changes color to Cyan to offer the possibility of action. Once a user drops a file containiend comma-separated values into the region, the text changes to "Currently loaded: Y" where Y is the name of the file. 
+
+This component of the interface has been designed to be as minimal as possible, with a single dynamic point of change to indicate to a user that an action is possible, or that an action has been completed. Loading data into programming languages like Matlab, Python, or Julia can  be a time-consuming process, because the absolute or relative path of the file on the host operating system must be known beforehand. Smoothing out this process can reduce cognitive load in exploring the data, and increase the efficiency of the overall procedure. The design choice is also meant to encourage users to try loading in different datasets, and potentially different subsampled version of the dataset, which can be easily generated programmatically using command-line tools in linux or generated graphically using Microsoft Excel.
+
+\textbf{1D and 2D Data Reduction} \\
+Each dimensionality reduction widget contains three blank subdivisions that are populated with scatterplots based on the reduced-dimensionality data. Scatterplots were chosen for as the central visualization component of the Visualization Dashboard because they are a model-agnostic way of viewing data in 1, 2, or 3 dimensions. This makes a scatterplot representation  The subdivisions are depicted in figure [TODO: figure number]. The three subdivisions are labelled by the dimensionality reduction that is available in each of them. Below the viewing pane are the current value of tunable parameters for the algorithm. Depending on the complexity of the algorithm, more or fewer tunable parameters will be present. For example, with the t-SNE algorithm, the parameters are Perplexity, Learning Rate, and Number of Iterations. Each tunable parameters is controlled by a slider. Moving the sliders dynamically updates the values of the parameters, shown below the lpotting pane.
+
+Once settings for the parameters have been selected, the algorithm can be run using a button labelled "Run the algorithm!". As the mouse cursor moves over this button, it inverts colors so that the dark text becomes light at the same time as the light background becomes dark. Such a dynamic inversion is a common way for web applications to indicate to a user that a region contains a latent possibility for action, and invites a mouse click. A second button in the subdivision is labelled "Cluster with K-means, k = Z" where Z is an integer between 1 and 10. A slider is present above this button, which dynamically changes the value of K. When no dataset is loaded, clicking these buttons had no effect.
+
+\textbf{3D Data Exploration}
+Because data in 3D has an additional extension that 2D does not, the interface for 3D exploration is different. Users can click and drag the viewport to rotate around the 3D structure and examine different points of view to look for interesting structures. Because the structures visible in 3D views are highly sensitive to the point of view, users are given the option of saving a particular view of the data in all common image formats. This can be used to compare the views later to decide what statistical model would best separate out the classes or fit a curve for regression.
+
+\textbf{Clustering the Data with K-Means}\\
+For the prototype, one clustering algorithm was implemented: k-means. Upon clustering hte data, the different clusters are visualized by a change in point color. The k-means cluster assignments corresponds to assuming that the data was generated from a mixture of Gaussian distributions, each of which has spherical covariance [footnote: explain spherical covariance] and means corresponding to the centers of the colored regions. Although the assumption that the points were generated as random samples from Gaussian distributions may seem unreasonable, it's worth recalling that in terms of Information Theory [TODO: find a MacKay reference], the Gaussian distribution makes the fewest  assumptions of any probability distribution. Moreover, this assumptions allows a convenient clsutering algorithm that is generally very stable, in that it will reach the same clusters on every run with the exception of some points on the fringes of the cluster that could belong to neighbouring groups. The colours themselves will sometimes change, but this is to be expected, because the colours are simply labels and carry no important information other than group membership.
+
+\textbf{Animations and Other Dynamic Components}\\
+Animations are also used by the Visualization Dashboard to convey important information. The first dynamic affordance offered by the Visualization Dashboard is the appearance of tooltips over data points that are currently on display. The tooltip appears on mouseover of hte point and disappears when the mouse leaves the region of hte point. The tooltip provides information on the coordinates of the point, and also its row number in the dataset (labelled "Index") in the interface. 
+
+The coordinates are displayed so that the magnitude of difference between nearby points can be found quantitatively. Unlike on a paper plot, it can be difficult to see exactly where a horiztonal or vertical line through a point of interest intersects with the coordinate axes to know the value of a point. On the other hand, displaying every value as a tuple next to the point would be too visually cluttered. Having the actual point value available on mouse-over solves both problems. The index is provided because dimensionality reduction algorithms modify the actual location of the points. If a point was original in six dimensions and is reduced to three, the three remaining dimensions are extremely unlikely to have the same value after the algorithm has run. Hence, the index allows a user to investigate the points back in the original high-dimensional space if desired.
+
+Because some dimensionality reduction algorithms are strongly influenced by their parameters settings, whenever the algorithm is run, an animation occurs in the visual display region. Assuming a dataset has been loaded into the interface, clicking the run button executes the dimensionality reduction algorithm with the current parameters settings. This calculates a new set of positions for the points, creating a new reduced dimensionality dataset. As soon the reduced-dimension dataset is available, all points currently on display inflate in size, and then glide to their new positions.
+
+The purpose of this animation is twofold. The first is to invite a user to play with different settings for the algorithm by stoking their curiousity about the changes that may occur next. This is intended to encourage greater exploration of the possibilities in the dataset. The second reason is to help a user track particular dataset clusters of interest. If a particular group of points appears together under one parameter setting, increasing or decreasing those parameteres might cause the point cluster to either disperse, or contract even more tightly. Determining which behaviour has occurred can be a strong cue to structural features of the dataset in high dimensions that are being reproduced in lower dimensions.
+
+\textbf{Algorithms Available in Prototype}
+The current algorithms implement in the prototype are t-Distributed Stochastic Neighbour Embedding (t-SNE), Principal Component Analysis (PCA), and Multidimensional Scaling (MDS). As will be explored in the case study section below, these algorithms each offer different persepctives on the same data, facilitating the exploration of different possible models and questions that could be answered by the dataset. Each dimensional reduction of each of the three algorithms can be generated and controleld independently, meaning that for any run of the Visualization Dashboard on one dataset, 9 independent views can be generated and manipulated.
+
+\textbf{Hyperlinks into the Machine Learning Community}\\
+The machine learning community, like many other subdisciplines of comptuer science, is strongly connected online. There are many excellent resources to help users understand dimensionality reduction algorithms [TODO: chain of citations]. Even expert users can benefit from review the effect of different parameters on how the algorithms behave, a fortiori when they are studying a particular dataset in great detail. Hyperlinkns are provided next to the names of the algorithms tha link to such resources. For example, next to the t-SNE algorithm is a hyperlink to a recent Google Brain project on how to tune the t-SNE algorithm when the true dataset has particular structuers. The resource uses the same t-SNE Javascript library as the Visualization Dashboard, but provides numerous toy examples to explore how the hyperparameters expose different structural features of the high dimensional spaces in low dimensions. %
+%
+\subsection{Case Study: Exploring Latent Structure in a Dataset}
+%
+TODO: rewrite as exploration.
+
+This section gives an extended example of how the Visualization Dashboard can be used to determine an appropriate model for a dataset that contains a lower-dimensional subspace which captures the important variation point to point. This dataset, called the "Swiss Roll", is a curved structure in 3D. It is often used to study the properties of dimensionality reduction algorithms. Although the structure has curvature, the points that lie on it are related to each other in a relevant way by the location on the "unrolled" roll. The swiss roll is an example of a manifold in geometry, where the relevant distances on the manifold are locally "flat" and described perfectly by Euclidean distances, but the overall space is curved when viewed as a whole. So, we would like to find a lower dimensional representation that is itself flat, corresponding to the best way to describe the relationship among points.
+
+When viewed using the PCA algorithm, it is not clear that the correct structure is found in 2D as in figure [TODO: figure]. Playing around with the 3D curvature, it is clear that PCA has simply reduced teh distances maong points, but kept the rolled structure in space intact. in teh 2D represntation, the third dimension has simply been "flattened", so that points very far away from each other on the manifold are now very close. This is undesirable.
+
+Similarly, MDS finds a different flattening of the space: as if viewing the roll straight on, it has collapsed the width of the roll so that only the spiral shape remains in 2D [TODO: figure]. In 3D, MDS has similarly collapsed the width of the roll but maintained its curved structure, producing a coiled snake-like structure.
+
+t-SNE, on the other hand, appears to be doing what we want. In 2D, it produce a wide and flat structure with some pathological clustering and gaps in the center. nevertheless, it performs generally better than MDS and PCA on this problem. In 3D space, the curvature of the roll is decreased substantially. This shows that t-SNE is learning to ignore the curvature of the overall manifold and naturally represnting the high-dimensional structure using only 2 dimensions. This can inform an analyst that encodign the data usign a neural network with 2 output dimensions could yield features for the dataset that perform best for a classification or regression problem.
+
+%
+\section{Information Visualization Theory}%
+%
+In Information Visualization theory, Ed Chi’s thesis extended a model of the information visualization pipeline \cite{stuart card} that places raw data at the start and a view of the data at the end. Chi’s model is designed to capture the process of analysis that yields multiple visualization of a dataset. Raw data is transformed through four stages: first to an analytical abstraction representing the data as some abstract data structure like a graph, tree, or vector, through to a visualization abstraction like a network diagram, point set, or surface, and finally to a view on the data that displays some salient feature of interest to the analyst. Chi’s model is an extension of Stuart Card’s simpler information visualization pipeline that imagines an analyst proceding through a single path from raw data to final view. Card’s model allows multiple paths, some of which terminate before yeilding a final visualization.
+
+Chi's network model can be extended to model the process by which a machine learningresearcher use the Visualization Dashboard. The extension involves the addition of backlinks to permit cycles through the network, changing the model from a Directed Acylclic Graph to one with cycles. This extended Data Space Model can track the heuristic steps that an analyst takes in discovering relevant structure by tracing the links among the diagrams. This could serve as a map for other researchers looking at similar data to help guide their exploration of the high dimensional space. Since the present does not have strong theoretical goals, further work on developing this idea is left to future projects. [!!!!!!!!!!!!!!!!!11TODO: add in figure]
+
+Another concept in information visualization useful for modeling this project can be found in the cost structure of sensemaking \cite{russel and card}. Sensemaking describes how an analyst searches through the space of possible methods for answering a question, given some visualization or other information. The ideal sensemaking system provides a richer space of models to search through without taking too much additional time on the part of the analyst. The goal of the Visualization Dashboard is to minimize the time cost of running complex analyses using deimnsionality reduction algorithms. Software libraries in popular scientific computing languages like Matlab and Python can acheive greater control over the algorithms and datasets, but at the cost of aditional experitse required. Even loading data into the graphical user interface can involve many small details that take time away from the exploration value. In this senes, the Visualization Dashboard reduces the time cost of dataset exploration down to the minimum while still allowing the rich high-dimensional visualization within it to guide an anlayst to the best model.
+
+
+
+\subsection{Evaluation}
+A formative study was conducted in the late stages of development, after a working prototype was completed. The study was conducted with one participant, who is a graduate student in the machine learning group at the University of Toronto. The format of the study was an unstructured interview.
+
+The participant was told that the interface was useful for statisticians and machine learning practicioners to understand high dimensional data. The participant was then shown the interface, and asked to explore its functions and describe what it was intended for. The participant was able to determine that a data file could be loaded into the interface, and that the interface would react to a data file being loaded by showing different visualizations of the points. This suggests that the basic functionality of the interface is evident from the design, and that no major flaws exist in the design concept.
+
+The participant was then given access to a data file and asked to use the interface to explore it. After loading the file in the interface, he successfully generated a number of different visualizations. After the participant discovered the three-dimensional visualization which allows rotation around the point cloud, he attempted to click and dragging the two and one dimensional visualizations in order to elicit a panning response from the view. He remarked on this missing functionality and noted that panning and zooming in the 1 and 2 dimensional representations would be a valuable addition.
+
+A second piece of feedback from the participant was that there should be the abililty to view the raw data itself within the interface in a tabular, editable format. In order to understand the clustering procedure, he noted, it would be useful to add in synthetic data points and have them appear dynamically within the reduced dimensional representations.
+
+These results are suggestive that the interface is effective in allowing exploration and study of complex datasets. The kinds of visualizations and play allowed by the current interface could be fruitfully extended in future enhancements to the interface. These enhancements can be built into the existing framework in a straightforward manner, now that the core functionality has been developed.
+
+\subsection{Discussion and Conclusion}
+(Hold until tomorrow after edits)
+
 
 \subsection{First Page Copyright Notice}
 This template include a sample ACM copyright notice at the bottom of
@@ -197,242 +435,7 @@ practitioners worldwide. See
 \url{http://acm.org/publications/policies/copyright_policy} for the
 ACM's copyright and permissions policy.
 
-\subsection{Subsequent Pages}
 
-On pages beyond the first, start at the top of the page and continue
-in double-column format.  The two columns on the last page should be
-of equal length.
-
-\begin{figure}
-\centering
-  \includegraphics[width=0.9\columnwidth]{figures/sigchi-logo}
-  \caption{Insert a caption below each figure. Do not alter the
-    Caption style.  One-line captions should be centered; multi-line
-    should be justified. }~\label{fig:figure1}
-\end{figure}
-
-\subsection{References and Citations}
-
-Use a numbered list of references at the end of the article, ordered
-alphabetically by last name of first author, and referenced by numbers
-in
-brackets~\cite{acm_categories,ethics,Klemmer:2002:WSC:503376.503378}.
-Your references should be published materials accessible to the
-public. Internal technical reports may be cited only if they are
-easily accessible (i.e., you provide the address for obtaining the
-report within your citation) and may be obtained by any reader for a
-nominal fee. Proprietary information may not be cited. Private
-communications should be acknowledged in the main text, not referenced
-(e.g., ``[Borriello, personal communication]'').
-
-References should be in ACM citation format:
-\url{http://acm.org/publications/submissions/latex_style}. This
-includes citations to internet
-resources~\cite{acm_categories,cavender:writing,CHINOSAUR:venue,psy:gangnam}
-according to ACM format, although it is often appropriate to include
-URLs directly in the text, as above.
-
-
-% Use a numbered list of references at the end of the article, ordered
-% alphabetically by first author, and referenced by numbers in
-% brackets~\cite{ethics, Klemmer:2002:WSC:503376.503378,
-%   Mather:2000:MUT, Zellweger:2001:FAO:504216.504224}. For papers from
-% conference proceedings, include the title of the paper and an
-% abbreviated name of the conference (e.g., for Interact 2003
-% proceedings, use \textit{Proc. Interact 2003}). Do not include the
-% location of the conference or the exact date; do include the page
-% numbers if available. See the examples of citations at the end of this
-% document. Within this template file, use the \texttt{References} style
-% for the text of your citation.
-
-% Your references should be published materials accessible to the
-% public.  Internal technical reports may be cited only if they are
-% easily accessible (i.e., you provide the address for obtaining the
-% report within your citation) and may be obtained by any reader for a
-% nominal fee.  Proprietary information may not be cited. Private
-% communications should be acknowledged in the main text, not referenced
-% (e.g., ``[Robertson, personal communication]'').
-
-\begin{table}
-  \centering
-  \begin{tabular}{l r r r}
-    % \toprule
-    & & \multicolumn{2}{c}{\small{\textbf{Test Conditions}}} \\
-    \cmidrule(r){3-4}
-    {\small\textit{Name}}
-    & {\small \textit{First}}
-      & {\small \textit{Second}}
-    & {\small \textit{Final}} \\
-    \midrule
-    Marsden & 223.0 & 44 & 432,321 \\
-    Nass & 22.2 & 16 & 234,333 \\
-    Borriello & 22.9 & 11 & 93,123 \\
-    Karat & 34.9 & 2200 & 103,322 \\
-    % \bottomrule
-  \end{tabular}
-  \caption{Table captions should be placed below the table. We
-    recommend table lines be 1 point, 25\% black. Minimize use of
-    table grid lines.}~\label{tab:table1}
-\end{table}
-
-\section{Sections}
-
-The heading of a section should be in Helvetica or Arial 9-point bold,
-all in capitals. Sections should \textit{not} be numbered.
-
-\subsection{Subsections}
-
-Headings of subsections should be in Helvetica or Arial 9-point bold
-with initial letters capitalized.  For sub-sections and
-sub-subsections, a word like \emph{the} or \emph{of} is not
-capitalized unless it is the first word of the heading.
-
-\subsubsection{Sub-subsections}
-
-Headings for sub-subsections should be in Helvetica or Arial 9-point
-italic with initial letters capitalized.  Standard
-\texttt{{\textbackslash}section}, \texttt{{\textbackslash}subsection},
-and \texttt{{\textbackslash}subsubsection} commands will work fine in
-this template.
-
-\section{Figures/Captions}
-
-Place figures and tables at the top or bottom of the appropriate
-column or columns, on the same page as the relevant text (see
-Figure~\ref{fig:figure1}). A figure or table may extend across both
-columns to a maximum width of 17.78 cm (7 in.).
-
-\begin{figure*}
-  \centering
-  \includegraphics[width=1.75\columnwidth]{figures/map}
-  \caption{In this image, the map maximizes use of space. You can make
-    figures as wide as you need, up to a maximum of the full width of
-    both columns. Note that \LaTeX\ tends to render large figures on a
-    dedicated page. Image: \ccbynd~ayman on
-    Flickr.}~\label{fig:figure2}
-\end{figure*}
-
-Captions should be Times New Roman or Times Roman 9-point bold.  They
-should be numbered (e.g., ``Table~\ref{tab:table1}'' or
-``Figure~\ref{fig:figure1}''), centered and placed beneath the figure
-or table.  Please note that the words ``Figure'' and ``Table'' should
-be spelled out (e.g., ``Figure'' rather than ``Fig.'') wherever they
-occur. Figures, like Figure~\ref{fig:figure2}, may span columns and
-all figures should also include alt text for improved accessibility.
-Papers and notes may use color figures, which are included in the page
-limit; the figures must be usable when printed in black-and-white in
-the proceedings.
-
-The paper may be accompanied by a short video figure up to five
-minutes in length. However, the paper should stand on its own without
-the video figure, as the video may not be available to everyone who
-reads the paper.  
-
-\subsection{Inserting Images}
-When possible, include a vector formatted graphic (i.e. PDF or EPS).
-When including bitmaps,  use an image editing tool to resize the image
-at the appropriate printing resolution (usually 300 dpi).
-
-\section{Quotations}
-Quotations may be italicized when \textit{``placed inline''} (Anab,
-23F).
-
-\begin{quote}
-Longer quotes, when placed in their own paragraph, need not be
-italicized or in quotation marks when indented (Ramon, 39M).  
-\end{quote}
-
-\section{Language, Style, and Content}
-
-The written and spoken language of SIGCHI is English. Spelling and
-punctuation may use any dialect of English (e.g., British, Canadian,
-US, etc.) provided this is done consis- tently. Hyphenation is
-optional. To ensure suitability for an international audience, please
-pay attention to the following:
-
-\begin{itemize}
-\item Write in a straightforward style.
-\item Try to avoid long or complex sentence structures.
-\item Briefly define or explain all technical terms that may be
-  unfamiliar to readers.
-\item Explain all acronyms the first time they are used in your
-  text---e.g., ``Digital Signal Processing (DSP)''.
-\item Explain local references (e.g., not everyone knows all city
-  names in a particular country).
-\item Explain ``insider'' comments. Ensure that your whole audience
-  understands any reference whose meaning you do not describe (e.g.,
-  do not assume that everyone has used a Macintosh or a particular
-  application).
-\item Explain colloquial language and puns. Understanding phrases like
-  ``red herring'' may require a local knowledge of English.  Humor and
-  irony are difficult to translate.
-\item Use unambiguous forms for culturally localized concepts, such as
-  times, dates, currencies, and numbers (e.g., ``1--5--97'' or
-  ``5/1/97'' may mean 5 January or 1 May, and ``seven o'clock'' may
-  mean 7:00 am or 19:00). For currencies, indicate equivalences:
-  ``Participants were paid {\fontfamily{txr}\selectfont \textwon}
-  25,000, or roughly US \$22.''
-\item Be careful with the use of gender-specific pronouns (he, she)
-  and other gendered words (chairman, manpower, man-months). Use
-  inclusive language that is gender-neutral (e.g., she or he, they,
-  s/he, chair, staff, staff-hours, person-years). See the
-  \textit{Guidelines for Bias-Free Writing} for further advice and
-  examples regarding gender and other personal
-  attributes~\cite{Schwartz:1995:GBF}. Be particularly aware of
-  considerations around writing about people with disabilities.
-\item If possible, use the full (extended) alphabetic character set
-  for names of persons, institutions, and places (e.g.,
-  Gr{\o}nb{\ae}k, Lafreni\'ere, S\'anchez, Nguy{\~{\^{e}}}n,
-  Universit{\"a}t, Wei{\ss}enbach, Z{\"u}llighoven, \r{A}rhus, etc.).
-  These characters are already included in most versions and variants
-  of Times, Helvetica, and Arial fonts.
-\end{itemize}
-
-\section{Accessibility}
-The Executive Council of SIGCHI has committed to making SIGCHI
-conferences more inclusive for researchers, practitioners, and
-educators with disabilities. As a part of this goal, the all authors
-are asked to work on improving the accessibility of their
-submissions. Specifically, we encourage authors to carry out the
-following five steps:
-\begin{enumerate}
-\item Add alternative text to all figures
-\item Mark table headings
-\item Add tags to the PDF
-\item Verify the default language
-\item Set the tab order to ``Use Document Structure''
-\end{enumerate}
-For more information and links to instructions and resources, please
-see: \url{http://chi2016.acm.org/accessibility}.  The
-\texttt{{\textbackslash}hyperref} package allows you to create well tagged PDF files,
-please see the preamble of this template for an example.
-
-\section{Page Numbering, Headers and Footers}
-Your final submission should not contain footer or header information
-at the top or bottom of each page. Specifically, your final submission
-should not include page numbers. Initial submissions may include page
-numbers, but these must be removed for camera-ready. Page numbers will
-be added to the PDF when the proceedings are assembled.
-
-\section{Producing and Testing PDF Files}
-
-We recommend that you produce a PDF version of your submission well
-before the final deadline.  Your PDF file must be ACM DL
-Compliant. The requirements for an ACM Compliant PDF are available at:
-{\url{http://www.sheridanprinting.com/typedept/ACM-distilling-settings.htm}}.
-
-Test your PDF file by viewing or printing it with the same software we
-will use when we receive it, Adobe Acrobat Reader Version 10. This is
-widely available at no cost. Note that most
-reviewers will use a North American/European version of Acrobat
-reader, so please check your PDF accordingly.
-
-When creating your PDF from Word, ensure that you generate a tagged
-PDF from improved accessibility. This can be done by using the Adobe
-PDF add-in, also called PDFMaker. Select Acrobat | Preferences from
-the ribbon and ensure that ``Enable Accessibility and Reflow with
-tagged Adobe PDF'' is selected. You can then generate a tagged PDF by
-selecting ``Create PDF'' from the Acrobat ribbon.
 
 \section{Conclusion}
 
@@ -448,74 +451,6 @@ these questions in mind, your work is more likely to be successful,
 both in being accepted into the conference, and in influencing the
 work of our field.
 
-\section{Acknowledgments}
-
-Sample text: We thank all the volunteers, and all publications support
-and staff, who wrote and provided helpful comments on previous
-versions of this document. Authors 1, 2, and 3 gratefully acknowledge
-the grant from NSF (\#1234--2012--ABC). \textit{This whole paragraph is
-  just an example.}
-
-% Balancing columns in a ref list is a bit of a pain because you
-% either use a hack like flushend or balance, or manually insert
-% a column break.  http://www.tex.ac.uk/cgi-bin/texfaq2html?label=balance
-% multicols doesn't work because we're already in two-column mode,
-% and flushend isn't awesome, so I choose balance.  See this
-% for more info: http://cs.brown.edu/system/software/latex/doc/balance.pdf
-%
-% Note that in a perfect world balance wants to be in the first
-% column of the last page.
-%
-% If balance doesn't work for you, you can remove that and
-% hard-code a column break into the bbl file right before you
-% submit:
-%
-% http://stackoverflow.com/questions/2149854/how-to-manually-equalize-columns-
-% in-an-ieee-paper-if-using-bibtex
-%
-% Or, just remove \balance and give up on balancing the last page.
-%
-\balance{}
-
-\section{References Format}
-Your references should be published materials accessible to the
-public. Internal technical reports may be cited only if they are
-easily accessible and may be obtained by any reader for a nominal
-fee. Proprietary information may not be cited. Private communications
-should be acknowledged in the main text, not referenced (e.g.,
-[Golovchinsky, personal communication]). References must be the same
-font size as other body text. References should be in alphabetical
-order by last name of first author. Use a numbered list of references
-at the end of the article, ordered alphabetically by last name of
-first author, and referenced by numbers in brackets. For papers from
-conference proceedings, include the title of the paper and the name of
-the conference. Do not include the location of the conference or the
-exact date; do include the page numbers if available. 
-
-References should be in ACM citation format:
-\url{http://www.acm.org/publications/submissions/latex_style}.  This
-includes citations to Internet
-resources~\cite{CHINOSAUR:venue,cavender:writing,psy:gangnam}
-according to ACM format, although it is often appropriate to include
-URLs directly in the text, as above. Example reference formatting for
-individual journal articles~\cite{ethics}, articles in conference
-proceedings~\cite{Klemmer:2002:WSC:503376.503378},
-books~\cite{Schwartz:1995:GBF}, theses~\cite{sutherland:sketchpad},
-book chapters~\cite{winner:politics}, an entire journal
-issue~\cite{kaye:puc},
-websites~\cite{acm_categories,cavender:writing},
-tweets~\cite{CHINOSAUR:venue}, patents~\cite{heilig:sensorama}, and
-online videos~\cite{psy:gangnam} is given here.  See the examples of
-citations at the end of this document and in the accompanying
-\texttt{BibTeX} document. This formatting is a edited version of the
-format automatically generated by the ACM Digital Library
-(\url{http://dl.acm.org}) as ``ACM Ref.'' DOI and/or URL links are
-optional but encouraged as are full first names. Note that the
-Hyperlink style used throughout this document uses blue links;
-however, URLs in the references section may optionally appear in
-black.
-
-% REFERENCES FORMAT
 % References must be the same font size as other body text.
 \bibliographystyle{SIGCHI-Reference-Format}
 \bibliography{sample}
