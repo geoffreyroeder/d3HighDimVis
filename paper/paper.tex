@@ -24,7 +24,9 @@
 \usepackage[pdftex]{hyperref}
 \usepackage{color}
 \usepackage{booktabs}
-\usepackage{textcomp}
+\usepackage{textcomp}%
+\usepackage{caption}
+\usepackage{subcaption}
 % Some optional stuff you might like/need.
 \usepackage{microtype} % Improved Tracking and Kerning
 % \usepackage[all]{hypcap}  % Fixes bug in hyperref caption linking
@@ -102,18 +104,11 @@
     \email{roeder@cs.toronto.edu}}\\
 }
 
-\maketitle
+\maketitle%
 
 \begin{abstract}
 PLACEHOLDER To address this visualization gap between classical statistics and machine learning, my project will produce a new software tool that implements automated dimensionality reduction algorithms from the domain of visual analytics like t-SNE (Hinton \& Van der Maatens 2008), Multi-Dimensional Scaling (Kruskal \& Wish, 1978) and Sammon Mapping (Sammon, 1969) in the context of a D3.js visualization interface. The interface will provide users with multiple reduced dimensionality versions of a dataset that can be clustered using the algorithms DBSCAN density-based clustering, (Ester et al. 1996), k-means centroid-based clustering (Hartigan \& Wong 1979), or mixture-of-Gaussians distribution-based clustering. The D3.js interface is a way for the tool to present the visualizations in an easy-to-modify form. The software provides easy-to-use sliders for adjusting the parameters and viewing boxes that allow a researcher to experiment and iterate quickly over different visualizations 
 \end{abstract}
-
-\category{H.5.m.}{Information Interfaces and Presentation
-  (e.g. HCI)}{Miscellaneous} \category{See
-  \url{http://acm.org/about/class/1998/} for the full list of ACM
-  classifiers. This section is required.}{}{}
-
-\keywords{\plainkeywords}
 
 \section{Introduction}
 
@@ -150,11 +145,17 @@ The assigned task was to predict the output of an industrial fusion reactor usin
 %
 The greatest bottleneck and most time consuming task was to discover an effective visualization of the data that revealed sufficient structure for the team to exploit to build a useful, interpretable predictive model. %
 %
-\\\\
+\\\\%
+%
+\begin{figure}
+  \centering
+  \includegraphics[width=.99\columnwidth]{figures/main_populated}
+  \caption{Dimensionality reduction and clustering interface widget populated with example data.}~\label{fig:figure1}
+\end{figure}
 %
 Concretely, the contribution of this research is a high-dimensional data visualization dashboard (referred to as the \textit{Visualization Dashboard} in the remainder). % 
 %
-The Visualization Dashboard has been developed using the D3.JS and Highcharts libraries in Javascript. %
+The Visualization Dashboard (see Figure 1) has been developed using the D3.JS and Highcharts libraries in Javascript. %
 %
 It is hosted on a remote web server and runs locally in a web browser. % 
 %
@@ -292,7 +293,9 @@ This interactivity can help make the algorithm intuitive to a user, and aid in t
 %
 \\\\
 %
-Similarly, the Google Brain research group released a set of visualizations \cite{wattenberg2016how} to help analysts understand how tuning particular parameters\footnote{Sometimes, the tunable components of tSNE are called \textit{hyperparameters} to emphasize their role in determining other parameters at a lower hierarchical level of the algorithm.} affects the output of tSNE \cite{maaten2008visualizing}. %
+Similarly, the Google Brain research group released a set of visualizations \cite{wattenberg2016how} to help analysts understand how tuning particular parameters%
+%
+\footnote{Sometimes, the tunable components of tSNE are called \textit{hyperparameters} to emphasize their role in determining other parameters at a lower hierarchical level of the algorithm.} affects the output of tSNE \cite{maaten2008visualizing}. %
 %
 tSNE is the most complex algorithm included in the Visualization Dashboard. %
 %
@@ -338,118 +341,357 @@ Moreover, the pedagogical value of \cite{wattenberg2016how} is high, and it has 
 
 
 \section{Visualization Dashboard}
-The Visualization Dashboard is a web application intended for use by analysts in the initial phase of a machine learing project. A portion of the interface is shown in figure [TODO: add figure]. The steps necessary to develop a set of visualizations like this will be described in this section, focusing on what a user is able to acheive with the interface and the design choices that were made.%
+The Visualization Dashboard is a web application that runs locally in a user's browser. %
+%
+A portion of the interface is shown in figure [TODO: add figure]. %
+%
+The steps necessary to develop a set of visualizations like this will be described in this section, focusing on what a user is able to acheive with the interface and the design choices that were made. %
+%
+\subsection{Technical Overview}
+This section gives a brief description of the software used to develop the Visualization Dashboard, intended to help other researchers select among the available libraries online%
+%
+The highly developed state of open source machine learning Javascript libraries makes the development of experimental visualization software like the Visualization Dashboard much less time intensive than it would be otherwise.%
 %
 \\\\
 %
-\textbf{Technical Overview}
-The core functionality of the Visualization Dashboard was written in Javascript, using a number of open source tools to acheive the dimensionality reduction and cluster algorithms. The tools include ml-js for PCA and general linear algebra functionality, tsnejs by Andrej Karpathy for the t-SNE dimensionality reduction algorithm, and mdsjs by  for the MDS algorithm
-\cite{tSNEJS}
-\cite{highcharts}
-\cite{mljs}
-\cite{mdsjs}
-\cite{papaparse}
-\cite{d3js}
+The dimensionality reduction algorithms were implemented using \texttt{ml-js} \cite{mljs} for PCA and general linear algebra, \texttt{tsnejs} \cite{tSNEJS} for the t-SNE, and \texttt{mdsjs} \cite{mdsjs} for the Multidimensional Scaling (MDS). %
+%
+Plotting functionality in 1D and 2D was implemented using D3.js \cite{d3js} and 3D plotting was implemented using Highcharts \cite{highcharts}. %
+%
+Automated data parsing was implemented using the \texttt{Papa Parse} \cite{papaparse} library.
 %
 
-\textbf{Data Loading} \\
-The interface consists of a group of visual widgets as in figure [TODO reference immediately previous figure] stacked vertically. Each widget is a dark region that fills the majority of the browser view window. The design choice of separated but visually similar widgets is intended to reinforce the idea that users are seeing independent and equally valid views of a dataset, differing in terms of the dimensionality reduction algorithms that were used.
+\subsection{Design Overview}
+The interface consists of a set of visual widgets like the one shown in Figure 1 stacked vertically. %
+%
+The design choice of separated but visually similar widgets is intended to reinforce the idea that users are seeing independent and equally valid views of a dataset, differing in terms of the dimensionality reduction algorithms that were used. %
+%
+The name of the dimensionality reduction algorithm is written on the outermost plate of each widget. %
+%
+\subsection{Data Loading}
+The first interface component below the title is for loading data and labels into the application. %
+%
+\begin{figure}
+  \centering
+  \includegraphics[width=.99\columnwidth]{figures/data_load}
+  \caption{Data loading widget in the Visualization Dashboard}~\label{fig:figure2}
+\end{figure}
+%
+Users are presented with two, equal-area dashed boxes with beveled edges inside of a surrounding visual region, darker than the background. %
+%
+When a user drags a file over the area, the text changes color from light grey to cyan to indicate the possibility of action. %
+%
+Once a user drops a file containing a dataset into the region, the text changes to "Currently loaded: Y" where Y is the name of the file. %
+%
+This component of the interface has been designed with visual minimalism in mind by having a single point of focus that indicates an action is possible, or an action has been completed. %
+%
+These choices are meant to draw attention away from programatic data loading issues and convey a sense of simplicity. %
+%
+The design is meant to encourage experimentation by keeping the low-level details out of sight%
+%
+\footnote{The library handling data parsing, Papa Parse \cite{papaparse} is, robust to data formatting and will infer the format of the data from the first few lines (e.g. tab-separated, comma-separated, etc.). %
+%
+Although the prototype of the Visualization Dashboard indicates that only comma-separated values will be accepted, \cite{papaparse} can easily be extended to arbitrary data formats meaning that a user will not need to pay attention to how the data is formatted.}%.
+%
+The drag-and-drop choice is intended to encourage users to try loading in different datasets, and potentially different subsampled version of the dataset, which can be easily generated programmatically using command-line tools in Linux or generated graphically using Microsoft Excel.%
+%
+\subsection{1D and 2D Dimensionality Reduction}
+%
+Each dimensionality reduction widget contains three blank subdivisions that are populated with scatterplots based on the reduced-dimensionality data (see Figure 1). %
+%
+Scatterplots were chosen for as the key visualization component of the Visualization Dashboard because they are a model-agnostic way of viewing data in 1, 2, or 3 dimensions. %
+%
+The three subdivisions are labelled by the dimensionality on display. %
+%
+Immediately Below the viewing pane are the current values of tunable parameters for the algorithm. %
+%
+Depending on the complexity of the algorithm, more or fewer tunable parameters will be present. %
+%
+For example, with the tSNE algorithm, the parameters are Perplexity, Learning Rate, and Number of Iterations%
+%
+\footnote{See \cite{wattenberg2016how} for an overview of these parameters and how they influence the algorithm.} %
+%
+Each tunable parameters is controlled by a slider. %
+%
+Moving the sliders dynamically updates the values of the parameters, shown below the lpotting pane. %
+\\\\
+%
+Once settings for the parameters have been selected, the algorithm can be run using a button labelled "Run the algorithm!". %
+%
+As the mouse cursor moves over this button, it inverts colors so that the dark text becomes light at the same time as the light background becomes dark. %
+%
+Such a dynamic inversion is a common way for web applications to indicate to a user that a region contains a latent possibility for action, and invites a mouse click. %
+%
+A second button in the subdivision is labelled "Cluster with K-means, k = Z" where Z is an integer between 1 and 10. %
+%
+A slider is present above this button, which dynamically changes the value of K. %
+%
+When no dataset is loaded, clicking these buttons had no effect.
+%
+\subsection{3D Dimensionality Exploration}%
+%
+\begin{figure}
+\centering
+\begin{subfigure}{.49\columnwidth}
+  \centering
+  \includegraphics[width=.95\columnwidth]{figures/preclick3d}
+  \caption{A 3D plot.}
+\end{subfigure}%
+\begin{subfigure}{.49\columnwidth}
+  \centering
+  \includegraphics[width=.96\columnwidth]{figures/postclick3d}
+  \caption{Options menu for saving figure.}
+\end{subfigure}
+\caption{Options for saving 3D visualizations.}
+\label{fig:double}
+\end{figure}%
 
+The interface for 3D exploration provides more options due to the additional degree of complexity. %
+%
+Users can click and drag the viewport to rotate around the 3D structure and examine different points of view to look for interesting structures. %
+%
+Because the structures visible in 3D views are sensitive to the point of view, users are given the option of saving a particular view of the data in common image formats (see Figure 3). %
+%
+This functionality can be used to compare among views, to help an analyst decide what statistical model would, e.g., best separate out the classes or fit a curve for regression.%
+%
+\subsection{Clustering the Data with K-Means}
+%
+For the prototype, one clustering algorithm was implemented: k-means \cite{hartigan1979algorithm}. %
+%
+K-means was chosen because it is one of the most commonly used simple clustering algorithms, next to a density-based approach (e.g., \cite{ester1996density}).
+%
+Upon clustering the data, the different clusters are visualized by a change in point color. %
+%
+The k-means cluster assignments corresponds to an assumption that the data was generated from a mixture of Gaussian distributions, each of which has spherical covariance %
+%
+\footnote{Spherical covariance is the assumption that a cluster of points has equal variance in all dimensions. Point clouds with spherical covariance indeed appear sphere-shaped since no one dimension is extended more than any other.}%
+%
+and means corresponding to the centers of the colored regions. %
+%
+Moreover, this assumptions allows a convenient clsutering algorithm that is generally very stable, in that it will reach the same clusters %
+%
+\footnote{The colours themselves will sometimes change, but this is to be expected as the colours are arbitrary assigned to the labels and carry no information other than group membership.}%
+%
+on every run, with the exception of some points on the fringes of the cluster that could plausibly belong to neighbouring groups. %
+%
+\subsection{Animations and Other Dynamic Components}
+%
+Two dynamic components of the interface convey key information about the dataset: tooltips appearing over individual points, and animations triggered when algorithms return new sets of reduced-dimensionality points. %
+%
+These dynamic components help a use navigate an information-dense space of plots by providing informative and contextual cues as to the transformations taking place. %
+%
+\\\\
+%
+Tooltips can appear over data points that are currently displayed in any view pane. %
+%
+The tooltip will appear on mouseover of the point and disappear when the mouse leaves that region. %
+%
+The tooltip provides information on the coordinates of the point and its row number in the raw dataset ("Index") in the interface. %
+%
+The coordinates are displayed so that the magnitude of difference between nearby points can be determined quantitatively, if desired. %
+%
+Unlike on a paper plot, it can be difficult to see exactly where a horizontal or vertical line through some point of interest intersects with the coordinate axes. %
+%
+A dynamic tooltip solves this problem elegantly.
+%
+The alternatively, displaying every value as a tuple next to the point, would be too visually cluttered for any moderately dense set of points. %
+%
+\\\\
+%
+The index is provided because dimensionality reduction algorithms modify the actual location of the points. %
+%
+If a point was original in six dimensions and is reduced to three, the three remaining dimensions are extremely unlikely to have the same value after the algorithm has run. %
+%
+Hence, the index allows a user to investigate the points back in the original high-dimensional space if desired. %
+\\\\
+%
+Because some dimensionality reduction algorithms like tSNE are strongly influenced by their parameters settings, whenever the algorithm is run, an animation occurs in the visual display region. %
+%
+Whenever the "Run the algorithm!" button is clicked, the application calculates a new set of positions for the original data points. %
+%
+As soon the reduced-dimension dataset is available, all points currently on display inflate in size, then glide to their new positions over the period of one second.
 
-The first widget is for loading data and labels into the interface [TODO: data load widget]. Users are presented with two, equal-area dashed boxes with beveled edges inside of a surrounding visual region, darker than the background. The boxes have "X Data: Drop .csv File Here" where X is one of Features, Labels. When a user drags a file over the area, the text changes color to Cyan to offer the possibility of action. Once a user drops a file containiend comma-separated values into the region, the text changes to "Currently loaded: Y" where Y is the name of the file. 
-
-This component of the interface has been designed to be as minimal as possible, with a single dynamic point of change to indicate to a user that an action is possible, or that an action has been completed. Loading data into programming languages like Matlab, Python, or Julia can  be a time-consuming process, because the absolute or relative path of the file on the host operating system must be known beforehand. Smoothing out this process can reduce cognitive load in exploring the data, and increase the efficiency of the overall procedure. The design choice is also meant to encourage users to try loading in different datasets, and potentially different subsampled version of the dataset, which can be easily generated programmatically using command-line tools in linux or generated graphically using Microsoft Excel.
-
-\textbf{1D and 2D Data Reduction} \\
-Each dimensionality reduction widget contains three blank subdivisions that are populated with scatterplots based on the reduced-dimensionality data. Scatterplots were chosen for as the central visualization component of the Visualization Dashboard because they are a model-agnostic way of viewing data in 1, 2, or 3 dimensions. This makes a scatterplot representation  The subdivisions are depicted in figure [TODO: figure number]. The three subdivisions are labelled by the dimensionality reduction that is available in each of them. Below the viewing pane are the current value of tunable parameters for the algorithm. Depending on the complexity of the algorithm, more or fewer tunable parameters will be present. For example, with the t-SNE algorithm, the parameters are Perplexity, Learning Rate, and Number of Iterations. Each tunable parameters is controlled by a slider. Moving the sliders dynamically updates the values of the parameters, shown below the lpotting pane.
-
-Once settings for the parameters have been selected, the algorithm can be run using a button labelled "Run the algorithm!". As the mouse cursor moves over this button, it inverts colors so that the dark text becomes light at the same time as the light background becomes dark. Such a dynamic inversion is a common way for web applications to indicate to a user that a region contains a latent possibility for action, and invites a mouse click. A second button in the subdivision is labelled "Cluster with K-means, k = Z" where Z is an integer between 1 and 10. A slider is present above this button, which dynamically changes the value of K. When no dataset is loaded, clicking these buttons had no effect.
-
-\textbf{3D Data Exploration}
-Because data in 3D has an additional extension that 2D does not, the interface for 3D exploration is different. Users can click and drag the viewport to rotate around the 3D structure and examine different points of view to look for interesting structures. Because the structures visible in 3D views are highly sensitive to the point of view, users are given the option of saving a particular view of the data in all common image formats. This can be used to compare the views later to decide what statistical model would best separate out the classes or fit a curve for regression.
-
-\textbf{Clustering the Data with K-Means}\\
-For the prototype, one clustering algorithm was implemented: k-means. Upon clustering hte data, the different clusters are visualized by a change in point color. The k-means cluster assignments corresponds to assuming that the data was generated from a mixture of Gaussian distributions, each of which has spherical covariance [footnote: explain spherical covariance] and means corresponding to the centers of the colored regions. Although the assumption that the points were generated as random samples from Gaussian distributions may seem unreasonable, it's worth recalling that in terms of Information Theory [TODO: find a MacKay reference], the Gaussian distribution makes the fewest  assumptions of any probability distribution. Moreover, this assumptions allows a convenient clsutering algorithm that is generally very stable, in that it will reach the same clusters on every run with the exception of some points on the fringes of the cluster that could belong to neighbouring groups. The colours themselves will sometimes change, but this is to be expected, because the colours are simply labels and carry no important information other than group membership.
-
-\textbf{Animations and Other Dynamic Components}\\
-Animations are also used by the Visualization Dashboard to convey important information. The first dynamic affordance offered by the Visualization Dashboard is the appearance of tooltips over data points that are currently on display. The tooltip appears on mouseover of hte point and disappears when the mouse leaves the region of hte point. The tooltip provides information on the coordinates of the point, and also its row number in the dataset (labelled "Index") in the interface. 
-
-The coordinates are displayed so that the magnitude of difference between nearby points can be found quantitatively. Unlike on a paper plot, it can be difficult to see exactly where a horiztonal or vertical line through a point of interest intersects with the coordinate axes to know the value of a point. On the other hand, displaying every value as a tuple next to the point would be too visually cluttered. Having the actual point value available on mouse-over solves both problems. The index is provided because dimensionality reduction algorithms modify the actual location of the points. If a point was original in six dimensions and is reduced to three, the three remaining dimensions are extremely unlikely to have the same value after the algorithm has run. Hence, the index allows a user to investigate the points back in the original high-dimensional space if desired.
-
-Because some dimensionality reduction algorithms are strongly influenced by their parameters settings, whenever the algorithm is run, an animation occurs in the visual display region. Assuming a dataset has been loaded into the interface, clicking the run button executes the dimensionality reduction algorithm with the current parameters settings. This calculates a new set of positions for the points, creating a new reduced dimensionality dataset. As soon the reduced-dimension dataset is available, all points currently on display inflate in size, and then glide to their new positions.
-
-The purpose of this animation is twofold. The first is to invite a user to play with different settings for the algorithm by stoking their curiousity about the changes that may occur next. This is intended to encourage greater exploration of the possibilities in the dataset. The second reason is to help a user track particular dataset clusters of interest. If a particular group of points appears together under one parameter setting, increasing or decreasing those parameteres might cause the point cluster to either disperse, or contract even more tightly. Determining which behaviour has occurred can be a strong cue to structural features of the dataset in high dimensions that are being reproduced in lower dimensions.
-
-\textbf{Algorithms Available in Prototype}
-The current algorithms implement in the prototype are t-Distributed Stochastic Neighbour Embedding (t-SNE), Principal Component Analysis (PCA), and Multidimensional Scaling (MDS). As will be explored in the case study section below, these algorithms each offer different persepctives on the same data, facilitating the exploration of different possible models and questions that could be answered by the dataset. Each dimensional reduction of each of the three algorithms can be generated and controleld independently, meaning that for any run of the Visualization Dashboard on one dataset, 9 independent views can be generated and manipulated.
-
-\textbf{Hyperlinks into the Machine Learning Community}\\
-The machine learning community, like many other subdisciplines of comptuer science, is strongly connected online. There are many excellent resources to help users understand dimensionality reduction algorithms [TODO: chain of citations]. Even expert users can benefit from review the effect of different parameters on how the algorithms behave, a fortiori when they are studying a particular dataset in great detail. Hyperlinkns are provided next to the names of the algorithms tha link to such resources. For example, next to the t-SNE algorithm is a hyperlink to a recent Google Brain project on how to tune the t-SNE algorithm when the true dataset has particular structuers. The resource uses the same t-SNE Javascript library as the Visualization Dashboard, but provides numerous toy examples to explore how the hyperparameters expose different structural features of the high dimensional spaces in low dimensions. %
+The purpose of this animation is twofold. %
+%
+The first reason is to help a user track particular emerging clusters of interest. %
+%
+If a particular group of points appears together under one parameter setting, increasing or decreasing those parameters might cause the point cluster to either disperse, or contract even more tightly. %
+%
+Determining which behaviour has occurred can be a strong clue as to high dimensional structure in a dataset. %
+%
+The second, more speculative reason is to stoke the curiousity of a user about the changes that may occur next in a visualization as they vary parameters under some rationale. %
+%
+Attempting to find structure in high dimensional spaces can be frustrating due to the amount of creativity it requires for most people to imagine relationships in greater than three dimensions.
+%
+An interface with elements of play can encourage analysts to exploration of the possibilities in the dataset.%
+%
+\footnote{This is an independent research question that could be answered using the Visualization Dashboard with a suitably designed user study. For reasons of scope, I will leave this topic to another paper.} %
+%
+\subsection{Hyperlinks into the Machine Learning Community}
+%
+The machine learning community, like many other subdisciplines of comptuer science, is strongly connected online. %
+%
+There are many excellent resources to help users understand dimensionality reduction algorithms (e.g. \cite{wattenberg2016how}, \cite{setosaPCA}. %
+%
+Even expert users can benefit from review the effect of different parameters on how the algorithms behave. %
+%
+To make such review easy, links are provided next to the names of the algorithms that connect to good resources. %
+%
+For example, next to the t-SNE algorithm is a hyperlink to the recent Google Brain project \cite{wattenberg2016how} that explores how to tune the t-SNE algorithm when the true high-dimensional dataset has a particular structure. %
 %
 \subsection{Case Study: Exploring Latent Structure in a Dataset}
+%%
 %
-TODO: rewrite as exploration.
-
-This section gives an extended example of how the Visualization Dashboard can be used to determine an appropriate model for a dataset that contains a lower-dimensional subspace which captures the important variation point to point. This dataset, called the "Swiss Roll", is a curved structure in 3D. It is often used to study the properties of dimensionality reduction algorithms. Although the structure has curvature, the points that lie on it are related to each other in a relevant way by the location on the "unrolled" roll. The swiss roll is an example of a manifold in geometry, where the relevant distances on the manifold are locally "flat" and described perfectly by Euclidean distances, but the overall space is curved when viewed as a whole. So, we would like to find a lower dimensional representation that is itself flat, corresponding to the best way to describe the relationship among points.
-
-When viewed using the PCA algorithm, it is not clear that the correct structure is found in 2D as in figure [TODO: figure]. Playing around with the 3D curvature, it is clear that PCA has simply reduced teh distances maong points, but kept the rolled structure in space intact. in teh 2D represntation, the third dimension has simply been "flattened", so that points very far away from each other on the manifold are now very close. This is undesirable.
-
-Similarly, MDS finds a different flattening of the space: as if viewing the roll straight on, it has collapsed the width of the roll so that only the spiral shape remains in 2D [TODO: figure]. In 3D, MDS has similarly collapsed the width of the roll but maintained its curved structure, producing a coiled snake-like structure.
-
-t-SNE, on the other hand, appears to be doing what we want. In 2D, it produce a wide and flat structure with some pathological clustering and gaps in the center. nevertheless, it performs generally better than MDS and PCA on this problem. In 3D space, the curvature of the roll is decreased substantially. This shows that t-SNE is learning to ignore the curvature of the overall manifold and naturally represnting the high-dimensional structure using only 2 dimensions. This can inform an analyst that encodign the data usign a neural network with 2 output dimensions could yield features for the dataset that perform best for a classification or regression problem.
-
+\begin{figure}
+\centering
+\begin{subfigure}{.49\columnwidth}
+  \centering
+  \includegraphics[width=.5\columnwidth]{figures/pca_3d_swiss}
+  \caption{3D PCA.}
+\end{subfigure}%
+\begin{subfigure}{.49\columnwidth}
+  \centering
+  \includegraphics[width=.5\columnwidth]{figures/PCA_2d_roll}
+  \caption{2D PCA.}
+\end{subfigure}%
+\\%
+\begin{subfigure}{.49\columnwidth}
+  \centering
+  \includegraphics[width=.5\columnwidth]{figures/MDS_3d}
+  \caption{3D MDS.}
+\end{subfigure}%
+\begin{subfigure}{.49\columnwidth}
+  \centering
+  \includegraphics[width=.5\columnwidth]{figures/MDS_2d}
+  \caption{2D MDS.}
+\end{subfigure}\\%
+\begin{subfigure}{.49\columnwidth}
+  \centering
+  \includegraphics[width=.5\columnwidth]{figures/tSNE_3d}
+  \caption{3D tSNE.}
+\end{subfigure}%
+\begin{subfigure}{.49\columnwidth}
+  \centering
+  \includegraphics[width=.5\columnwidth]{figures/tSNE_2d}
+  \caption{2D tSNE.}
+\end{subfigure}
+\caption{Swiss roll dataset after dimensionality reduction and parameter tuning.}
+\label{fig:double}
+\end{figure}%
 %
-\section{Information Visualization Theory}%
+This section provides a case study of how the Visualization Dashboard can be used to determine an appropriate model for a dataset. %
 %
-In Information Visualization theory, Ed Chi’s thesis extended a model of the information visualization pipeline \cite{stuart card} that places raw data at the start and a view of the data at the end. Chi’s model is designed to capture the process of analysis that yields multiple visualization of a dataset. Raw data is transformed through four stages: first to an analytical abstraction representing the data as some abstract data structure like a graph, tree, or vector, through to a visualization abstraction like a network diagram, point set, or surface, and finally to a view on the data that displays some salient feature of interest to the analyst. Chi’s model is an extension of Stuart Card’s simpler information visualization pipeline that imagines an analyst proceding through a single path from raw data to final view. Card’s model allows multiple paths, some of which terminate before yeilding a final visualization.
+The dataset under analysis appears as a curved structure in 3D (see Figure 4). %
+%
+Although the structure in 3D has curvature, the points that lie on it are related to each other in a relevant way by only their positions on the "unrolled" roll. %
+%
+The structure is an example of a special kind of manifold in geometry, where the relevant distances (and hence similarities among points) can be best represented on a flat plane, but the plane is embedded in a higher dimensional space in which it is curved. %
+%
+\\\\
+%
+When reduced to 2D using the PCA algorithm (Figure 4b), it is not clear at all that the correct structure is found. %
+%
+Indeed, by looking at the structure in 3D, it is clear that PCA has simply reduced the magnitude of the distances among points, but has kept the curvature of the embedding in 3D space intact. %
+%
+By comparing the 2D and 3D representations%
+%
+\footnote{Recall that due to the independent clustering algorithms run on the 2D and 3D representations, the colours will not match. They are presented here to help distinguish regions of the plots.}, %
+%
+it is evident that PCA has incorrectly collapsed the third dimension, squashing the cylinder into two dimensions. %
+%
+In such a representation, points which should be very far away from each other in the manifold (like points on the outside of opposite ends of the outside cylinder, corresponding to points in the green and dark blue regions of 4a) are now very close. %
+%
+\\\\
+%
+Similarly, MDS finds a different flattening of the space: the center of the roll is pinched inwards, but in 3D, it remains rolled. %
+%%
+In 2D, the same incorrect "squashing" phenomenon is observed. %
+%
+By playing around with the parameters of t-SNE\footnote{To reproduce this result, use set LR to 100, P to 50, and N to 500.}, %
+however, we can discover exactly the structure we would expect to find in the synthetic dataset. %
+%
+This shows that t-SNE discovers a lower dimensional represntation that ignores the curvature of the embedded manifold in 3D and represents the high-dimensional structure correctly, using only 2 dimensions. %
+%
+This information can be used by an analyst to choose a model that encodes the data using only 2 output dimensions.
+%%
+%
+\section{Evaluation: Formative Study}
+A formative study was conducted in the late stages of development, after a working prototype was completed. %
+%
+The study was an unstructured interview with one pilot participant, who was at the time a graduate student in the Machine Learning Group at the University of Toronto. %
+%
 
-Chi's network model can be extended to model the process by which a machine learningresearcher use the Visualization Dashboard. The extension involves the addition of backlinks to permit cycles through the network, changing the model from a Directed Acylclic Graph to one with cycles. This extended Data Space Model can track the heuristic steps that an analyst takes in discovering relevant structure by tracing the links among the diagrams. This could serve as a map for other researchers looking at similar data to help guide their exploration of the high dimensional space. Since the present does not have strong theoretical goals, further work on developing this idea is left to future projects. [!!!!!!!!!!!!!!!!!11TODO: add in figure]
+The participant was informed that the interface was useful for machine learning practicioners to understand high dimensional data. %
+%
+Without further instruction, the participant was then shown the interface, and asked to explore its functionality. %
+%
+The participant inferred that a data file could be dropped into the application, and that the interface would react to the data file by showing different visualizations of it. %
+%
+This suggests that no major flaws exist in the design concept. %
+%
+\\\\
+%
+The participant was then given access to a data file and asked to use the interface to explore it. %
+%
+After loading the file in the interface, he successfully generated a number of different visualizations. %
+%
+One behaviour of note is that after the participant discovered the three-dimensional visualization which allows rotation around the point cloud, he attempted to click and dragging the two and one dimensional visualizations in order to elicit a response from the view. %%
+%
+When asked about the behaviour, the participant commented that the ability to pan or zoom is necessary to understand a dataset under exploration. %
+%
+\\\\
+%
+A final noteworthy result came from a request by the participant who asked for a tabular view of the raw data itself that could be modified with extra synthetic data. %
+%
+The paricipant noted that this would be useful for understanding intuitively how the reduced-dimensional representations are formed. %
+%
+The formative study suggests that the interface is effective in allowing exploration and study of complex datasets. %
+%
+The kinds of visualizations and play allowed by the current interface could be fruitfully extended in future enhancements to the interface according to the suggestions given. %
+%
+These enhancements can be built into the existing framework in a straightforward manner, now that the core functionality has been developed. %
+%
 
-Another concept in information visualization useful for modeling this project can be found in the cost structure of sensemaking \cite{russel and card}. Sensemaking describes how an analyst searches through the space of possible methods for answering a question, given some visualization or other information. The ideal sensemaking system provides a richer space of models to search through without taking too much additional time on the part of the analyst. The goal of the Visualization Dashboard is to minimize the time cost of running complex analyses using deimnsionality reduction algorithms. Software libraries in popular scientific computing languages like Matlab and Python can acheive greater control over the algorithms and datasets, but at the cost of aditional experitse required. Even loading data into the graphical user interface can involve many small details that take time away from the exploration value. In this senes, the Visualization Dashboard reduces the time cost of dataset exploration down to the minimum while still allowing the rich high-dimensional visualization within it to guide an anlayst to the best model.
+\section{Discussion and Future Work}%
+%
+\begin{figure*}
+  \centering
+  \includegraphics[width=1.5\columnwidth]{figures/extended}
+  \caption{An extended Data Space Model that captures exploratory data visualizations}~\label{fig:figure2}
+\end{figure*}
+%
+Based on the formative study, the author concludes that the interface is ready for use as a research platform into high-dimensional visualization.%
+%
+Moreover, the process of producing this interface has provided an opportunity to consider how dominant theoretical ideas in the field of information visualization can be leveraged to understand the Visualization Dashboard. %
+%
+Chi's Data Space Model of information visualization is applicable here.
+%
+Chi's model is designed to accurately capture the process of analysis that yields multiple visualization of a dataset. %
+%
+Raw data is transformed through four stages: first to an analytical abstraction representing the data as some abstract data structure like a graph, tree, or vector, next to a visualization abstraction like a network diagram, point set, or surface, and finally to a view of the data that displays some salient feature of interest. %
+%
+\\\\
+%
+Chi's model is an extension of Stuart Card's less complex Information Visualization Pipeline that imagines an analyst proceding through a single path from raw data to final view. %
+%
+Card's model allows multiple paths, some of which terminate before yielding a final visualization. %
+%
+The Visualization Dashboard motivates an extension to Chi's network model that can capture the process by which a machine learning researcher learns about data using multiple, temporary visualizations. %
+%
+The extension involves the addition of backlinks from the visual abstraction layer in Chi's model, effectively permitting cycles through the network (see Figure 5 for a simple example). %
+%
+The backlinks represent "discovery links", where the current visual abstraction has given some useful information that motivates a revision of an earlier node in the path.
+%
 
-
-
-\subsection{Evaluation}
-A formative study was conducted in the late stages of development, after a working prototype was completed. The study was conducted with one participant, who is a graduate student in the machine learning group at the University of Toronto. The format of the study was an unstructured interview.
-
-The participant was told that the interface was useful for statisticians and machine learning practicioners to understand high dimensional data. The participant was then shown the interface, and asked to explore its functions and describe what it was intended for. The participant was able to determine that a data file could be loaded into the interface, and that the interface would react to a data file being loaded by showing different visualizations of the points. This suggests that the basic functionality of the interface is evident from the design, and that no major flaws exist in the design concept.
-
-The participant was then given access to a data file and asked to use the interface to explore it. After loading the file in the interface, he successfully generated a number of different visualizations. After the participant discovered the three-dimensional visualization which allows rotation around the point cloud, he attempted to click and dragging the two and one dimensional visualizations in order to elicit a panning response from the view. He remarked on this missing functionality and noted that panning and zooming in the 1 and 2 dimensional representations would be a valuable addition.
-
-A second piece of feedback from the participant was that there should be the abililty to view the raw data itself within the interface in a tabular, editable format. In order to understand the clustering procedure, he noted, it would be useful to add in synthetic data points and have them appear dynamically within the reduced dimensional representations.
-
-These results are suggestive that the interface is effective in allowing exploration and study of complex datasets. The kinds of visualizations and play allowed by the current interface could be fruitfully extended in future enhancements to the interface. These enhancements can be built into the existing framework in a straightforward manner, now that the core functionality has been developed.
-
-\subsection{Discussion and Conclusion}
-(Hold until tomorrow after edits)
-
-
-\subsection{First Page Copyright Notice}
-This template include a sample ACM copyright notice at the bottom of
-page 1, column 1.  Upon acceptance, you will be provided with the
-appropriate copyright statement and unique DOI string for publication.
-Accepted papers will be distributed in the conference
-publications. They will also be placed in the ACM Digital Library,
-where they will remain accessible to thousands of researchers and
-practitioners worldwide. See
-\url{http://acm.org/publications/policies/copyright_policy} for the
-ACM's copyright and permissions policy.
-
-
-
-\section{Conclusion}
-
-It is important that you write for the SIGCHI audience. Please read
-previous years' proceedings to understand the writing style and
-conventions that successful authors have used. It is particularly
-important that you state clearly what you have done, not merely what
-you plan to do, and explain how your work is different from previously
-published work, i.e., the unique contribution that your work makes to
-the field. Please consider what the reader will learn from your
-submission, and how they will find your work useful. If you write with
-these questions in mind, your work is more likely to be successful,
-both in being accepted into the conference, and in influencing the
-work of our field.
+Such an extended Data Space Model tracks the heuristic steps that an analyst takes in discovering relevant structure by tracing the links among the diagrams. %
+%
+This could serve as a map for other researchers looking at similarly data to help guide their exploration of the high dimensional space. %
+%
+The scope of the present paper does not include a strong theoretical aim, and so further development of this contribution will be left to future projects. %
+%
+\section{Conclusion}%
+This paper has introduced the Visualization Dashboard, a high-dimensional data exploration tool designed to support machine learning researchers in the early phase of model building. Design choices have been described and explored in the context of the intended use of the tool. A formative study has shown that the tool is ready to be used as a platform to answer research questions, and a novel extension to the Data Space Model has been proposed to describe the use of visualizations by a user of the Visualization Dashboard.
+%
 
 % References must be the same font size as other body text.
 \bibliographystyle{SIGCHI-Reference-Format}
