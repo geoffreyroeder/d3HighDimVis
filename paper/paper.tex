@@ -5,10 +5,9 @@
 % camera-ready copyright statement.
 
 %% EXAMPLE BEGIN -- HOW TO OVERRIDE THE DEFAULT COPYRIGHT STRIP -- (July 22, 2013 - Paul Baumann)
-% \toappear{Permission to make digital or hard copies of all or part of this work for personal or classroom use is      granted without fee provided that copies are not made or distributed for profit or commercial advantage and that copies bear this notice and the full citation on the first page. Copyrights for components of this work owned by others than ACM must be honored. Abstracting with credit is permitted. To copy otherwise, or republish, to post on servers or to redistribute to lists, requires prior specific permission and/or a fee. Request permissions from permissions@acm.org. \\
-% {\emph{CHI'14}}, April 26--May 1, 2014, Toronto, Canada. \\
-% Copyright \copyright~2014 ACM ISBN/14/04...\$15.00. \\
-% DOI string from ACM form confirmation}
+\makeatletter
+\def\@copyrightspace{\relax}
+\makeatother
 %% EXAMPLE END -- HOW TO OVERRIDE THE DEFAULT COPYRIGHT STRIP -- (July 22, 2013 - Paul Baumann)
 
 % Arabic page numbers for submission.  Remove this line to eliminate
@@ -42,8 +41,8 @@
 % Paper metadata (use plain text, for PDF inclusion and later
 % re-using, if desired).  Use \emtpyauthor when submitting for review
 % so you remain anonymous.
-\def\plaintitle{Lifting the Curse of Dimensionality: High-Dimensional Visual Informatics using d3}
-\def\plainauthor{Geoffrey G. Roeder}
+\def\plaintitle{The Visualization Dashboard: A Browser-Based Tool for High-Dimensional Data Exploration}
+\def\plainauthor{Geoffrey Roeder}
 %\def\emptyauthor{}
 \def\plainkeywords{Authors' choice; of terms; separated; by
   semicolons; include commas, within terms only; required.}
@@ -99,7 +98,7 @@
 
 \numberofauthors{3}
 \author{%
-  \alignauthor{Geoffrey G. Roeder\\
+  \alignauthor{Geoffrey Roeder\\
     \affaddr{University of Toronto}\\
     \email{roeder@cs.toronto.edu}}\\
 }
@@ -107,7 +106,17 @@
 \maketitle%
 
 \begin{abstract}
-PLACEHOLDER To address this visualization gap between classical statistics and ML, my project will produce a new software tool that implements automated dimensionality reduction algorithms from the domain of visual analytics like t-SNE (Hinton \& Van der Maatens 2008), Multi-Dimensional Scaling (Kruskal \& Wish, 1978) and Sammon Mapping (Sammon, 1969) in the context of a D3.js visualization interface. The interface will provide users with multiple reduced dimensionality versions of a dataset that can be clustered using the algorithms DBSCAN density-based clustering, (Ester et al. 1996), k-means centroid-based clustering (Hartigan \& Wong 1979), or mixture-of-Gaussians distribution-based clustering. The D3.js interface is a way for the tool to present the visualizations in an easy-to-modify form. The software provides easy-to-use sliders for adjusting the parameters and viewing boxes that allow a researcher to experiment and iterate quickly over different visualizations 
+This research addresses a visualization gap between the needs of classical statistics and current practice in machine learning by introducing the Visualization Dashboard, a new tool for high dimensional data exploration. %
+%
+The Dashboard provides users with multiple state-of-the-art dimensionality reduction and clustering algorithms for exploring high-dimensional data. %
+%
+The Dashboard is designed for use in early phases of statistical and machine learning analyses, to assist in comprehending data for model exploration and feature extraction purposes. %
+%
+A review of prior work in this area shows it has focused primarily on synthetic data for pedagogical aims. %
+%
+Some prior work, hosted online, is integrated into the Dashboard to enrich user comprehension of parameter tuning in dimensionality reduction. %
+%
+Motivating design choices and functionality of the Dashboard are discussed in detail, followed by the results of a formative study and implications for information visualization theory.
 \end{abstract}%
 %
 %
@@ -134,7 +143,7 @@ Moreover, extra uninformative dimensions make the data exploration stage of the 
 %
 Visualizing data for exploratory purposes is a crucial step in an analysis that motivates the rest of the study, often suggesting a model class or a feature transform. %
 %
-Classical statistics has some tools to offer, like a matrix-style pairwise scatterplot showing how each pair of feature changes with respect to every other, accessible through the \texttt{pairs} function in the R programming language. % 
+Classical statistics has some tools to offer, like a matrix-style pairwise scatter plot showing how each pair of feature changes with respect to every other, accessible through the \texttt{pairs} function in the R programming language. % 
 %
 Such visualizations are instrumental in helping a practitioner choose the right features for a generalized linear model. % 
 %
@@ -165,8 +174,6 @@ The Visualization Dashboard (see Figure 1) is a web application developed using 
 %
 The Visualization Dashboard allows users to easily load data from a locally-hosted file and to generate multiple reduced-dimensionality views on a raw dataset. % 
 %
-% TODO: maybe a figure here to motivate, as in the presentaiton
-%
 The views may then be clustered using the k-means centroid-based clustering (Hartigan \& Wong 1979) in order to reveal groups of related points. % 
 %
 The interface provides sliders for adaptively adjusting the parameters, and a button to re-run each algorithm with the new settings. % 
@@ -190,7 +197,6 @@ After a review of recent work related to the Visualization Dashboard, the interf
 To the best of the author's knowledge, the Visualization Dashboard is the first interactive dimensionality reduction and clustering web application that presents different views of a dataset for data exploration. %
 %
 Common tools and software frameworks used for such purposes, like or \texttt{RStudio}, \texttt{Matlab}, or \texttt{Python}, require extensive knowledge of the particularities of the languages. %
-% TODO: cite Tableau
 %
 The software package \texttt{Tableau} \cite{tableau} is closest in intention to the Visualization Dashboard. %
 \texttt{Tableau} is a commercial software tool with a simple interface that can generate many different visualizations, intended for business applications. %
@@ -198,11 +204,11 @@ The software package \texttt{Tableau} \cite{tableau} is closest in intention to 
 % https://www.r-bloggers.com/dream-team-combining-tableau-and-r/
 For more advanced statistical techniques like dimensionality reduction, though, \texttt{Tableau} relies on integration with the R programming language. %
 %
-In contrast, the Visualization Dashboard encapsulates the statistical experitise needed to program an advanced algorithm by exposing only sliders and the algorithm output as a scatterplot. %
+In contrast, the Visualization Dashboard encapsulates the statistical expertise needed to program an advanced algorithm by exposing only sliders and the algorithm output as a scatter plot. %
 %
 \\\\
 %
-There have been a number of recent research contributions that attempt to acheive a similar level of technical encapsulation for ML, and we review these in this section. %
+There have been a number of recent research contributions that attempt to achieve a similar level of technical encapsulation for ML, and we review these in this section. %
 %
 %
 \subsection{Visualizations to Support Machine Learning}
@@ -250,7 +256,7 @@ A cost function provides the mathematical object that tunes the decisions made b
 %
 a confusion matrix, and the decision boundaries generated by a classifier%
 %
-\footnote{A decision boundary is a region of the data space in which any point that falls in the region is classified identically. This is commonly visualized by colouring entire decision regions uniformly in a scatterplot of the points.}. %
+\footnote{A decision boundary is a region of the data space in which any point that falls in the region is classified identically. This is commonly visualized by colouring entire decision regions uniformly in a scatter plot of the points.}. %
 %
 ManiMatrix provides an interface widget that allows a user to change the cost function, represented as a matrix, up or down for each class. %
 %
@@ -318,7 +324,7 @@ PCA finds orthogonal directions of greatest variance in a dataset, and then proj
 %
 The reduced dimensions are a linear function of the original dimensions, and so it is possible to gain intuition into how those original dimensions influence the new positions of the point.
 %
-In the Setosa.io interface, users can click and drag points diplayed on a scatterplot to see how changing the location of inputs influences the projection onto 1 or 2 dimensions. %
+In the Setosa.io interface, users can click and drag points displayed on a scatter plot to see how changing the location of inputs influences the projection onto 1 or 2 dimensions. %
 %
 This interactivity can help make the algorithm intuitive to a user, and aid in the interpretation of the results from a real dataset. %
 %
@@ -367,7 +373,7 @@ The Visualization Dashboard is a web application that runs locally in a user's b
 %
 The central visualization component of the interface is shown in Figure 1. %
 %
-This section focuses on what a user is able to acheive with the interface, and the design choices that were made to facilitate this. %
+This section focuses on what a user is able to achieve with the interface, and the design choices that were made to facilitate this. %
 %
 \subsection{Technical Overview}
 First, a brief description of the software used to develop the Visualization Dashboard is presented, intended to help other researchers select among the available libraries online. %
@@ -409,13 +415,13 @@ Once a user drops a file containing a dataset into the region, the text changes 
 %
 This component of the interface has been designed with visual minimalism in mind by having a single point of focus that indicates an action is possible, or an action has been completed. %
 %
-These choices are meant to draw attention away from programatic data loading issues and convey a sense of simplicity. %
+These choices are meant to draw attention away from programmatic data loading issues and convey a sense of simplicity. %
 %
 The design is hoped to encourage experimentation by keeping the low-level details out of sight%
 %
-\footnote{The library handling data parsing, Papa Parse \cite{papaparse} is, robust to data formatting and will infer the format of the data from the first few lines (e.g. tab-separated, comma-separated, etc.). %
+\footnote{The library chosen for data parsing, Papa Parse \cite{papaparse} can infer the format of the data from the first few lines (e.g. tab-separated, comma-separated, etc.). %
 %
-Although the prototype of the Visualization Dashboard indicates that only comma-separated values will be accepted, \cite{papaparse} can easily be extended to arbitrary data formats meaning that a user will not need to pay attention to how the data is formatted.}. %
+Although the prototype of the Visualization Dashboard recommends only comma-separated values, \cite{papaparse} can easily be extended to arbitrary data formats meaning that a user will not need to pay attention to how the data is formatted.}. %
 %
 The drag-and-drop choice is intended to encourage users to try loading in different datasets, and potentially different subsampled version of the dataset, which can be easily generated programmatically using command-line tools in Linux or generated graphically using Microsoft Excel. %
 %
@@ -423,9 +429,9 @@ The drag-and-drop choice is intended to encourage users to try loading in differ
 \subsection{1D and 2D Dimensionality Reduction}
 %
 %
-Each dimensionality reduction widget like the one in Figure 1 initially contains three blank subdivisions that can be populated with scatterplots based on the reduced-dimensionality data (see Figure 1). %
+Each dimensionality reduction widget like the one in Figure 1 initially contains three blank subdivisions that can be populated with scatter plots based on the reduced-dimensionality data (see Figure 1). %
 %
-Scatterplots were chosen for as the key visualization component of the Visualization Dashboard because they are a model-agnostic way of viewing data in 1, 2, or 3 dimensions. %
+Scatter plots were chosen for as the key visualization component of the Visualization Dashboard because they are a model-agnostic way of viewing data in 1, 2, or 3 dimensions. %
 %
 The three subdivisions are labelled above by the dimensionality of the data on display, in order to orient viewers in an information-dense visual field. %
 %
@@ -526,7 +532,7 @@ The index is provided because dimensionality reduction algorithms modify the act
 %
 This means that if a point was originally in six dimensions and is reduced to three, the three remaining dimensions are extremely unlikely to have the same value they began with after the algorithm has run. %
 %
-Hence, the index allows a user to investigate the points back in the original high-dimensional space to explore what correspondances might by causing their lower-dimensional distance. %
+Hence, the index allows a user to investigate the points back in the original high-dimensional space to explore what correspondences might by causing their lower-dimensional distance. %
 \\\\
 %
 Because some dimensionality reduction algorithms like tSNE are strongly influenced by their parameters settings, whenever the algorithm is run, an animation occurs in the visual display region. %
@@ -543,7 +549,7 @@ If a particular group of points appears together under one parameter setting, in
 %
 Determining which behaviour has occurred can be a useful clue as to high dimensional structure in a dataset. %
 %
-The second, more speculative reason is to stoke the curiousity of a user about the changes that may occur next in a visualization as they vary parameters under some rationale. %
+The second, more speculative reason is to stoke the curiosity of a user about the changes that may occur next in a visualization as they vary parameters under some rationale. %
 %
 Attempting to find structure in high dimensional spaces can be frustrating due to the amount of creativity it requires for most people to imagine relationships in greater than three dimensions.
 %
@@ -555,7 +561,7 @@ An interface with elements of play can encourage analysts to exploration of the 
 \subsection{Linking Out into the Online ML Community}
 %
 %
-The ML community, like many other subdisciplines of the field of Comptuer Science, is strongly connected online. %
+The ML community, like many other subdisciplines of the field of Computer Science, is strongly connected online. %
 %
 There are many excellent resources to help users understand dimensionality reduction algorithms (e.g. \cite{wattenberg2016how}, \cite{setosaPCA}. %
 %
@@ -563,7 +569,7 @@ Even expert users can benefit from a review the effect of different parameters o
 %
 To make such review easy, links are provided next to the names of the algorithms that connect to useful resources. %
 %
-For example, next to the t-SNE algorithm is a hyperlink to the recent Google Brain project \cite{wattenberg2016how} that explores how to tune the t-SNE algorithm when the true high-dimensional dataset has a particular structure. %
+For example, next to the tSNE algorithm is a hyperlink to the recent Google Brain project \cite{wattenberg2016how} that explores how to tune the tSNE algorithm when the true high-dimensional dataset has a particular structure. %
 %
 \subsection{Case Study: Exploring Latent Structure in a Dataset}
 %%
@@ -633,10 +639,10 @@ Similarly, MDS finds a different flattening of the space: the center of the roll
 %%
 In 2D, the same incorrect "squashing" phenomenon is observed. %
 %
-By playing around with the parameters of t-SNE\footnote{To reproduce this result, use set LR to 100, P to 50, and N to 500.}, %
+By playing around with the parameters of tSNE\footnote{To reproduce this result with the dataset swiss\_roll\_pi.csv (email author for access), set LR to 100, P to 50, and N to 500.}, %
 however, we can discover exactly the structure we would expect to find in the synthetic dataset. %
 %
-This shows that t-SNE discovers a lower dimensional represntation that ignores the curvature of the embedded manifold in 3D and represents the high-dimensional structure correctly, using only 2 dimensions. %
+This shows that tSNE discovers a lower dimensional representation that ignores the curvature of the embedded manifold in 3D and represents the high-dimensional structure correctly, using only 2 dimensions. %
 %
 This information can be used by an analyst to choose a model that encodes the data using only 2 output dimensions.
 %%
@@ -677,12 +683,11 @@ The kinds of visualizations and play allowed by the current interface could be f
 %
 These enhancements can be built into the existing framework in a straightforward manner, now that the core functionality has been developed. %
 %
-
 \section{Discussion and Future Work}%
 %
 \begin{figure*}
   \centering
-  \includegraphics[width=1.5\columnwidth]{figures/extended}
+  \includegraphics[width=2\columnwidth]{figures/extended}
   \caption{An extended Data Space Model that captures exploratory data visualizations}~\label{fig:figure2}
 \end{figure*}
 %
@@ -698,7 +703,7 @@ Raw data is transformed through four stages: first to an analytical abstraction 
 %
 \\\\
 %
-Chi's model is an extension of Stuart Card's Information Visualization Pipeline that imagines an analyst proceding through a single path from raw data to final view \cite{chi1999framework}. %
+Chi's model is an extension of Stuart Card's Information Visualization Pipeline that imagines an analyst proceeding through a single path from raw data to final view \cite{chi1999framework}. %
 %
 Chi's model extends Card's to allow multiple paths, some of which terminate before yielding a final visualization. %
 %
@@ -706,7 +711,7 @@ The Visualization Dashboard motivates an extension to Chi's model that can captu
 %
 The extension involves the addition of backlinks from the visual abstraction layer in Chi's model to previous layers, effectively permitting cycles through the network (see Figure 5 for a simple example). %
 %
-The backlinks represent "discovery links", where the current visual abstraction has given some useful information that motivates a new brach from an earlier node in the path.
+The backlinks represent "discovery links", where the current visual abstraction has given some useful information that motivates a new branch from an earlier node in the path.
 %
 Such an extended Data Space Model tracks the heuristic steps that an analyst takes in discovering relevant structure by tracing the links among the diagrams. %
 %
@@ -714,7 +719,12 @@ This model could serve as a map for other researchers looking at similarly data 
 %
 The scope of the present paper does not include a strong theoretical aims, so a further development of this contribution will be left to future projects. %
 %
+%
+%
 \section{Conclusion}%
+%
+%
+%
 This paper has introduced the Visualization Dashboard, a high-dimensional data exploration tool designed to support ML researchers in the early phase of model building. Design choices have been described and explored in the context of the intended use of the tool. A formative study has shown that the tool is ready to be used as a platform to answer research questions, and a novel extension to the Data Space Model has been proposed to describe the use of visualizations by a user of the Visualization Dashboard.
 %
 
