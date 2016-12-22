@@ -107,22 +107,28 @@
 \maketitle%
 
 \begin{abstract}
-PLACEHOLDER To address this visualization gap between classical statistics and machine learning, my project will produce a new software tool that implements automated dimensionality reduction algorithms from the domain of visual analytics like t-SNE (Hinton \& Van der Maatens 2008), Multi-Dimensional Scaling (Kruskal \& Wish, 1978) and Sammon Mapping (Sammon, 1969) in the context of a D3.js visualization interface. The interface will provide users with multiple reduced dimensionality versions of a dataset that can be clustered using the algorithms DBSCAN density-based clustering, (Ester et al. 1996), k-means centroid-based clustering (Hartigan \& Wong 1979), or mixture-of-Gaussians distribution-based clustering. The D3.js interface is a way for the tool to present the visualizations in an easy-to-modify form. The software provides easy-to-use sliders for adjusting the parameters and viewing boxes that allow a researcher to experiment and iterate quickly over different visualizations 
-\end{abstract}
-
+PLACEHOLDER To address this visualization gap between classical statistics and ML, my project will produce a new software tool that implements automated dimensionality reduction algorithms from the domain of visual analytics like t-SNE (Hinton \& Van der Maatens 2008), Multi-Dimensional Scaling (Kruskal \& Wish, 1978) and Sammon Mapping (Sammon, 1969) in the context of a D3.js visualization interface. The interface will provide users with multiple reduced dimensionality versions of a dataset that can be clustered using the algorithms DBSCAN density-based clustering, (Ester et al. 1996), k-means centroid-based clustering (Hartigan \& Wong 1979), or mixture-of-Gaussians distribution-based clustering. The D3.js interface is a way for the tool to present the visualizations in an easy-to-modify form. The software provides easy-to-use sliders for adjusting the parameters and viewing boxes that allow a researcher to experiment and iterate quickly over different visualizations 
+\end{abstract}%
+%
+%
+%
 \section{Introduction}
-
-Machine learning in practice follows a pipeline that begins with data cleaning and exploration and ends with a statistical model tailored to answer a particular question. % 
+%
+%
+%
+Machine learning (ML) in practice follows a pipeline that begins with data cleaning and exploration and ends with a statistical model tailored to answer a particular question. % 
 %
 Information visualization can help a practitioner with this pipeline by providing valuable visualizations of high-dimensional data to aid in the formation of models that are effective for the task at hand. % 
 %
-Particular challenges in machine learning make existing tools inadequate. % 
-Unlike data collected from carefully designed statistical experiments, the data handled in machine learning is often collected as a by-product of some other business process, such as the scrolling, clicking, and purchase behaviour of customers while browsing a retail website. % 
+Particular challenges in ML make existing tools inadequate. % 
+%
+Unlike data collected from carefully designed statistical experiments, the data handled in ML is often collected as a by-product of some other business process, such as the scrolling, clicking, and purchase behaviour of customers while browsing a retail website. % 
+%
 The features of such datasets are often redundant, and so they exhibit high statistical correlation with each other. % 
 %
 Correlated features reduce the efficacy of data mining techniques like generalized linear models by increasing the variance in the estimated model coefficients, leading to greater uncertainty in the model outputs. % 
 %
-Moreover, extra uninformative dimensions make the data exploration stage of the machine learning pipeline very challenging, because there exists no principled way of choosing which of the many dimensions to visualize for an arbitrary dataset. % 
+Moreover, extra uninformative dimensions make the data exploration stage of the ML pipeline very challenging, because there exists no principled way of choosing which of the many dimensions to visualize for an arbitrary dataset. % 
 %
 \\\\
 %
@@ -133,37 +139,35 @@ Classical statistics has some tools to offer, like a matrix-style pairwise scatt
 Such visualizations are instrumental in helping a practitioner choose the right features for a generalized linear model. % 
 %
 After perhaps nine dimensions, though, these plots become difficult to read and interpret. % 
-New visualization tools are needed in the machine learning pipeline to help practitioners deal with the expanding ambition and data scale of the methods. %
+New visualization tools are needed in the ML pipeline to help practitioners deal with the expanding ambition and data scale of the methods. %
 %
 \\\\
 %
-This project asks the following research question: can a simple-to-use, automated dimensionality reduction and data-cluster tool improve the workflow of machine learning researchers during the model exploration phase of their analysis? % 
+This project addresses the following research question: can a simple-to-use, automated dimensionality reduction and data-cluster tool improve the workflow of ML researchers during the model exploration phase of their analysis? % 
 %
 The motivation for this study stems from the author's personal experience working with a team of statisticians and mathematicians at an industry mathematical modelling workshop. %
 %
 The assigned task was to predict the output of an industrial fusion reactor using a subsample of 2 terabytes of time-series data. % 
 %
-The greatest bottleneck and most time consuming task was to discover an effective visualization of the data that revealed sufficient structure for the team to exploit to build a useful, interpretable predictive model. %
+The greatest bottleneck and most time consuming task was to discover an effective visualization of the data that revealed sufficient structure for the team to exploit to build a useful, interpretable predictive model.%
 %
 \\\\%
 %
 \begin{figure}
   \centering
   \includegraphics[width=.99\columnwidth]{figures/main_populated}
-  \caption{Dimensionality reduction and clustering interface widget populated with example data.}~\label{fig:figure1}
+  \caption{Interface widget from the Visualization Dashboard populated with example data.}~\label{fig:figure1}
 \end{figure}
 %
-Concretely, the contribution of this research is a high-dimensional data visualization dashboard (referred to as the \textit{Visualization Dashboard} in the remainder). % 
+Concretely, the research contribution is a high-dimensional data visualization dashboard (referred to as the \textit{Visualization Dashboard} in the remainder). % 
 %
-The Visualization Dashboard (see Figure 1) has been developed using the D3.JS and Highcharts libraries in Javascript. %
-%
-It is hosted on a remote web server and runs locally in a web browser. % 
+The Visualization Dashboard (see Figure 1) is a web application developed using the D3.js \cite{d3js} and Highcharts libraries in Javascript. %
 %
 The Visualization Dashboard allows users to easily load data from a locally-hosted file and to generate multiple reduced-dimensionality views on a raw dataset. % 
 %
 % TODO: maybe a figure here to motivate, as in the presentaiton
 %
-This views may then be clustered using the k-means centroid-based clustering (Hartigan \& Wong 1979) in order to reveal groups of related points. % 
+The views may then be clustered using the k-means centroid-based clustering (Hartigan \& Wong 1979) in order to reveal groups of related points. % 
 %
 The interface provides sliders for adaptively adjusting the parameters, and a button to re-run each algorithm with the new settings. % 
 %
@@ -171,32 +175,50 @@ State-of-the-art dimensionality reduction techniques like t-Distributed Stochast
 %
 The Visualization Dashboard facilitates this tuning through the updatable views and sliders, and provides independent viewing panes for each of the three visualizable reductions (one, two, or three dimensions) and each of the algorithms currently implemented. % 
 %
-This allows a researcher to experiment and iterate quickly over different visualizations of a subsampled version of the dataset. % 
-%
-\section{Background and Previous Work}%
-%
-To the best of the author's knowledge, no previous tool provides an interactive dimensionality reduction and clustering framework with multiple different algorithms in order to aid researchers in data exploration. %
-%
-Common tools and software frameworks like or RStudio, or Matlab, or iPython require extensive installation and knowledge of the particularities of the languages. %
-% TODO: cite Tableau
-Tableau, by contrast, is a commercial software tool with a simple interface that can generate many different visualizations. %
-%
-Tableau is closest in intention to the Visualization Dashboard. %
-% http://www.tableau.com/learn/whitepapers/using-r-and-tableau
-% https://www.r-bloggers.com/dream-team-combining-tableau-and-r/
-For more advanced statistical techniques like dimensionality reduction, though, Tableau relies on user expertise in the R programming language. %
-In contrast, the Visualization Dashboard encapsulates the statistical experitise needed to program an advanced algorithm by exposing only sliders and the algorithm output. %
+This allows a researcher to experiment and iterate quickly over different visualizations of a subsampled version of the dataset.% 
 %
 \\\\
 %
-There have been a number of recent research contributions that attempt to acheive a similar level of technical encapsulation for machine learning, and we review these in this section. %
+After a review of recent work related to the Visualization Dashboard, the interface design will be presented in detail. Next, the results of a formative study are presented, followed by a discussion of implications this research has for information visualization theory in terms of the widely-used Data Space Model \cite{chi1999framework}.
+%
+%
+%
+\section{Background and Previous Work}
+%
+%
+%
+To the best of the author's knowledge, the Visualization Dashboard is the first interactive dimensionality reduction and clustering web application that presents different views of a dataset for data exploration. %
+%
+Common tools and software frameworks used for such purposes, like or \texttt{RStudio}, \texttt{Matlab}, or \texttt{Python}, require extensive knowledge of the particularities of the languages. %
+% TODO: cite Tableau
+%
+The software package \texttt{Tableau} \cite{tableau} is closest in intention to the Visualization Dashboard. %
+\texttt{Tableau} is a commercial software tool with a simple interface that can generate many different visualizations, intended for business applications. %
+% http://www.tableau.com/learn/whitepapers/using-r-and-tableau
+% https://www.r-bloggers.com/dream-team-combining-tableau-and-r/
+For more advanced statistical techniques like dimensionality reduction, though, \texttt{Tableau} relies on integration with the R programming language. %
+%
+In contrast, the Visualization Dashboard encapsulates the statistical experitise needed to program an advanced algorithm by exposing only sliders and the algorithm output as a scatterplot. %
+%
+\\\\
+%
+There have been a number of recent research contributions that attempt to acheive a similar level of technical encapsulation for ML, and we review these in this section. %
+%
+%
 \subsection{Visualizations to Support Machine Learning}
 %
-EnsembleMatrix \cite{talbot2009ensemblematrix} is a visualization tool designed to assist non-experts in machine learning in the task of combining independently-trained classifiers into the best performing ensemble\footnote{An ensemble classifier aggregates the output of a set of classifiers to make a final classification decision through majority voting, or a the highest probability class out of a weighted combination of the class-membership probabilities contributed by each component classifier.}. %
 %
-EnsembleMatrix presents a confusion matrix \footnote{A confusion matrix displays the number of classification decisions for each class label in a matrix. The true class label is the row label, and the predicted class label is the column label. A perfect classifier has no entries in the off-diagonal of the matrix.}, coloured as a heat-map, as its central visualization. %
+EnsembleMatrix\cite{talbot2009ensemblematrix} is a visualization tool designed to assist non-experts in ML in the task of combining independently-trained classifiers into the best performing ensemble%
 %
-Users are given two interface widgets: (1) a polygon and brush tool that determines the weighting of each classifier by the position of the brush; and (2), the ability to partition the data by labels by clicking on the central confusion matrix visualization and apply a custom weighting scheme on that partition. %
+\footnote{An ensemble classifier aggregates the output of a set of classifiers to make a final classification decision through majority voting, or a the highest probability class out of a weighted combination of the class-membership probabilities contributed by each component classifier.}. %
+%
+EnsembleMatrix presents a confusion matrix%
+%
+\footnote{A confusion matrix displays the number of classification decisions for each class label in a matrix. The true class label is the row label, and the predicted class label is the column label. A perfect classifier has no entries in the off-diagonal of the matrix.}, %
+%
+coloured as a heat-map as its central visualization. %
+%
+Users are given two interface widgets: (1) a polygon and brush tool that determines the weighting of each classifier by the position of the brush, and (2) the ability to partition the data by labels by clicking on the central confusion matrix visualization and apply a custom weighting scheme on that partition. %
 %
 Control point (1) allows a user to upweight classifiers that perform well on regions of the class space that have been isolated by control point (2). %
 %
@@ -208,24 +230,25 @@ Such adaptive feedback allows fine-grained control over how the classifiers are 
 \\\\
 A user study of the interface demonstrated that non-expert users were able to achieve state-of-the-art performance on an image classification task \cite{talbot2009ensemblematrix}. %
 %
-This validates the theory that well-designed visualization tools can give non-expert users access to very effective machine learning tools. %
-Both the adaptive updates and interface widget design concept were and inspiration for the Visualization Dashboard. %
+This validates the theory that well-designed visualization tools can give non-expert users access to very effective ML tools. %
 %
-EnsembleMatrix differs from the Visualization Dashboard because it intervenes in a later stage of the machine learning pipeline, after a group of models has already been constructed. %
+Both the adaptive updates and the interface widget design concept were an inspiration for the Visualization Dashboard. %
 %
-The Visualization Interface presented in this paper intervens in an earlier stage: determining what model class and what features can be modeled using the dataset. %
+EnsembleMatrix differs from the Visualization Dashboard because it intervenes in a later stage of the ML pipeline, after a group of models has already been constructed. %
+%
+The Visualization Interface presented in this paper intervenes in an earlier stage: determining what model class and what features can be modeled using the dataset. %
 %
 \\\\
 %
-ManiMatrix \cite{kapoor2010interactive} is another visualization that intervenes in the machine learning pipeline after a classifier has been trained. %
+ManiMatrix \cite{kapoor2010interactive} is another visualization that intervenes in the ML pipeline after a classifier has been trained. %
 %
-ManiMatrix presents users with a visualization of a cost function
+ManiMatrix presents users with a visualization of a cost function%
 %
 \footnote{A cost function is a mathematical tool from decision theory. It formalizes the natural idea that more costly mistakes should be avoided when doing classification (this is not a feature of the base mathematical formulation used in a classifier). %
-%
 Misclassifying a patient as suffering from the influenza virus when they are really suffering from a rhinovirus infection is not as serious as misclassifying skin cancer as a regular freckle. %
+A cost function provides the mathematical object that tunes the decisions made by a classifier, allowing a statistician to minimize the risk of the most serious errors.}, %
 %
-A cost function provides the mathematical object that tunes the decisions made by a classifier, allowing a statistician to minimize the risk of the most serious errors.}, a confusion matrix, and the decision boundaries generated by a classifier%
+a confusion matrix, and the decision boundaries generated by a classifier%
 %
 \footnote{A decision boundary is a region of the data space in which any point that falls in the region is classified identically. This is commonly visualized by colouring entire decision regions uniformly in a scatterplot of the points.}. %
 %
@@ -239,21 +262,25 @@ This is reflected immediately in changes to the confusion matrix and decision bo
 %
 In a user study, \cite{kapoor2010interactive} found that their system allowed users to quickly and effectively tailor standard algorithms to problems with a complex cost and penalty structure. %
 %
-Their work demonstrates the gains that information visualization can offer machine learning practitioners by encapsulating algorithmic updates within adaptive displays and intuitive interface components. %
+Their work demonstrates the gains that information visualization can offer ML practitioners by encapsulating algorithmic updates within adaptive displays and intuitive interface components. %
 %
 Such an interface allows users to avoid the expertise required (or, given the expertise, taxing work of) recalculating the model and re-running, re-visualizing the analysis scripts. %
 %
 The Visualization Dashboard works to provide the same encapsulation by hiding the unimportant details behind an effective user interface. %
 %
-ManiMatrix differs from the Visualization Dashboard differs in the same way as EnsembleMatrix: the intervention in the machine learning pipeline by ManiMatrix occurs after the difficult work of deciding on and training a model has been completed.%
+ManiMatrix differs from the Visualization Dashboard differs in the same way as EnsembleMatrix: the intervention in the ML pipeline by ManiMatrix occurs after the difficult work of deciding on and training a model has been completed.%
+%
 %
 \subsection{Visualizations to Teach Machine Learning}
 %
-Another set of research contributions, closer in technical ambitions and software form to the Visualization Dashboard, have been produced in recent years to help teach relatively complex machine learning concepts. \textbf{[TODO: better motivation for this section]}. %
+%
+Another set of research contributions, closer in technical framework to the Visualization Dashboard, have been developed recently to help teach complex ML concepts.
+%
 \\\\%
 %
 The architecture of a trained Convolutional Neural Network (CNN)%
-\footnote{Neural networks are represented in ML as node-link diagrams, because their mathematical structure corresponds exactly to a directed graph where each input feature of a datapoint is a root node, and each output features is a leaf nodes.} %
+%
+\footnote{Neural networks are represented in ML as node-link diagrams because their mathematical structure corresponds precisely to a directed graph in which each input feature is a top-level node with no incoming edges, and each output features is a leaf node with no outgoing edges.} %
 %
 is visualized by \cite{harley2015interactive}. %
 %
@@ -265,31 +292,35 @@ This is acheived by showing what parts of the network are most active during a c
 %
 Users view a three-dimensional representation of the entire network, with a pane for drawing new digits with the mouse cursor. %
 %
-Users can traverse the network structure in three dimensions after entering a digit. %
+After entering a digit, users can move around the network structure in three dimensions using the interface %
 %
 Playing with this dynamic interface can help a user see what sorts of errors the network is prone to make, and can give a sense of how the network recognizes a given number. %
 %
 \\\\
 %
-Although a valuable learning tool to help users familiarize themselves with CNNs, the Node-Link visualization does not have any immediate applications for tuning or improving CNN models for image recognition. %
+Although a valuable learning tool to help users familiarize themselves with CNNs, the Node-Link visualization does not have any immediate applications for tuning or improving actual CNN models for image recognition. %
 %
-Moreover, as of writing, practical neural architectures for image recognition are non-trivially more complex than the network visualized in \cite{harley2015interactive}. %
+As of writing, practical neural architectures for image recognition are non-trivially more complex than the network visualized in \cite{harley2015interactive}, with many orders of magnitude more parameters and layers. %
 %
-Nevertheless, this work is an important first step in the direction of visualizing complex neural architectures. %
+In the image recognition community, this trend of increasing complexity is expected to continue. %
 %
-Its use of three-dimensional  highlight the desire for better visualization methods in machine learning to aid practitioners in understanding and using models.%
+Nevertheless, \cite{harley2015interactive} is an important first step in the direction of visualizing complex neural architectures. %
+%
+Its use of three-dimensions in particular highlight the desire for better and more intuitive visualization methods in ML to aid practitioners in understanding and using models.%
 %
 \\\\
 %
-A few online teaching tools are more similar in technology and intention to the Visualization Dashboard. %
+A few recently developed online teaching tools are similar in technology to the Visualization Dashboard. %
 %
-Setosa.io's Explained Visually project demonstrates the Principal Component Analysis (PCA) algorithm \cite{setosaPCA} using both a toy example and a real example. %
+Setosa.io's Explained Visually \cite{setosaPCA} project demonstrates the Principal Component Analysis (PCA) dimensionality reduction algorithm \cite{jolliffe2002principal} using both a toy example and a real dataset. %
 %
-PCA finds the directions of greatest variance in a dataset, and then projects the data points onto those directions as a way of eliminating redundant or noisy information. %
+PCA finds orthogonal directions of greatest variance in a dataset, and then projects the data points onto as many or as few of those directions as desired, as a way of eliminating redundant or noisy information. %
+%
+The reduced dimensions are a linear function of the original dimensions, and so it is possible to gain intuition into how those original dimensions influence the new positions of the point.
 %
 In the Setosa.io interface, users can click and drag points diplayed on a scatterplot to see how changing the location of inputs influences the projection onto 1 or 2 dimensions. %
 %
-This interactivity can help make the algorithm intuitive to a user, and aid in the interpretation of the results. %
+This interactivity can help make the algorithm intuitive to a user, and aid in the interpretation of the results from a real dataset. %
 %
 \\\\
 %
@@ -303,15 +334,13 @@ It is one of the most popular%
 %
 \footnote{In the eight years since its introduction to the time of writing, it has been cited 1973 times.} %
 %
-and widely used due to its ability to reproduce structure in high dimensions accurately in low dimensions \cite{maaten2008visualizing}. %
+and widely used modern dimensionality reduction algorithms due to its ability to reproduce structure in high dimensions accurately in low dimensions \cite{maaten2008visualizing}. %
 %
-The tSNE visualizations show toy examples of particular geometrical relationships in high dimensional spaces and shows how tSNE represents them in two dimensions. %
+The tSNE visualizations in \cite{wattenberg2016how} provide toy examples of particular geometrical relationships among groups of data in high dimensional spaces, and shows how tSNE represents them in two dimensions given a judicious choice of parameters. %
 %
-They apply the same open-source library as the Visualization Dashboard to generate the tSNE visualizations. %
+\cite{wattenberg2016how} apply the same open-source library for tSNE, \cite{wattenberg2016how} as the Visualization Dashboard to generate the visualizations. %
 %
-This works shows both the impetus for better visualizations in dimensionality reduction techniques, and also provides an exemplar of a successful set of visualizations. %
-%
-Moreover, the pedagogical value of \cite{wattenberg2016how} is high, and it has been linked to through the Visualization Dashboard as a source of extra information to help users develop intuition about their data in the reduced dimensional space.
+The pedagogical value of \cite{wattenberg2016how} is very high, and it has been linked to in the Visualization Dashboard as a source of extra information to help users develop intuition about their data in the reduced dimensional space.%
 %A recent innovation in t-SNE, one of the algorithms used for the Visualization Dashboard \cite{pezzotti2015approximated}, applies ideas from the field of Progressive Visual Analytics to make intermediate results of t-SNE useful. %
 %
 %t-SNE is a computationally intensive technique when applied to a large or complex dataset. %
@@ -333,40 +362,33 @@ Moreover, the pedagogical value of \cite{wattenberg2016how} is high, and it has 
 
 %Statisticians have been dealing with high dimensional datasets since the inception of the field. H
 
-%Scatterplot matricies are their solution
-
-%these work to a point, and then fail
-
-%TODO: bring in the statistics comparison with scatterplot matrix.
-
-
 \section{Visualization Dashboard}
 The Visualization Dashboard is a web application that runs locally in a user's browser. %
 %
-A portion of the interface is shown in figure [TODO: add figure]. %
+The central visualization component of the interface is shown in Figure 1. %
 %
-The steps necessary to develop a set of visualizations like this will be described in this section, focusing on what a user is able to acheive with the interface and the design choices that were made. %
+This section focuses on what a user is able to acheive with the interface, and the design choices that were made to facilitate this. %
 %
 \subsection{Technical Overview}
-This section gives a brief description of the software used to develop the Visualization Dashboard, intended to help other researchers select among the available libraries online%
+First, a brief description of the software used to develop the Visualization Dashboard is presented, intended to help other researchers select among the available libraries online. %
 %
-The highly developed state of open source machine learning Javascript libraries makes the development of experimental visualization software like the Visualization Dashboard much less time intensive than it would be otherwise.%
+The highly developed state of open source ML Javascript libraries makes the development of experimental visualization software like the Visualization Dashboard much less resource intensive than it would have been in the recent past.%
 %
 \\\\
 %
-The dimensionality reduction algorithms were implemented using \texttt{ml-js} \cite{mljs} for PCA and general linear algebra, \texttt{tsnejs} \cite{tSNEJS} for the t-SNE, and \texttt{mdsjs} \cite{mdsjs} for the Multidimensional Scaling (MDS). %
+The dimensionality reduction algorithms were implemented using \texttt{ml-js} \cite{mljs} for PCA and general linear algebra, \texttt{tsnejs} \cite{tSNEJS} for tSNE, and \texttt{mdsjs} \cite{mdsjs} for the Multidimensional Scaling (MDS). %
 %
-Plotting functionality in 1D and 2D was implemented using D3.js \cite{d3js} and 3D plotting was implemented using Highcharts \cite{highcharts}. %
+Plotting functionality in 1D and 2D was implemented using D3.js \cite{d3js}, and 3D plotting was implemented using the Highcharts \cite{highcharts} framework. %
 %
 Automated data parsing was implemented using the \texttt{Papa Parse} \cite{papaparse} library.
 %
 
 \subsection{Design Overview}
-The interface consists of a set of visual widgets like the one shown in Figure 1 stacked vertically. %
+The interface consists of a set of visual widgets like the one shown in Figure 1, stacked vertically in the window. %
 %
-The design choice of separated but visually similar widgets is intended to reinforce the idea that users are seeing independent and equally valid views of a dataset, differing in terms of the dimensionality reduction algorithms that were used. %
+The design choice of separated but visually similar widgets is intended to facilitate comparisons among the independent and equally valid views of a dataset. %
 %
-The name of the dimensionality reduction algorithm is written on the outermost plate of each widget. %
+The name of the dimensionality reduction algorithm is written on the surrounding rectangle of each widget. %
 %
 \subsection{Data Loading}
 The first interface component below the title is for loading data and labels into the application. %
@@ -383,27 +405,31 @@ When a user drags a file over the area, the text changes color from light grey t
 %
 Once a user drops a file containing a dataset into the region, the text changes to "Currently loaded: Y" where Y is the name of the file. %
 %
+\\\\
+%
 This component of the interface has been designed with visual minimalism in mind by having a single point of focus that indicates an action is possible, or an action has been completed. %
 %
 These choices are meant to draw attention away from programatic data loading issues and convey a sense of simplicity. %
 %
-The design is meant to encourage experimentation by keeping the low-level details out of sight%
+The design is hoped to encourage experimentation by keeping the low-level details out of sight%
 %
 \footnote{The library handling data parsing, Papa Parse \cite{papaparse} is, robust to data formatting and will infer the format of the data from the first few lines (e.g. tab-separated, comma-separated, etc.). %
 %
-Although the prototype of the Visualization Dashboard indicates that only comma-separated values will be accepted, \cite{papaparse} can easily be extended to arbitrary data formats meaning that a user will not need to pay attention to how the data is formatted.}%.
+Although the prototype of the Visualization Dashboard indicates that only comma-separated values will be accepted, \cite{papaparse} can easily be extended to arbitrary data formats meaning that a user will not need to pay attention to how the data is formatted.}. %
 %
-The drag-and-drop choice is intended to encourage users to try loading in different datasets, and potentially different subsampled version of the dataset, which can be easily generated programmatically using command-line tools in Linux or generated graphically using Microsoft Excel.%
+The drag-and-drop choice is intended to encourage users to try loading in different datasets, and potentially different subsampled version of the dataset, which can be easily generated programmatically using command-line tools in Linux or generated graphically using Microsoft Excel. %
+%
 %
 \subsection{1D and 2D Dimensionality Reduction}
 %
-Each dimensionality reduction widget contains three blank subdivisions that are populated with scatterplots based on the reduced-dimensionality data (see Figure 1). %
+%
+Each dimensionality reduction widget like the one in Figure 1 initially contains three blank subdivisions that can be populated with scatterplots based on the reduced-dimensionality data (see Figure 1). %
 %
 Scatterplots were chosen for as the key visualization component of the Visualization Dashboard because they are a model-agnostic way of viewing data in 1, 2, or 3 dimensions. %
 %
-The three subdivisions are labelled by the dimensionality on display. %
+The three subdivisions are labelled above by the dimensionality of the data on display, in order to orient viewers in an information-dense visual field. %
 %
-Immediately Below the viewing pane are the current values of tunable parameters for the algorithm. %
+Immediately below the viewing pane are the current values of tunable parameters for the algorithm, or other relevant information like the percentage of the original dataset's variance accounted for at the chosen level of reduced dimensionality in PCA. %
 %
 Depending on the complexity of the algorithm, more or fewer tunable parameters will be present. %
 %
@@ -413,12 +439,12 @@ For example, with the tSNE algorithm, the parameters are Perplexity, Learning Ra
 %
 Each tunable parameters is controlled by a slider. %
 %
-Moving the sliders dynamically updates the values of the parameters, shown below the lpotting pane. %
+Moving the sliders dynamically updates the values of the parameters. %
 \\\\
 %
 Once settings for the parameters have been selected, the algorithm can be run using a button labelled "Run the algorithm!". %
 %
-As the mouse cursor moves over this button, it inverts colors so that the dark text becomes light at the same time as the light background becomes dark. %
+As the mouse cursor moves over this button, the button inverts colors such that the dark text becomes light at the same time as the light background becomes dark. %
 %
 Such a dynamic inversion is a common way for web applications to indicate to a user that a region contains a latent possibility for action, and invites a mouse click. %
 %
@@ -426,9 +452,11 @@ A second button in the subdivision is labelled "Cluster with K-means, k = Z" whe
 %
 A slider is present above this button, which dynamically changes the value of K. %
 %
-When no dataset is loaded, clicking these buttons had no effect.
+When no dataset is loaded, clicking these buttons has no effect.
+%
 %
 \subsection{3D Dimensionality Exploration}%
+%
 %
 \begin{figure}
 \centering
@@ -456,53 +484,49 @@ This functionality can be used to compare among views, to help an analyst decide
 %
 \subsection{Clustering the Data with K-Means}
 %
-For the prototype, one clustering algorithm was implemented: k-means \cite{hartigan1979algorithm}. %
+One clustering algorithm has been implemented in the prototype: K-Means \cite{hartigan1979algorithm}. %
 %
-K-means was chosen because it is one of the most commonly used simple clustering algorithms, next to a density-based approach (e.g., \cite{ester1996density}).
+K-Means was chosen because it is one of the most familiar, stable clustering algorithms, next to a perhaps too-simple density-based approach (e.g., \cite{ester1996density}).
 %
-Upon clustering the data, the different clusters are visualized by a change in point color. %
+Upon clustering the data, the different clusters are visualized by a change in point color. 
 %
-The k-means cluster assignments corresponds to an assumption that the data was generated from a mixture of Gaussian distributions, each of which has spherical covariance %
+The K-Means cluster assignments correspond to a modelling assumption that the data was generated by sampling from a mixture of Normal distributions, where each component Gaussian is independent and has identical covariance. %
 %
-\footnote{Spherical covariance is the assumption that a cluster of points has equal variance in all dimensions. Point clouds with spherical covariance indeed appear sphere-shaped since no one dimension is extended more than any other.}%
+The means of the Normals correspond to the centers of the colored regions%
 %
-and means corresponding to the centers of the colored regions. %
+\footnote{Note that the colours themselves will sometimes change, but this is to be expected as the colours are arbitrarily assigned to the labels and carry no information other than group membership.}. %
 %
-Moreover, this assumptions allows a convenient clsutering algorithm that is generally very stable, in that it will reach the same clusters %
-%
-\footnote{The colours themselves will sometimes change, but this is to be expected as the colours are arbitrary assigned to the labels and carry no information other than group membership.}%
-%
-on every run, with the exception of some points on the fringes of the cluster that could plausibly belong to neighbouring groups. %
+This is a weaker assumption than it may appear at first, as the Normal distribution describes many dataset well as resulting from many different random effects combining together in a large sample. %
 %
 \subsection{Animations and Other Dynamic Components}
 %
 Two dynamic components of the interface convey key information about the dataset: tooltips appearing over individual points, and animations triggered when algorithms return new sets of reduced-dimensionality points. %
 %
-These dynamic components help a use navigate an information-dense space of plots by providing informative and contextual cues as to the transformations taking place. %
+These dynamic components were chosen to help a user navigate an information-dense space of plots by providing informative and contextual cues as to the transformations taking place. %
 %
 \\\\
 %
-Tooltips can appear over data points that are currently displayed in any view pane. %
+Tooltips can appear over any data point that is currently displayed in a viewing pane. %
 %
 The tooltip will appear on mouseover of the point and disappear when the mouse leaves that region. %
 %
-The tooltip provides information on the coordinates of the point and its row number in the raw dataset ("Index") in the interface. %
+The tooltip provides the coordinates of the point and its row number in the raw dataset ("Index"). %
 %
 The coordinates are displayed so that the magnitude of difference between nearby points can be determined quantitatively, if desired. %
 %
 Unlike on a paper plot, it can be difficult to see exactly where a horizontal or vertical line through some point of interest intersects with the coordinate axes. %
 %
-A dynamic tooltip solves this problem elegantly.
+A dynamic tooltip solves this problem cleanly. %
 %
-The alternatively, displaying every value as a tuple next to the point, would be too visually cluttered for any moderately dense set of points. %
+The alternative, displaying every value as a tuple next to the point, would be too visually cluttered for any dense set of points. %
 %
 \\\\
 %
-The index is provided because dimensionality reduction algorithms modify the actual location of the points. %
+The index is provided because dimensionality reduction algorithms modify the actual coordinates of the points. %
 %
-If a point was original in six dimensions and is reduced to three, the three remaining dimensions are extremely unlikely to have the same value after the algorithm has run. %
+This means that if a point was originally in six dimensions and is reduced to three, the three remaining dimensions are extremely unlikely to have the same value they began with after the algorithm has run. %
 %
-Hence, the index allows a user to investigate the points back in the original high-dimensional space if desired. %
+Hence, the index allows a user to investigate the points back in the original high-dimensional space to explore what correspondances might by causing their lower-dimensional distance. %
 \\\\
 %
 Because some dimensionality reduction algorithms like tSNE are strongly influenced by their parameters settings, whenever the algorithm is run, an animation occurs in the visual display region. %
@@ -517,7 +541,7 @@ The first reason is to help a user track particular emerging clusters of interes
 %
 If a particular group of points appears together under one parameter setting, increasing or decreasing those parameters might cause the point cluster to either disperse, or contract even more tightly. %
 %
-Determining which behaviour has occurred can be a strong clue as to high dimensional structure in a dataset. %
+Determining which behaviour has occurred can be a useful clue as to high dimensional structure in a dataset. %
 %
 The second, more speculative reason is to stoke the curiousity of a user about the changes that may occur next in a visualization as they vary parameters under some rationale. %
 %
@@ -527,15 +551,17 @@ An interface with elements of play can encourage analysts to exploration of the 
 %
 \footnote{This is an independent research question that could be answered using the Visualization Dashboard with a suitably designed user study. For reasons of scope, I will leave this topic to another paper.} %
 %
-\subsection{Hyperlinks into the Machine Learning Community}
 %
-The machine learning community, like many other subdisciplines of comptuer science, is strongly connected online. %
+\subsection{Linking Out into the Online ML Community}
+%
+%
+The ML community, like many other subdisciplines of the field of Comptuer Science, is strongly connected online. %
 %
 There are many excellent resources to help users understand dimensionality reduction algorithms (e.g. \cite{wattenberg2016how}, \cite{setosaPCA}. %
 %
-Even expert users can benefit from review the effect of different parameters on how the algorithms behave. %
+Even expert users can benefit from a review the effect of different parameters on how the algorithms behave. %
 %
-To make such review easy, links are provided next to the names of the algorithms that connect to good resources. %
+To make such review easy, links are provided next to the names of the algorithms that connect to useful resources. %
 %
 For example, next to the t-SNE algorithm is a hyperlink to the recent Google Brain project \cite{wattenberg2016how} that explores how to tune the t-SNE algorithm when the true high-dimensional dataset has a particular structure. %
 %
@@ -589,7 +615,7 @@ The structure is an example of a special kind of manifold in geometry, where the
 %
 \\\\
 %
-When reduced to 2D using the PCA algorithm (Figure 4b), it is not clear at all that the correct structure is found. %
+When reduced to 2D using the PCA algorithm (Figure 4b), it is not clear at all that the correct structure has been found. %
 %
 Indeed, by looking at the structure in 3D, it is clear that PCA has simply reduced the magnitude of the distances among points, but has kept the curvature of the embedding in 3D space intact. %
 %
@@ -618,10 +644,10 @@ This information can be used by an analyst to choose a model that encodes the da
 \section{Evaluation: Formative Study}
 A formative study was conducted in the late stages of development, after a working prototype was completed. %
 %
-The study was an unstructured interview with one pilot participant, who was at the time a graduate student in the Machine Learning Group at the University of Toronto. %
+The study was an unstructured interview with one pilot participant, who was at the time a graduate student in the ML Group at the University of Toronto. %
 %
 
-The participant was informed that the interface was useful for machine learning practicioners to understand high dimensional data. %
+The participant was informed that the interface was useful for ML practitioners to understand high dimensional data. %
 %
 Without further instruction, the participant was then shown the interface, and asked to explore its functionality. %
 %
@@ -635,7 +661,7 @@ The participant was then given access to a data file and asked to use the interf
 %
 After loading the file in the interface, he successfully generated a number of different visualizations. %
 %
-One behaviour of note is that after the participant discovered the three-dimensional visualization which allows rotation around the point cloud, he attempted to click and dragging the two and one dimensional visualizations in order to elicit a response from the view. %%
+One behaviour of note is that after the three-dimensional visualization was discovered, which allows rotation around the point cloud, the participant attempted to click and dragging the two and one dimensional visualizations in order to elicit a similar response from the view. %%
 %
 When asked about the behaviour, the participant commented that the ability to pan or zoom is necessary to understand a dataset under exploration. %
 %
@@ -662,35 +688,34 @@ These enhancements can be built into the existing framework in a straightforward
 %
 Based on the formative study, the author concludes that the interface is ready for use as a research platform into high-dimensional visualization.%
 %
-Moreover, the process of producing this interface has provided an opportunity to consider how dominant theoretical ideas in the field of information visualization can be leveraged to understand the Visualization Dashboard. %
+Moreover, the process of producing this interface has provided an opportunity to consider how current theoretical perspectives in the field of information visualization can be leveraged to understand the Visualization Dashboard. %
 %
-Chi's Data Space Model of information visualization is applicable here.
+Chi's Data Space Model of information visualization is useful here as a model of the user interacting with the Visualization Dashboard.%
 %
-Chi's model is designed to accurately capture the process of analysis that yields multiple visualization of a dataset. %
+Chi's model is designed to capture the process of analysis that yields multiple visualization of a dataset. %
 %
-Raw data is transformed through four stages: first to an analytical abstraction representing the data as some abstract data structure like a graph, tree, or vector, next to a visualization abstraction like a network diagram, point set, or surface, and finally to a view of the data that displays some salient feature of interest. %
+Raw data is transformed through four stages: first to an analytical abstraction representing the data as some abstract data structure like a graph, tree, or vector, next to a visualization abstraction like a network diagram, point set, or surface, and finally to a view of the data that displays some salient features of interest. %
 %
 \\\\
 %
-Chi's model is an extension of Stuart Card's less complex Information Visualization Pipeline that imagines an analyst proceding through a single path from raw data to final view. %
+Chi's model is an extension of Stuart Card's Information Visualization Pipeline that imagines an analyst proceding through a single path from raw data to final view \cite{chi1999framework}. %
 %
-Card's model allows multiple paths, some of which terminate before yielding a final visualization. %
+Chi's model extends Card's to allow multiple paths, some of which terminate before yielding a final visualization. %
 %
-The Visualization Dashboard motivates an extension to Chi's network model that can capture the process by which a machine learning researcher learns about data using multiple, temporary visualizations. %
+The Visualization Dashboard motivates an extension to Chi's model that can capture the process by which a ML researcher learns about data using multiple, temporary visualizations. %
 %
-The extension involves the addition of backlinks from the visual abstraction layer in Chi's model, effectively permitting cycles through the network (see Figure 5 for a simple example). %
+The extension involves the addition of backlinks from the visual abstraction layer in Chi's model to previous layers, effectively permitting cycles through the network (see Figure 5 for a simple example). %
 %
-The backlinks represent "discovery links", where the current visual abstraction has given some useful information that motivates a revision of an earlier node in the path.
+The backlinks represent "discovery links", where the current visual abstraction has given some useful information that motivates a new brach from an earlier node in the path.
 %
-
 Such an extended Data Space Model tracks the heuristic steps that an analyst takes in discovering relevant structure by tracing the links among the diagrams. %
 %
-This could serve as a map for other researchers looking at similarly data to help guide their exploration of the high dimensional space. %
+This model could serve as a map for other researchers looking at similarly data to help guide their exploration of the high dimensional space, or simply provide a slightly richer framework for analyzing visualization systems. %
 %
-The scope of the present paper does not include a strong theoretical aim, and so further development of this contribution will be left to future projects. %
+The scope of the present paper does not include a strong theoretical aims, so a further development of this contribution will be left to future projects. %
 %
 \section{Conclusion}%
-This paper has introduced the Visualization Dashboard, a high-dimensional data exploration tool designed to support machine learning researchers in the early phase of model building. Design choices have been described and explored in the context of the intended use of the tool. A formative study has shown that the tool is ready to be used as a platform to answer research questions, and a novel extension to the Data Space Model has been proposed to describe the use of visualizations by a user of the Visualization Dashboard.
+This paper has introduced the Visualization Dashboard, a high-dimensional data exploration tool designed to support ML researchers in the early phase of model building. Design choices have been described and explored in the context of the intended use of the tool. A formative study has shown that the tool is ready to be used as a platform to answer research questions, and a novel extension to the Data Space Model has been proposed to describe the use of visualizations by a user of the Visualization Dashboard.
 %
 
 % References must be the same font size as other body text.
