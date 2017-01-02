@@ -11890,7 +11890,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            }
 	        }
 	        // do fast column slice by transposing the matrix first
-            var datasetReduced = ML.Matrix.checkMatrix(pca_data.U.transpose().slice(0, k)).transpose()
+            var datasetReduced = ML.Matrix.checkMatrix(this.U.transpose().slice(0, k)).transpose()
             console.log(datasetReduced.rows, datasetReduced.columns)
 	        return dataset.mmul(datasetReduced);
 	    }

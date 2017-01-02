@@ -78,7 +78,7 @@ var plotManager = {
                         color: '#F0F0F0'
                     },
                     formatter: function() {
-                        console.log(this)
+                        //console.log(this)
                         return 'x: ' + this.point.x.toExponential(2) +'<br>'
                             + 'y: ' + this.point.y.toExponential(2)+'<br>'
                             + 'z: ' + this.point.z.toExponential(2)+'<br>'
@@ -336,7 +336,7 @@ var plotManager = {
             var num_plots = divIDs.length
 
             for (var i = 0; i < num_plots; i++) {
-                console.log("i")
+               // console.log("i")
                 // Check whether the element is already created
                 var selectedPlotDiv = d3.select("#" + divIDs[i]);
                 // http://stackoverflow.com/questions/10003683/javascript-get-number-from-string
@@ -396,9 +396,9 @@ var plotManager = {
 
         addPlot: function(selectedPlotDiv, divWidth, divHeight, dataset, labels, dim, clusterAssignments = null) {
             var padding = 30;
-            console.log(divWidth);
-            console.log(divHeight);
-            console.log(dataset[0][0]);
+            // console.log(divWidth);
+            // console.log(divHeight);
+            // console.log(dataset[0][0]);
 
 
             // https://stackoverflow.com/questions/17671252/d3-create-a-continous-color-scale-with-many-strings-inputs-for-the-range-and-dy/17672702#17672702
@@ -406,7 +406,7 @@ var plotManager = {
             maxlab = d3.max(labels, function(d) { return d[0]; })
 
             if (clusterAssignments == null) {
-            console.log('clutser assignments null')
+           // console.log('clutser assignments null')
                 // https://www.strangeplanet.fr/work/gradient-generator/index.php
                 // 100 step gradient blue to red
                 // var colours = ["#FF0000", "#FD0001", "#FC0002", "#FB0003", "#FA0004", "#F90005", "#F80006", "#F70007",
@@ -448,10 +448,10 @@ var plotManager = {
 
                 var rescale = d3.scale.linear().domain([minlab, maxlab]).range([1, 10])
             } else {
-                console.log('clutser assignments no null')
+                //console.log('clutser assignments no null')
 
                 labels = clusterAssignments;
-                console.log('after clustering labels are' + labels)
+               // console.log('after clustering labels are' + labels)
                 var colourMap = d3.scale.category10();
                 var rescale = function(x) { return x; };
             }
@@ -507,7 +507,7 @@ var plotManager = {
             }
 
             if (svgExists) {
-                console.log("SVG did not exist, making new one");
+                //console.log("SVG did not exist, making new one");
                 var svg = selectedPlotDiv
                     .append("svg")
                     .attr("width", divWidth)
@@ -534,8 +534,8 @@ var plotManager = {
                     })
                     .attr("r", 4)
                     .attr("fill", function(d,i) {
-                        console.log(colourMap(Math.round(rescale(labels[i]))))
-                        console.log(colourMap(Math.round(rescale(labels[i]))))
+                       // console.log(colourMap(Math.round(rescale(labels[i]))))
+                        //console.log(colourMap(Math.round(rescale(labels[i]))))
                         // enforce at most 100 colours by rounding
                         return colourMap(Math.round(rescale(labels[i])));
                     })
@@ -557,9 +557,9 @@ var plotManager = {
                         .call(yAxis);
                 }
             } else {
-                console.log("svg exists, updating with new data")
+                //console.log("svg exists, updating with new data")
                 // update svg with new data
-                //Update scale domains
+                // Update scale domains
                 this.updateScales(xScale, yScale, dataset, dim)
 
                 svg.call(tip);
@@ -569,20 +569,19 @@ var plotManager = {
                     .transition()
                     .duration(1000)
                     .attr("fill", function(d, i) {
-                        console.log('color index is:' + i);
+                        //console.log('color index is:' + i);
                         return colourMap(Math.round(100*rescale(labels[i]))/100);
                     })
                     .attr("fill-opacity", 0.6)
                     .each("start", function () {
                         d3.select(this)
-
                             .attr("r", 7);
                     })
                     .attr("cx", function (d) {
                         return xScale(d[0]);
                     })
                     .attr("cy", function (d) {
-                        var ret
+                        var ret;
                         if (dim > 1) {
                             ret = yScale(d[1])
                         } else {
@@ -594,10 +593,6 @@ var plotManager = {
                         d3.select(this)
                             .transition()
                             .duration(1000)
-                            // .attr("fill", function(d,i) {
-                            //     console.log(d);
-                            //     return colourMap(Math.round(100*rescale(i))/100);
-                            // })
                             .attr("r", 4);
 
                     })
@@ -618,77 +613,5 @@ var plotManager = {
                 }
 
             }
-
-
-            // TODO: currently inactive
-            //On click, update with new data
-//            d3.select(controlButtonID)
-//                .on("click", function () {
-//
-//
-//                    //New values for _dataset
-//                    var numValues = _dataset.length;						 		//Count original length of _dataset
-//                    var maxRange = Math.random() * 1000;						//Max range of new values
-//                    _dataset = [];  						 				 		//Initialize empty array
-//                    for (var i = 0; i < numValues; i++) {				 		//Loop numValues times
-//                        var newNumber1 = Math.floor(Math.random() * maxRange);	//New random integer
-//                        var newNumber2 = Math.floor(Math.random() * maxRange);	//New random integer
-//                        _dataset.push([newNumber1, newNumber2]);					//Add new number to array
-//                    }
-//
-//                    //Update scale domains
-//                    xScale.domain([0, d3.max(_dataset, function (d) {
-//                        return d[0];
-//                    })]);
-//                    yScale.domain([0, d3.max(_dataset, function (d) {
-//                        return d[1];
-//                    })]);
-//
-//                    //Update all circles
-//                    svg.selectAll("circle")
-//                        .data(_dataset)
-//                        .transition()
-//                        .duration(1000)
-//                        .each("start", function () {
-//                            d3.select(this)
-//                                .attr("fill", "magenta")
-//                                .attr("r", 7);
-//                        })
-//                        .attr("cx", function (d) {
-//                            return xScale(d[0]);
-//                        })
-//                        .attr("cy", function (d) {
-//                            var ret
-//                            if (dim > 1) {
-//                                ret = yScale(d[1])
-//                            } else {
-//                                ret = divHeight / 2
-//                            }
-//                            return ret;
-//                        })
-//                        .each("end", function () {
-//                            d3.select(this)
-//                                .transition()
-//                                .duration(1000)
-//                                .attr("fill", "black")
-//                                .attr("r", 2);
-//                        });
-//
-//                    //Update X axis
-//                    svg.select(".x.axis")
-//                        .transition()
-//                        .duration(1000)
-//                        .call(xAxis);
-//
-//                    if(dim > 1) {
-//                        //Update Y axis
-//                        svg.select(".y.axis")
-//                            .transition()
-//                            .duration(1000)
-//                            .call(yAxis);
-//                    }
-//
-//                });
-
         }
-}
+};

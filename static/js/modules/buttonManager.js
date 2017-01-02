@@ -8,212 +8,92 @@ var kMeansButtonBuilder = {
         this.divName = divName;
 
         this.button.click(function() {
-            algoReducedDataset = algoObject.reducedDatasets[divName];
+            reducedDataset = algoObject.reducedDatasets[divName];
 
             labels = datasetManager.getLabels(); // TODO: extend to text labels
-            if (algoReducedDataset == null) {
+            if (reducedDataset == null) {
                 //TODO: add alert
-                console.log(divName + ' button found no reduced dimensionality dataset');
+                //console.log(divName + ' button found no reduced dimensionality dataset');
             } else {
-                console.log(divName + 'SliderKText')
+                //console.log(divName + 'SliderKText')
                 var k = utils.extractInt(divName + 'SliderKText');
-                console.log('saw k='+k);
-                clusterAssignments = algorithms.runKMeans(algoReducedDataset, k);
+                //console.log('saw k='+k);
+                clusterAssignments = algorithms.runKMeans(reducedDataset, k);
 
                 if (dim < 3) {
-                    plotManager.updatePlot(algoReducedDataset, labels, divName, dim, clusterAssignments);
+                    plotManager.updatePlot(reducedDataset, labels, divName, dim, clusterAssignments);
                 } else {
                     // get chart, destroy chart, make new chart
                     if (algoObject.chart != null) {
-                        console.log("ys. trying to estory chart");
+                        //console.log("ys. trying to estory chart");
                         algoObject.chart.destroy();
-                        console.log("chart is now" + algoObject.chart);
+                        //console.log("chart is now" + algoObject.chart);
                         algoObject.chart = null;
-                        console.log("chart is now" + algoObject.chart);
+                        //console.log("chart is now" + algoObject.chart);
                     }
-                    options = plotManager.config3DPlot(algoReducedDataset, clusterAssignments, divName);
+                    options = plotManager.config3DPlot(reducedDataset, clusterAssignments, divName);
                     algoObject.chart = new Highcharts.Chart(options);
-                    console.log("new chart is" + algoObject.chart)
+                    //console.log("new chart is" + algoObject.chart)
                     plotManager.configMouseControl(algoObject.chart);
                 }
-                console.log(divName + ' plotted a dataset');
+                //console.log(divName + ' plotted a dataset');
             }
         });
     },
 };
 
-
-var tsneButtonBuilder = {
+var runButtonBuilder = {
     button: null,
     divName: null,
 
-    build: function(divName, dim) {
+    build: function(divName, dim, algorithm) {
         this.button = $('#'+ divName + 'Run');
         this.divName = divName;
 
         this.button.click(function() {
-            tsnedataset = datasetManager.getDataset().slice();
+            dataset = datasetManager.getDataset().slice();
             labels = datasetManager.getLabels(); // TODO: extend to text labels
-            if (tsnedataset == null) {
+            if (dataset == null) {
                 //TODO: add alert
-                console.log(divName + ' button found no dataset');
             } else {
-                console.log(divName + ' button found a dataset');
-                var perp = utils.extractInt(divName + 'Slider1Text');
-                var eps =  utils.extractInt(divName + 'Slider2Text');
-                var iters =  utils.extractInt(divName + 'Slider3Text');
-                algoReducedDataset = tsne.runTSNE(eps, perp, iters, dim, tsnedataset);
-                tsne.reducedDatasets[divName] = algoReducedDataset;
+                // run the algorithm with the settings
+                reducedDataset = algorithm.run(dataset, divName, dim);
+
                 if (dim < 3) {
-                    plotManager.updatePlot(algoReducedDataset, labels, divName, dim);
+                    // rebuild 1D or 2D plot
+                    plotManager.updatePlot(reducedDataset, labels, divName, dim);
                 } else {
-                    console.log("can i destory chart y/n?" + tsne.chart)
-                    if (tsne.chart != null) {
-                        console.log("ys. trying to estory chart");
-                        tsne.chart.destroy();
-                        console.log("chart is now" + tsne.chart);
-                        tsne.chart = null;
-                        console.log("chart is now" + tsne.chart);
+                    // destroy and rebuild 3D plot if necessary
+                    if (algorithm.chart != null) {
+                        algorithm.chart.destroy();
+                        algorithm.chart = null;
                     }
-                    console.log("make new chart pls:")
-                    options = plotManager.config3DPlot(algoReducedDataset, labels, divName);
-                    tsne.chart = new Highcharts.Chart(options);
-                    console.log("new chart is" + tsne.chart)
-                    plotManager.configMouseControl(tsne.chart);
+                    options = plotManager.config3DPlot(reducedDataset, labels, divName);
+                    algorithm.chart = new Highcharts.Chart(options);
+                    plotManager.configMouseControl(algorithm.chart);
                 }
-                console.log(divName + ' plotted a dataset');
             }
         });
     },
 };
 
-var pcaButtonBuilder = {
-    button: null,
-    divName: null,
 
-    build: function(divName, dim) {
-        this.button = $('#'+ divName + 'Run');
-        this.divName = divName;
-
-        this.button.click(function() {
-            dataset = datasetManager.getDataset();
-            labels = datasetManager.getLabels(); // TODO: extend to text labels
-            if (dataset == null) {
-                console.log(divName + ' button found no dataset');
-            } else {
-                console.log(divName + ' button found a dataset');
-
-                 pca_data = new ML.Stat.PCA(dataset, options = {isCovarianceMatrix: false,
-                                                                center: true,
-                                                                scale: true });
-                pcaReducedDataset = pca_data.predict(datasetManager.getDataset(), dim);
-                varExplained = pca_data.getCumulativeVariance()[dim-1];
-                d3.select('#' + divName + 'VarText').text(String(100*Math.round(100*varExplained)/100));
-                pca.reducedDatasets[divName] = pcaReducedDataset;
-                if (dim < 3) {
-                    plotManager.updatePlot(pcaReducedDataset, labels, divName, dim);
-                } else {
-                    if (pca.chart != null) {
-                        console.log("ys. trying to estory chart");
-                        pca.chart.destroy();
-                        console.log("chart is now" + pca.chart);
-                        pca.chart = null;
-                        console.log("chart is now" + pca.chart);
-                    }
-                    // TODO: set options better for PCA
-                    console.log(typeof(pcaReducedDataset[0][0][0]))
-                    options = plotManager.config3DPlot(pcaReducedDataset, labels, divName);
-                    pca.chart = new Highcharts.Chart(options);
-                    plotManager.configMouseControl(pca.chart);
-                }
-                console.log(divName + ' plotted a dataset');
-            }
-        });
-    },
-};
-
-var mdsButtonBuilder = {
-    button: null,
-    divName: null,
-    mdsChartObject: null,
-
-    build: function(divName, dim) {
-        this.button = $('#'+ divName + 'Run');
-        this.divName = divName;
-
-        this.button.click(function() {
-            dataset = datasetManager.getDataset();
-            labels = datasetManager.getLabels(); // TODO: extend to text labels
-            if (dataset == null) {
-                console.log(divName + ' button found no dataset');
-            } else {
-                console.log(divName + ' button found a dataset');
-                dists = utils.distances(dataset);
-                console.log(dists.row);
-                console.log(dists.columns);
-                mdsOut = mdsjs.landmarkMDS(mdsjs.convertToMatrix(dists.to2DArray()), dim);
-                reducedDists = [];
-
-                // Load mdsjs data type into 2D array
-                mdsOut.rowsIter(function (row) {
-                    // Kludge to make sure the result is Array of Number, not Float64Array
-                    thisRow = [];
-                    for (let j = 0; j < dim; j++) {
-                        thisRow.push(row[j]);
-                    }
-                    reducedDists.push(thisRow);
-                });
-
-                mds.reducedDatasets[divName] = reducedDists;
-                if (dim < 3) {
-                    console.log(reducedDists);
-                    plotManager.updatePlot(reducedDists, labels, divName, dim);
-                } else {
-
-                if (mds.chart != null) {
-                    console.log("ys. trying to estory chart");
-                    mds.chart.destroy();
-                    console.log("chart is now" + mds.chart);
-                    mds.chart = null;
-                    console.log("chart is now" + mds.chart);
-                }
-                // TODO: set options better for mds
-                mdsoptions = plotManager.config3DPlot(reducedDists, labels, divName);
-                console.log(mdsoptions)
-                mds.chart = new Highcharts.Chart(mdsoptions);
-                plotManager.configMouseControl(mds.chart);
-            }
-                console.log(divName + ' plotted a dataset');
-            }
-        });
-    },
-};
 
 var buttonManager = {
-    $tsne1D: $('#tsneDo1D'),
+    algoNames: ['tsne', 'pca', 'mds'],
+    dims: ['One', 'Two', 'Three'],
+    algos: [tsne, pca, mds],
 
     init: function () {
         // Hook buttons to actions
-        tsneButtonBuilder.build('tsneOneD', 1);
-        tsneButtonBuilder.build('tsneTwoD', 2);
-        tsneButtonBuilder.build('tsneThreeD', 3);
-        pcaButtonBuilder.build('pcaOneD', 1);
-        pcaButtonBuilder.build('pcaTwoD', 2);
-        pcaButtonBuilder.build('pcaThreeD', 3);
-        mdsButtonBuilder.build('mdsOneD', 1);
-        mdsButtonBuilder.build('mdsTwoD', 2);
-        mdsButtonBuilder.build('mdsThreeD', 3);
+        for(let i = 1; i < 4; i++) {
+            for(let j = 1; j < 4; j++) {
+                //console.log(this.algoNames[i-1]+this.dims[j-1]+'D')
+                runButtonBuilder.build(this.algoNames[i-1]+this.dims[j-1]+'D', j, this.algos[i-1]);
+                kMeansButtonBuilder.build(this.algoNames[i-1]+this.dims[j-1]+'D', j, this.algos[i-1]);
 
+            }
+        }
 
-        kMeansButtonBuilder.build('tsneOneD', 1, tsne)
-        kMeansButtonBuilder.build('tsneTwoD', 2, tsne)
-        kMeansButtonBuilder.build('tsneThreeD', 3, tsne)
-        kMeansButtonBuilder.build('pcaOneD', 1, pca)
-        kMeansButtonBuilder.build('pcaTwoD', 2, pca)
-        kMeansButtonBuilder.build('pcaThreeD', 3, pca)
-        kMeansButtonBuilder.build('mdsOneD', 1, mds)
-        kMeansButtonBuilder.build('mdsTwoD', 2, mds)
-        kMeansButtonBuilder.build('mdsThreeD', 3, mds)
     }
-
 }

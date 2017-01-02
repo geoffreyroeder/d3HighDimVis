@@ -1,3 +1,4 @@
+//From: http://www.shamasis.net/2009/09/fast-algorithm-to-find-unique-items-in-javascript-array/
 Array.prototype.unique = function() {
     var o = {}, i, l = this.length, r = [];
     for(i=0; i<l;i+=1) o[this[i]] = this[i];
@@ -10,9 +11,7 @@ var utils = {
     self : this,
 
     init: function() {
-
-
-
+        //TODO
     },
 
     buildColouredDataset: function(dataset, labels, colourFun = d3.scale.category10()) {
@@ -46,7 +45,7 @@ var utils = {
     },
 
     hadamard : function(mat1, mat2) {
-        // TODO: test they are the correct size.
+        // TODO: check the operation is defined
         mat1 = ML.Matrix.checkMatrix(mat1);
         mat2 = ML.Matrix.checkMatrix(mat2);
 

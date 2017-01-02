@@ -1,7 +1,4 @@
-/* FILE LOADING AND PARSING*/ // ##################################################
-
 // modified from http://html5demos.com/file-api
-
 function buildDropZone(divId, labels=false) {
     var holder = document.getElementById(divId),
         state = document.getElementById(divId + 'Status');
@@ -33,7 +30,6 @@ function buildDropZone(divId, labels=false) {
         console.log(this.className)
         return false;
     };
-
 
     holder.ondrop = function (e) {
         this.className = '';
@@ -102,7 +98,6 @@ var datasetManager = {
         }
         return this.$_labels;
     },
-
 
     init: function() {
         buildDropZone('featuresLoader');
